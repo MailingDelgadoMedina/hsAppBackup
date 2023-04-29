@@ -136,7 +136,7 @@ function MyNavBar() {
                       <Menu.Item>
    {({ active }) => (
                           <a
-                           onClick={signOut}
+                           onClick={() => Auth.signOut()}
                             className={classNames(active ? 'bg-hscream text-hsbg' : '', 'block px-4 py-2 text-sm text-hsorange border-hsgreen border-2')}
                           >
                             Sign out
