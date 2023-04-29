@@ -1,0 +1,14 @@
+{
+  "resourceName": "s3hsappstorage",
+  "bucketName": "hsapp-storage",
+  "policyUUID": "0e8c8ca4",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}
