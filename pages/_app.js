@@ -4,6 +4,7 @@ import MyNavBar from './myComponents/MyNavBar'
 import MarketingFooter from '@/ui-components/MarketingFooter'
 
 import { Mina } from 'next/font/google'
+import { Authenticator } from '@aws-amplify/ui-react'
 
 
 const mina = Mina({ subsets: ['latin'], weight:['400', '700'] })
@@ -11,6 +12,9 @@ const mina = Mina({ subsets: ['latin'], weight:['400', '700'] })
 
 export default function App({ Component, pageProps }) {
   return (
+    <Authenticator signUpAttributes={[]}>
+
+  {({signOut, user, }) =>(
   <div className={mina.className}>
 
 
@@ -26,6 +30,8 @@ export default function App({ Component, pageProps }) {
 
 
   </div>
-
+  )
+    }
+  </Authenticator>
   )
 }
