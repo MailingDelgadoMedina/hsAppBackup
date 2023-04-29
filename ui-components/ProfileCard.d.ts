@@ -5,6 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
+import { Students, Classes, Term } from "../models";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 import { ButtonProps, FlexProps, ImageProps, TextProps } from "@aws-amplify/ui-react";
 import { MyIconProps } from "./MyIcon";
@@ -21,6 +22,10 @@ export declare type ProfileCardOverridesProps = {
     Button?: PrimitiveOverrideProps<ButtonProps>;
 } & EscapeHatchProps;
 export declare type ProfileCardProps = React.PropsWithChildren<Partial<FlexProps> & {
+    students?: Students;
+    classes?: Classes;
+    term?: Term;
+} & {
     overrides?: ProfileCardOverridesProps | undefined | null;
 }>;
 export default function ProfileCard(props: ProfileCardProps): React.ReactElement;

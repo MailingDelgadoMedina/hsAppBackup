@@ -77,6 +77,7 @@ type Rewards @model @auth(rules: [{allow: public}]) {
   rewardDate: AWSDate
   rewardTime: AWSTime
   Evaluation: Evaluation @hasOne
+  PottyLog: PottyLog @hasOne
 }
 
 type Breaks @model @auth(rules: [{allow: public}]) {
@@ -102,3 +103,4 @@ type PottyLog @model @auth(rules: [{allow: public}]) {
   exactTime: AWSDate
   PottyStudents: Students @hasOne
 }
+ 
