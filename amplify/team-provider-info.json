@@ -20,6 +20,13 @@
       },
       "api": {
         "hsApp": {}
+      },
+      "function": {
+        "hsAppCustomMessage": {
+          "REDIRECTURL": "https://localhost:3000/",
+          "EMAILSUBJECT": "Here your confirmation link!",
+          "EMAILMESSAGE": "Click on the link to confirm your email."
+        }
       }
     }
   }

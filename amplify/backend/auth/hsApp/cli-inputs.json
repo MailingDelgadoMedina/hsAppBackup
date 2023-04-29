@@ -1,8 +1,6 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "testAuthIdentityPool",
-    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "hsapp5dc65382",
     "userPoolName": "hsApp",
     "autoVerifiedAttributes": [
@@ -22,23 +20,23 @@
     "requiredAttributes": [],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
-    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientRefreshTokenValidity": "180",
     "userpoolClientWriteAttributes": [],
     "userpoolClientReadAttributes": [],
     "userpoolClientLambdaRole": "hsApp5dc65382_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
     "sharedId": "5dc65382",
     "resourceName": "hsApp",
-    "authSelections": "identityPoolAndUserPool",
+    "authSelections": "userPoolOnly",
     "serviceName": "Cognito",
     "usernameAttributes": [
       "email"
     ],
-    "useDefault": "default",
+    "useDefault": "manual",
     "userPoolGroups": false,
     "userPoolGroupList": [],
     "adminQueries": false,
-    "hostedUI": false,
+    "hostedUI": true,
     "usernameCaseSensitive": false,
     "useEnabledMfas": true,
     "authRoleArn": {
@@ -54,7 +52,32 @@
       ]
     },
     "breakCircularDependency": true,
-    "dependsOn": [],
-    "authProviders": []
+    "dependsOn": [
+      {
+        "category": "function",
+        "resourceName": "hsAppCustomMessage",
+        "triggerProvider": "Cognito",
+        "attributes": [
+          "Arn",
+          "Name"
+        ]
+      }
+    ],
+    "hostedUIDomainName": "hsapp904d60c2-904d60c2",
+    "authProvidersUserPool": [],
+    "hostedUIProviderMeta": "[]",
+    "triggers": {
+      "CustomMessage": [
+        "verification-link"
+      ]
+    },
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"implicit\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://localhost:3000/\"],\"LogoutURLs\":[\"https://localhost:3000/\"]}",
+    "verificationBucketName": "hsappverificationbucket",
+    "authProviders": [],
+    "parentStack": {
+      "Ref": "AWS::StackId"
+    },
+    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"CustomMessage\",\n    \"lambdaFunctionName\": \"hsAppCustomMessage\"\n  }\n]",
+    "permissions": []
   }
 }
