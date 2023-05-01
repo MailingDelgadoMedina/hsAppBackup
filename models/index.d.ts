@@ -292,9 +292,11 @@ type EagerRewards = {
   readonly rewardDate?: string | null;
   readonly rewardTime?: string | null;
   readonly Evaluation?: Evaluation | null;
+  readonly PottyLog?: PottyLog | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly rewardsEvaluationId?: string | null;
+  readonly rewardsPottyLogId?: string | null;
 }
 
 type LazyRewards = {
@@ -309,9 +311,11 @@ type LazyRewards = {
   readonly rewardDate?: string | null;
   readonly rewardTime?: string | null;
   readonly Evaluation: AsyncItem<Evaluation | undefined>;
+  readonly PottyLog: AsyncItem<PottyLog | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly rewardsEvaluationId?: string | null;
+  readonly rewardsPottyLogId?: string | null;
 }
 
 export declare type Rewards = LazyLoading extends LazyLoadingDisabled ? EagerRewards : LazyRewards

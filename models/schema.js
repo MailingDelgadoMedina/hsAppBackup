@@ -836,6 +836,24 @@ export const schema = {
                         ]
                     }
                 },
+                "PottyLog": {
+                    "name": "PottyLog",
+                    "isArray": false,
+                    "type": {
+                        "model": "PottyLog"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "rewardsPottyLogId"
+                        ]
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -854,6 +872,13 @@ export const schema = {
                 },
                 "rewardsEvaluationId": {
                     "name": "rewardsEvaluationId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "rewardsPottyLogId": {
+                    "name": "rewardsPottyLogId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": false,
@@ -1141,5 +1166,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.0",
-    "version": "7b4434c5563fbd5aa3424ed737ebda41"
+    "version": "afa74975fa70cd59af060fc52199e1ca"
 };
