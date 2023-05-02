@@ -44,13 +44,13 @@ export default function Home() {
 
 <div className='mt-24 ' >
       <h1 className="font-['minako'] text-4xl pb-8">
-     Are you a parent seeking a reliable way to plan, organize, and track your special needs child's homeschooling journey?
+     Are you a parent seeking a reliable way to plan &#44; organize &#44; and track your special needs child &#39; s homeschooling journey &#63;
       </h1>
-         <p className='pb-10 text-hspink font-semibold text-lg'> <span className='text-hsgreen font-bold text-xl '> Homeschool Book </span> is here to support both students and their families, creating a seamless learning experience tailored to your unique needs.
+         <p className='pb-10 text-hspink font-semibold text-lg'> <span className='text-hsgreen font-bold text-xl '> Homeschool Book </span> is here to support both students and their families &#44; creating a seamless learning experience tailored to your unique needs &#46;
 
-Keep your homeschooling organized in one place. Get the tools you need to manage every aspect of homeschool teaching and learning. Take control of your homeschool. track progress, attendance, grades, & more!
+Keep your homeschooling organized in one place &#46; Get the tools you need to manage every aspect of homeschool teaching and learning &#46; Take control of your homeschool &#46; Track progress &#44; attendance &#44; grades &#44; &#38; more &#33;
 
-Make this school year easier with our powerful application!</p>
+Make this school year easier with our powerful application &#33; </p>
 <div className='pt-12 mb-10'>
 
 
@@ -67,9 +67,9 @@ Make this school year easier with our powerful application!</p>
             isDisabled={false}
             color="#110038"
             backgroundColor="#57FF73"
-            children="Get Started"
+            
           
-          ></Button>
+          >Get Started</Button>
        
 </div>
 </div>

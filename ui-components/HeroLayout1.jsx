@@ -179,7 +179,7 @@ const router = useRouter();
         justifyContent="unset"
         shrink="0"
         position="relative"
-        padding="250px 0px 0px 0px"
+        padding="150px 0px 0px 0px"
         objectFit="cover"
         {...getOverrideProps(
           overrides,

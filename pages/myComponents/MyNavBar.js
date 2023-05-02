@@ -54,13 +54,17 @@ function MyNavBar() {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
+                  <Image
                     className="block h-8 w-auto lg:hidden"
+                    height={32}
+                    width={auto}
                     src="https://res.cloudinary.com/programandoconmei/image/upload/v1682278713/Hackthon/officiallogogreen_ljw6yp.png"
                     alt="Homeschool Book App"
                   />
-                  <img
+                  <Image
                     className="hidden h-10 w-auto lg:block"
+                    height={40}
+                    width={auto}
                     src="https://res.cloudinary.com/programandoconmei/image/upload/v1682278713/Hackthon/officiallogogreen_ljw6yp.png"
                     alt="Homeschool Book App"
                   />
@@ -96,8 +100,10 @@ function MyNavBar() {
                   <div>
                     <Menu.Button className="flex rounded-full bg-hsbg text-sm focus:outline-none focus:ring-2 focus:ring-hspink focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="sr-only">Open user menu</span>
-                      <img
+                      <Image
                         className="h-8 w-8 rounded-full "
+                        height={32}
+                        width={32}
                         src="https://res.cloudinary.com/programandoconmei/image/upload/v1682746951/Hackthon/profileIcon_g63gsv.png"
                         alt="user placeholder"
                       />
