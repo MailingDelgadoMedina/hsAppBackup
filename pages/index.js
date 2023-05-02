@@ -34,6 +34,7 @@ export default function Home() {
    src="https://res.cloudinary.com/programandoconmei/image/upload/v1682467175/Hackthon/bulbgear_bhacgj.gif"
    width={500}
     height={300}
+    alt="bulb gear"
   />
 
 
