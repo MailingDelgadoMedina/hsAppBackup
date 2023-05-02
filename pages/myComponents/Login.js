@@ -1,6 +1,16 @@
-import React from 'react'
+import React,{useState} from 'react'
 import Image from 'next/image'
+import { Auth } from 'aws-amplify'
+
 function Login() {
+
+const [email, setEmail] = useState('');
+const [password, setPassword] = useState('');
+
+
+
+
+
   return (
 
  <div className="flex min-h-full min-w-full  mt-40  flex-1">
