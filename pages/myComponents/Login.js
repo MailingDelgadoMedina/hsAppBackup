@@ -1,5 +1,5 @@
 import React from 'react'
-
+import Image from 'next/image'
 function Login() {
   return (
 
@@ -8,8 +8,8 @@ function Login() {
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
               <Image
-                className="h-10 w-auto"
-                width={auto}
+         
+                width={100}
                 height={40}
                 src="https://res.cloudinary.com/programandoconmei/image/upload/v1682278713/Hackthon/officiallogogreen_ljw6yp.png"
                 alt="HS official logo"
@@ -136,7 +136,7 @@ function Login() {
             width={100}
             height={100}
             src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
-            alt=""
+            alt="log image"
           />
         </div>
       </div>
