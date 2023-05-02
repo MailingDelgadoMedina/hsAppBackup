@@ -15,15 +15,15 @@ export default function App({ Component, pageProps }) {
 <div >
  
   
-    <Authenticator
+    {/* <Authenticator
     
     signUpAttributes={[]}
    
     
     
-    >
+    > */}
 
-  {({signOut, user, }) =>(
+  {/* {({signOut, user, }) =>( */}
   <div className={mina.className}>
 
 
@@ -39,9 +39,9 @@ export default function App({ Component, pageProps }) {
 
 
   </div>
-  )
-    }
-  </Authenticator>
+  {/* )
+    } */}
+  {/* </Authenticator> */}
   </div>
 
   )
