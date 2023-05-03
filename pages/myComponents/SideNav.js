@@ -114,9 +114,11 @@ export default function SideNav() {
                       <a 
                       className="pointer"
                       href="/">
-                         <img
+                         <Image
+                          width={32}
+                          height={32}
                         className="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                        src="https://res.cloudinary.com/programandoconmei/image/upload/v1682278713/Hackthon/officiallogogreen_ljw6yp.png"
                         alt="Your Company"
                       />
                       </a>
@@ -194,9 +196,12 @@ export default function SideNav() {
               className="pointer"
             href='/'
             >
-      <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+      <Image
+
+      width={32}
+      height={32}
+                
+                src="https://res.cloudinary.com/programandoconmei/image/upload/v1682278713/Hackthon/officiallogogreen_ljw6yp.png"
                 alt="Your Company"
               />
 
@@ -303,10 +308,12 @@ export default function SideNav() {
                 <Menu as="div" className="relative">
                   <Menu.Button className="-m-1.5 flex items-center p-1.5">
                     <span className="sr-only">Open user menu</span>
-                    <img
+                    <Image
                       className="h-8 w-8 rounded-full bg-gray-50"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                      alt=""
+                      width={32}
+                      height={32}
+                      src="https://res.cloudinary.com/programandoconmei/image/upload/v1682746951/Hackthon/profileIcon_g63gsv.png"
+                      alt="profile pic"
                     />
                     <span className="hidden lg:flex lg:items-center">
                       <span className="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
