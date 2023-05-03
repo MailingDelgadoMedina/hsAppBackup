@@ -123,7 +123,7 @@ function MyNavBar() {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
+                            href="/profile"
                             className={classNames(active ? 'bg-hscream text-hsbg' : '', 'block px-4 py-2 text-sm text-hsorange border-hsgreen border-2')}
                           >
                             Your Profile

@@ -27,12 +27,12 @@ export default function App({ Component, pageProps }) {
   <div className={mina.className}>
 
 
-<MyNavBar/>
+
 
   <Component {...pageProps} />
 
   
-  
+
 {/* className='fixed bottom-0 inset-x-0' */}
 <div >
   <MarketingFooter/>

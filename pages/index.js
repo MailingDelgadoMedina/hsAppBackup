@@ -6,7 +6,7 @@ import { Button } from '@aws-amplify/ui-react'
 import { Auth } from 'aws-amplify'
 import { FAQItem, Features4x1, FeaturesText2x2, HeroLayout1 } from '@/ui-components'
 import localFont from 'next/font/local'
-
+import MyNavBar from './myComponents/MyNavBar'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -17,7 +17,7 @@ export default function Home() {
     <main
       className='bg-hscream  min-h-full   flex flex-col '
     >
-   
+   <MyNavBar/>
 
        <div className='z-10 border-8   border-hsorange'>
  <HeroLayout1 className='w-full'/>
