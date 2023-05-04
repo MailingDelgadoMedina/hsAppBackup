@@ -45,13 +45,13 @@ const router = useRouter();
     <Flex
       gap="-104px"
       direction="row"
-      width="100%"
+      width={["100%", "380px", "755px", "100%", "100%", "100%"]}
       height="472px"
       justifyContent="center"
       alignItems="center"
       position="relative"
       border="4px SOLID rgba(102,255,166,1)"
-      padding="0px 634px 0px 416px"
+      padding={["0px 634px 0px 416px","0px 0px 0px 0px","0px 234px 0px 216px","0px 634px 0px 416px","0px 634px 0px 416px","0px 634px 0px 416px",]}
       backgroundColor="rgba(17,0,56,1)"
       display="flex"
       {...getOverrideProps(overrides, "HeroLayout1")}
@@ -60,7 +60,7 @@ const router = useRouter();
       <Flex
         gap="10px"
         direction="column"
-        width="884px"
+        width={["884px", "380px", "680px", "820px", "100%", "100%"]}
         height="unset"
         justifyContent="center"
         alignItems="center"
@@ -68,7 +68,7 @@ const router = useRouter();
         shrink="0"
         alignSelf="stretch"
         position="relative"
-        padding="120px 151px 120px 120px"
+        padding={["120px 151px 120px 120px", "120px 151px 120px 120px","120px 80px 120px 60px","120px 151px 120px 120px","120px 151px 120px 120px","120px 151px 120px 120px", ]}
         backgroundColor="rgba(0,6,66,1)"
         display="flex"
         {...getOverrideProps(overrides, "Left")}
@@ -102,18 +102,18 @@ const router = useRouter();
           >
             <Text
               fontFamily="Minako"
-              fontSize="96px"
+              fontSize={["96px", "20px", "76px", "96px", "96px", "96px"]}
               fontWeight="400"
               color="rgba(254,148,42,1)"
               lineHeight="158px"
               textAlign="center"
-              display="block"
+              display={["block", "flex", "block", "block", "block", "block"]}
               direction="column"
               justifyContent="unset"
-              width="726px"
+              width={["726px", "480px", "626px", "726px", "726px",]}
               height="173px"
               gap="unset"
-              alignItems="unset"
+              alignItems={["unset", "center", "unset", "unset", "unset", "unset"]}
               shrink="0"
               position="relative"
               padding="0px 0px 0px 0px"
@@ -121,6 +121,7 @@ const router = useRouter();
               children="Homeschool Book"
               {...getOverrideProps(overrides, "Homeschool Book")}
             ></Text>
+            
             <Text
               fontFamily="Mina"
               fontSize="32px"
@@ -171,15 +172,16 @@ const router = useRouter();
       </Flex>
       <Image
         src="https://res.cloudinary.com/programandoconmei/image/upload/v1682276099/Hackthon/Untitled_design_szi8if.png"
-        width="550px"
-        height="750px"
+        width={["550px", "380px", "180px", "820px", "550px", "550px"]}
+        height={["750px", "380px", "680px", "820px", "100%", "750px"]}
         display="block"
         gap="unset"
         alignItems="unset"
         justifyContent="unset"
         shrink="0"
-        position="relative"
-        padding="250px 0px 0px 0px"
+        position={["relative", "relative", "absolute", "relative", "relative", "relative"]}
+        padding={["150px 0px 0px 0px", "0px 0px 0px 0px", "220px 100px 280px 0px", "150px 0px 0px 0px", "150px 0px 0px 0px", "150px 0px 0px 0px"]}
+      left={["unset", "unset", "60px", "unset", "unset", "unset"]}
         objectFit="cover"
         {...getOverrideProps(
           overrides,

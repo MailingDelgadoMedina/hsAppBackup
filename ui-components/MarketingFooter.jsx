@@ -7,12 +7,15 @@
 /* eslint-disable */
 import * as React from "react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Text, View } from "@aws-amplify/ui-react";
+import { Text, View, useBreakpointValue } from "@aws-amplify/ui-react";
+
 export default function MarketingFooter(props) {
   const { overrides, ...rest } = props;
+
+  
   return (
     <View
-      width="100%"
+      width="100vw"
       height="109px"
       display="block"
       gap="unset"
