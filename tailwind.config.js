@@ -8,6 +8,11 @@ module.exports = {
   theme: {
       
     extend: {
+      fontFamily: {
+
+        'minako': ['Minako', 'sans-serif'], 
+      },
+        
 
       colors:{
       'hsbg': '#110038',

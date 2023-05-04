@@ -5,12 +5,15 @@ import MarketingFooter from '@/ui-components/MarketingFooter'
 
 import { Mina } from 'next/font/google'
 import { Authenticator, Text } from '@aws-amplify/ui-react'
+import MyFooter from './myComponents/MyFooter'
 
 
 const mina = Mina({ subsets: ['latin'], weight:['400', '700'] })
 
 
 export default function App({ Component, pageProps }) {
+  
+    
   return (
 <div >
  
@@ -35,7 +38,7 @@ export default function App({ Component, pageProps }) {
 
 {/* className='fixed bottom-0 inset-x-0' */}
 <div >
-  <MarketingFooter/>
+<MyFooter/>
 </div>
 
 

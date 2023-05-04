@@ -360,18 +360,21 @@ export default function SideNav() {
             <div className='bg-hsbg  '>
 
   <Image
-  className='bg-hsbg   ml-36 '
+  className='bg-hsbg   ml-48 lg:ml-36 '
             src="https://res.cloudinary.com/programandoconmei/image/upload/v1682474947/Hackthon/bulbgearpuzzle_bkmgdv.svg"
             width={100}
             height={100}
             alt="Picture of dashboard"
             
             />
+            <div className='font-minako  text-6xl  flex flex-col items-center  text-hsorange justify-center'>
+            Dashboard
+            </div>
             </div>
           
 
 
-              <Features2x3/>
+
            
             
             
