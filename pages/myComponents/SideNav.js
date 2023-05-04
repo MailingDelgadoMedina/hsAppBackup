@@ -30,6 +30,7 @@ import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { Features2x3, ItemCard } from '@/ui-components'
 
 import Image from 'next/image'
+import Dashboard from './dashboard/Dashboard'
 
 const navigation = [
   { name: 'Dashboard', href: '/hsapp', icon: HomeIcon, current: true },
@@ -78,7 +79,7 @@ export default function SideNav() {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <div className="fixed inset-0 bg-gray-900/80" />
+              <div className="fixed inset-0 bg-hsbg/80" />
             </Transition.Child>
 
             <div className="fixed inset-0 flex">
@@ -357,20 +358,7 @@ export default function SideNav() {
           <main className="py-10">
             <div className="px-4 sm:px-6 lg:px-8">
               {/* Your content */}
-            <div className='bg-hsbg  '>
-
-  <Image
-  className='bg-hsbg   ml-48 lg:ml-36 '
-            src="https://res.cloudinary.com/programandoconmei/image/upload/v1682474947/Hackthon/bulbgearpuzzle_bkmgdv.svg"
-            width={100}
-            height={100}
-            alt="Picture of dashboard"
-            
-            />
-            <div className='font-minako  text-6xl  flex flex-col items-center  text-hsorange justify-center'>
-            Dashboard
-            </div>
-            </div>
+           <Dashboard/>
           
 
 
