@@ -45,7 +45,7 @@ const router = useRouter();
     <Flex
       gap="-104px"
       direction="row"
-      width={["100%", "380px", "755px", "820px", "100%", "100%"]}
+      width={["100%", "380px", "755px", "100%", "100%", "100%"]}
       height="472px"
       justifyContent="center"
       alignItems="center"

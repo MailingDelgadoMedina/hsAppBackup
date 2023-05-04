@@ -37,7 +37,7 @@ export default function App({ Component, pageProps }) {
   
 
 {/* className='fixed bottom-0 inset-x-0' */}
-<div >
+<div className='fixed bottom-0 inset-x-0' >
 <MyFooter/>
 </div>
 
