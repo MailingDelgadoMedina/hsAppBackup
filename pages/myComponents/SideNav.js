@@ -217,7 +217,7 @@ export default function SideNav() {
                   <ul role="list" className="-mx-2 space-y-1">
                     {navigation.map((item) => (
                       <li key={item.name}>
-                        <a
+                        <Link
                           href={item.href}
                           className={classNames(
                             item.current
@@ -228,7 +228,7 @@ export default function SideNav() {
                         >
                           <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
                           {item.name}
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
