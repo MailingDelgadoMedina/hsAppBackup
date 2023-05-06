@@ -60,10 +60,10 @@ function MyFooter() {
       <div className=" lg:ml-72 max-w-7xl  my-2  px-32 py-4 md:flex md:items-center md:justify-between lg:px-8">
         <div className="flex justify-center space-x-6 md:order-2">
           {navigation.map((item) => (
-            <a key={item.name} href={item.href} className="text-hsgreen hover:text-hsorange">
+            <Link key={item.name} href={item.href} className="text-hsgreen hover:text-hsorange">
               <span className="sr-only">{item.name}</span>
               <item.icon className="h-6 w-6" aria-hidden="true" />
-            </a>
+            </Link>
           ))}
         </div>
         <div className="mt-8 md:order-1 md:mt-0">

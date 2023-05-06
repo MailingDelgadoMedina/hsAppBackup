@@ -132,7 +132,7 @@ export default function SideNav() {
                           <ul role="list" className="-mx-2 space-y-1">
                             {navigation.map((item) => (
                               <li key={item.name}>
-                                <a
+                                <Link
                                   href={item.href}
                                   className={classNames(
                                     item.current
@@ -143,7 +143,7 @@ export default function SideNav() {
                                 >
                                   <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
                                   {item.name}
-                                </a>
+                                </Link>
                               </li>
                             ))}
                           </ul>
@@ -153,7 +153,7 @@ export default function SideNav() {
                           <ul role="list" className="-mx-2 mt-2 space-y-1">
                             {necessities.map((necessities) => (
                               <li key={necessities.name}>
-                                <a
+                                <Link
                                   href={necessities.href}
                                   className={classNames(
                                     necessities.current
@@ -166,7 +166,7 @@ export default function SideNav() {
                                     {necessities.initial}
                                   </span>
                                   <span className="truncate">{necessities.name}</span>
-                                </a>
+                                </Link>
                               </li>
                             ))}
                           </ul>
@@ -238,7 +238,7 @@ export default function SideNav() {
                   <ul role="list" className="-mx-2 mt-2 space-y-1">
                     {necessities.map((necessities) => (
                       <li key={necessities.name}>
-                        <a
+                        <Link
                           href={necessities.href}
                           className={classNames(
                             necessities.current
@@ -251,7 +251,7 @@ export default function SideNav() {
                             {necessities.initial}
                           </span>
                           <span className="truncate">{necessities.name}</span>
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -337,7 +337,7 @@ export default function SideNav() {
                       {userNavigation.map((item) => (
                         <Menu.Item key={item.name}>
                           {({ active }) => (
-                            <a
+                            <Link
                               href={item.href}
                               className={classNames(
                                 active ? 'bg-hsorange text-hsbg' : '',
@@ -345,7 +345,7 @@ export default function SideNav() {
                               )}
                             >
                               {item.name}
-                            </a>
+                            </Link>
                           )}
                         </Menu.Item>
                       ))}

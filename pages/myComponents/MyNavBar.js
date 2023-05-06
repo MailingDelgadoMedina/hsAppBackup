@@ -74,7 +74,7 @@ function MyNavBar() {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
                         href={item.href}
                         className={classNames(
@@ -84,7 +84,7 @@ function MyNavBar() {
                         aria-current={item.current ? 'page' : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -143,12 +143,12 @@ function MyNavBar() {
                         )} */}
                       <Menu.Item>
    {({ active }) => (
-                          <a
+                          <Link
                            onClick={() => Auth.signOut()}
                             className={classNames(active ? 'bg-hscream text-hsbg' : '', 'block px-4 py-2 text-sm text-hsorange border-hsgreen border-2')}
                           >
                             Sign out
-                          </a>
+                          </Link>
                         )} 
                       </Menu.Item>
                     </Menu.Items>
