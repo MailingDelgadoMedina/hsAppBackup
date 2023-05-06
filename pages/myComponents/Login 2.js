@@ -29,9 +29,9 @@ const [password, setPassword] = useState('');
               </h2>
               <p className="mt-2 text-sm leading-6 text-gray-500">
                 Not a member?{' '}
-                <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                <Link href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
                   Start a 14 day free trial
-                </a>
+                </Link>
               </p>
             </div>
 
@@ -84,9 +84,9 @@ const [password, setPassword] = useState('');
                     </div>
 
                     <div className="text-sm leading-6">
-                      <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                      <Link href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
                         Forgot password?
-                      </a>
+                      </Link>
                     </div>
                   </div>
 

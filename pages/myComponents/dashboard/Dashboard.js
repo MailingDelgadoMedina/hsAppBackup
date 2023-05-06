@@ -4,6 +4,7 @@ import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 
 
 import Image from 'next/image'
+import Link from 'next/link'
 
 
 const projects = [
@@ -59,9 +60,9 @@ function Dashboard() {
             </div>
             <div className="flex flex-1 items-center justify-between truncate rounded-r-md border-4 hover:bg-hsbg hover:text-hsgreen border-hsbg bg-white">
               <div className="flex-1 truncate px-4 py-2 text-sm">
-                <a href={project.href} className="font-medium  text- hover:text-hsgreen">
+                <Link href={project.href} className="font-medium  text- hover:text-hsgreen">
                   {project.name}
-                </a>
+                </Link>
                 {/* <p className="text-gray-500">{project.members} Members</p> */}
               </div>
               <div className="flex-shrink-0 pr-2">

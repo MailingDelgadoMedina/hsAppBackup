@@ -6,6 +6,7 @@ import { Auth } from 'aws-amplify'
 import { Authenticator, Button } from '@aws-amplify/ui-react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const navigation = [
   { name: 'Home', href: '/', current: false },
@@ -122,12 +123,12 @@ function MyNavBar() {
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-hsbg py-1 shadow-lg ring-1 ring-hsgreen ring-opacity-5 text-hsorange focus:outline-none">
                       <Menu.Item>
                         {({ active }) => (
-                          <a
+                          <Link
                             href="/profile"
                             className={classNames(active ? 'bg-hscream text-hsbg' : '', 'block px-4 py-2 text-sm text-hsorange border-hsgreen border-2')}
                           >
                             Your Profile
-                          </a>
+                          </Link>
                         )}
                       </Menu.Item>
                      

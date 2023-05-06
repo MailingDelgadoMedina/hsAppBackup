@@ -31,6 +31,7 @@ import { Features2x3, ItemCard } from '@/ui-components'
 
 import Image from 'next/image'
 import Dashboard from './dashboard/Dashboard'
+import Link from 'next/link'
 
 const navigation = [
   { name: 'Dashboard', href: '/hsapp', icon: HomeIcon, current: true },
@@ -112,7 +113,7 @@ export default function SideNav() {
                   {/* Sidebar component, swap this element with another sidebar if you like */}
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-hsbg px-6 pb-4 ring-1 ring-hsorange/10">
                     <div className="flex h-16 shrink-0 items-center">
-                      <a 
+                      <Link 
                       className="pointer"
                       href="/">
                          <Image
@@ -122,7 +123,7 @@ export default function SideNav() {
                         src="https://res.cloudinary.com/programandoconmei/image/upload/v1682278713/Hackthon/officiallogogreen_ljw6yp.png"
                         alt="HS Logo"
                       />
-                      </a>
+                      </Link>
                     
                     </div>
                     <nav className="flex flex-1 flex-col">
@@ -193,7 +194,7 @@ export default function SideNav() {
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-hsbg border-4 border-hsgreen px-6 pb-4">
             <div className="flex h-16 shrink-0 items-center">
-            <a
+            <Link
               className="pointer"
             href='/'
             >
@@ -207,7 +208,7 @@ export default function SideNav() {
               />
 
 
-            </a>
+            </Link>
         
             </div>
             <nav className="flex flex-1 flex-col">
