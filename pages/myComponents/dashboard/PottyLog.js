@@ -2,15 +2,16 @@ import React from 'react'
 import Link from 'next/link'
 
 const tabs = [
-  { name: 'Create an Activity', href: '#', current: false },
-  { name: 'View Activities', href: '#', current: true },
+  { name: 'Create a Potty Log', href: '#', current: false },
+  { name: 'View the Potty Logs', href: '#', current: true },
   
 ]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
-function Activities() {
+
+function PottyLog() {
   return (
      <div>
  <div className="border-b border-gray-200 pb-5 sm:pb-0">
@@ -57,4 +58,4 @@ function Activities() {
   )
 }
 
-export default Activities
+export default PottyLog

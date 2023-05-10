@@ -1,18 +1,20 @@
 import React from 'react'
+
 import Link from 'next/link'
 
 const tabs = [
-  { name: 'Create an Activity', href: '#', current: false },
-  { name: 'View Activities', href: '#', current: true },
+  { name: 'Create a Reward', href: '#', current: false },
+  { name: 'View the Rewards', href: '#', current: true },
   
 ]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
-function Activities() {
+
+function Rewards() {
   return (
-     <div>
+  <div>
  <div className="border-b border-gray-200 pb-5 sm:pb-0">
       <h3 className="text-base font-semibold leading-6 text-gray-900">Candidates</h3>
       <div className="mt-3 sm:mt-4">
@@ -57,4 +59,4 @@ function Activities() {
   )
 }
 
-export default Activities
+export default Rewards

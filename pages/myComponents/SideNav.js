@@ -28,23 +28,37 @@ import {
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { Features2x3, ItemCard } from '@/ui-components'
-
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import Dashboard from './dashboard/Dashboard'
+
 import Link from 'next/link'
+
+import { useRouter } from 'next/router'
+
+
+const Enrollment = dynamic(() => import('./dashboard/Enrollment'))
+const Evaluations = dynamic(() => import('./dashboard/Evaluations'))
+const Reports = dynamic(() => import('./dashboard/Reports'))
+const Students = dynamic(() => import('./dashboard/Students'))
+const Activities = dynamic(() => import('./dashboard/Activities'))
+
+const Dashboard = dynamic(() => import('./dashboard/Dashboard'))
+const Breaks = dynamic(() => import('./dashboard/Breaks'))
+const PottyLog = dynamic(() => import('./dashboard/PottyLog'))
+const Rewards = dynamic(() => import('./dashboard/Rewards'))
 
 const navigation = [
   { name: 'Dashboard', href: '/hsapp', icon: HomeIcon, current: true },
-  { name: 'Students', href: '/students', icon: UsersIcon, current: false },
-  { name: 'Enrollments', href: '/enrollments', icon: FolderIcon, current: false },
-  { name: 'Activities', href: '/activities', icon: CalendarIcon, current: false },
-  { name: 'Evaluations', href: '/evalutations', icon: DocumentDuplicateIcon, current: false },
-  { name: 'Reports', href: '/reports', icon: ChartPieIcon, current: false },
+  { name: 'Students', href: './dashboard/Students', icon: UsersIcon, current: false },
+  { name: 'Enrollments', href: './dashboard/Enrollment', icon: FolderIcon, current: false },
+  { name: 'Activities', href: './dashboard/Activities', icon: CalendarIcon, current: false },
+  { name: 'Evaluations', href: './dashboard/Evalutations', icon: DocumentDuplicateIcon, current: false },
+  { name: 'Reports', href: './dashboard/Reports', icon: ChartPieIcon, current: false },
 ]
 const necessities = [
-  { id: 1, name: 'Breaks', href: '/breaks', initial: 'B', current: false },
-  { id: 2, name: 'Potty Log', href: '/pottylog', initial: 'P', current: false },
-  { id: 3, name: 'Rewards', href: 'rewards', initial: 'R', current: false },
+  { id: 1, name: 'Breaks', href: './dashboard/Breaks', initial: 'B', current: false },
+  { id: 2, name: 'Potty Log', href: './dashboard/PottyLog', initial: 'P', current: false },
+  { id: 3, name: 'Rewards', href: './dashboard/Rewards', initial: 'R', current: false },
 ]
 const userNavigation = [
   { name: 'Your profile', href: '/profile' },
@@ -56,7 +70,15 @@ function classNames(...classes) {
 }
 
 export default function SideNav() {
+
+ const [selectedComponent, setSelectedComponent] = useState('Dashboard');
+
   const [sidebarOpen, setSidebarOpen] = useState(false)
+const router = useRouter();
+const   handleClick = (component) => {
+    setSelectedComponent(component);
+    // router.push('/' + component);
+  };
 
   return (
     <>
@@ -134,13 +156,19 @@ export default function SideNav() {
                               <li key={item.name}>
                                 <Link
                                   href={item.href}
+                                  onClick={(e) =>{
+                                    e.preventDefault();
+                                     handleClick(item.name)}}
                                   className={classNames(
                                     item.current
                                       ? 'bg-hsgreen text-hsbg'
                                       : 'text-hsorange hover:text-hsgreen hover:bg-[#000642]',
                                     'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                                   )}
-                                >
+                                > 
+                              
+
+                             
                                   <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
                                   {item.name}
                                 </Link>
@@ -155,6 +183,9 @@ export default function SideNav() {
                               <li key={necessities.name}>
                                 <Link
                                   href={necessities.href}
+                                   onClick={(e) =>{
+                                    e.preventDefault();
+                                     handleClick(necessities.name)}}
                                   className={classNames(
                                     necessities.current
                                       ? 'bg-hsgreen text-hsbg'
@@ -219,6 +250,9 @@ export default function SideNav() {
                       <li key={item.name}>
                         <Link
                           href={item.href}
+                           onClick={(e) =>{
+                                    e.preventDefault();
+                                     handleClick(item.name)}}
                           className={classNames(
                             item.current
                               ? 'bg-hsgreen text-hsbg'
@@ -240,6 +274,9 @@ export default function SideNav() {
                       <li key={necessities.name}>
                         <Link
                           href={necessities.href}
+                          onClick={(e) =>{
+                                    e.preventDefault();
+                                     handleClick(necessities.name)}}
                           className={classNames(
                             necessities.current
                               ? 'bg-hsbg text-hsgreen'
@@ -358,9 +395,20 @@ export default function SideNav() {
 
           <main className="  pt-10  h-screen lg:h-fit xl:h-full">
             <div className="px-4  sm:px-6 lg:px-8">
+
               {/* Your content */}
-           <Dashboard/>
-          
+
+
+{selectedComponent === "Dashboard" && <Dashboard/>}
+{selectedComponent === "Enrollments" && <Enrollment/>}
+{selectedComponent === "Evaluations" && <Evaluations/>}
+{selectedComponent === "Reports" && <Reports/>}
+{selectedComponent === "Students" && <Students/>}
+{selectedComponent === "Activities" && <Activities/>}
+{selectedComponent === "Breaks" && <Breaks/>}
+{selectedComponent === "Potty Log" && <PottyLog/>}
+{selectedComponent === "Rewards" && <Rewards/>}
+
 
 
 
