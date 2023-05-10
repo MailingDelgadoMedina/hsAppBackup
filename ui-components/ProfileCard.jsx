@@ -6,15 +6,23 @@
 
 /* eslint-disable */
 import * as React from "react";
+import { DataStore } from "@aws-amlify/datastore";
+import{Students}from "../models";
 import {
   getOverrideProps,
   useNavigateAction,
 } from "@aws-amplify/ui-react/internal";
 import { Button, Flex, Image, Text } from "@aws-amplify/ui-react";
 import MyIcon from "./MyIcon";
+
+{/* const models = await DataStore.query(Students);
+ console.log(models);*/}
 export default function ProfileCard(props) {
+  
   const { students, classes, term, overrides, ...rest } = props;
   const buttonOnClick = useNavigateAction({ type: "url", url: "" });
+
+
   return (
     <Flex
       gap="24px"
