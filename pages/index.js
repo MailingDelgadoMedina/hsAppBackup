@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import ".././configureAmplify"
 import { Authenticator } from '@aws-amplify/ui-react'
 import { Button } from '@aws-amplify/ui-react'
-import { Auth } from 'aws-amplify'
+import {  Amplify, API, Auth, withSSRContext } from 'aws-amplify'
 import { FAQItem, Features4x1, FeaturesText2x2, HeroLayout1 } from '@/ui-components'
 import localFont from 'next/font/local'
 import MyNavBar from './myComponents/MyNavBar'

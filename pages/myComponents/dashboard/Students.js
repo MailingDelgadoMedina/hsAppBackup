@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import { ItemCard, ProfileCard } from '@/ui-components'
+import ProfileCardCollection from '@/ui-components/ProfileCardCollection'
 
 
 const StudentFormCreate = dynamic(() => import('@/ui-components/StudentFormCreate'))

@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { DataStore } from "@aws-amlify/datastore";
+
 import{Students}from "../models";
 import {
   getOverrideProps,
