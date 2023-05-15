@@ -7,8 +7,12 @@
 /* eslint-disable */
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
+import { getOverrideProps,
+        useDataStoreCreateAction,
+        useStateMutationAction,
+} from "@aws-amplify/ui-react/internal";
 import { Students } from "../models";
+import{schema} from "../models/schema"
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
 export default function StudentFormCreate(props) {
@@ -29,15 +33,27 @@ export default function StudentFormCreate(props) {
     age: "",
     imageProfileStu: "",
   };
-  const [stuName, setStuName] = React.useState(initialValues.stuName);
-  const [stuLastName, setStuLastName] = React.useState(
-    initialValues.stuLastName
-  );
-  const [email, setEmail] = React.useState(initialValues.email);
-  const [age, setAge] = React.useState(initialValues.age);
-  const [imageProfileStu, setImageProfileStu] = React.useState(
-    initialValues.imageProfileStu
-  );
+  const [stuName, setStuName] = useStateMutationAction("");
+  const [stuLastName, setStuLastName] = useStateMutationAction("");
+  
+  const [email, setEmail] = useStateMutationAction("");
+  const [age, setAge] = useStateMutationAction("");
+  const [imageProfileStu, setImageProfileStu] = useStateMutationAction("");
+  
+
+const buttonOnClick = useDataStoreCreateAction({
+fields: {
+  stuName: stuName,  
+  stuLastName: stuLastName,
+  email: email,
+  age: age,
+  imageProfileStu: imageProfileStu,
+},
+model: Students,
+schema: schema,
+});
+  
+
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setStuName(initialValues.stuName);
@@ -71,6 +87,9 @@ export default function StudentFormCreate(props) {
     setErrors((errors) => ({ ...errors, [fieldName]: validationResponse }));
     return validationResponse;
   };
+
+
+
   return (
     <Grid
       as="form"
@@ -295,6 +314,10 @@ export default function StudentFormCreate(props) {
             children="Submit"
             type="submit"
             variation="primary"
+            onClick={()=>{
+              buttonOnClick();
+            }}
+
             isDisabled={Object.values(errors).some((e) => e?.hasError)}
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>

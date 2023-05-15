@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import { ItemCard, ProfileCard } from '@/ui-components'
 import ProfileCardCollection from '@/ui-components/ProfileCardCollection'
+import ProfileCardStudents from '@/ui-components/ProfileCardStudents'
 
 
 const StudentFormCreate = dynamic(() => import('@/ui-components/StudentFormCreate'))
@@ -76,21 +77,10 @@ const [selectedComponent, setSelectedComponent] = useState('');
    
  {showForm && selectedComponent === 'Create a Student' && 
      <StudentFormCreate
-    onSubmit={(fields) => {
-        // Example function to trim all string inputs
-        const updatedFields = {}
-        Object.keys(fields).forEach(key => {
-            if (typeof fields[key] === 'string') {
-                updatedFields[key] = fields[key].trim()
-            } else {
-                updatedFields[key] = fields[key]
-            }
-        })
-        return updatedFields
-    }}
+   
 />}
 
-    {selectedComponent === 'View Students' && <ProfileCard/>}
+    {selectedComponent === 'View Students' && <ProfileCardStudents/>}
     </div>
   )
 }
