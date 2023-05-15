@@ -20,7 +20,7 @@ import MyIcon from "./MyIcon";
 export default function ProfileCard(props) {
   
   const { students, classes, term, overrides, ...rest } = props;
-  const buttonOnClick = useNavigateAction({ type: "url", url: "" });
+  const buttonOnClick = useNavigateAction({ type: "url", url: "/profile" });
 
 
   return (
