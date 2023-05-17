@@ -50,6 +50,8 @@ export default function StudentFormCrear(props) {
   });
   return (
     <View
+    color="#110038"
+    marginTop="75px"
       width="390px"
       height="788px"
       display="block"
@@ -66,13 +68,14 @@ export default function StudentFormCrear(props) {
       {...rest}
     >
       <TextField
+        color="#110038"
         width="300px"
         height="unset"
-        label="Student Name"
+  
         position="absolute"
         top="72px"
         left="41px"
-        placeholder="Placeholder"
+        placeholder="Name"
         size="default"
         isDisabled={false}
         labelHidden={false}
@@ -84,13 +87,14 @@ export default function StudentFormCrear(props) {
         {...getOverrideProps(overrides, "TextField39312685")}
       ></TextField>
       <TextField
+        color="#110038"
         width="300px"
         height="unset"
-        label="Student Last Name"
+  
         position="absolute"
         top="159px"
         left="41px"
-        placeholder="Placeholder"
+        placeholder="Last Name"
         size="default"
         isDisabled={false}
         labelHidden={false}
@@ -102,13 +106,14 @@ export default function StudentFormCrear(props) {
         {...getOverrideProps(overrides, "TextField39312692")}
       ></TextField>
       <TextField
+        color="#110038"
         width="300px"
         height="unset"
-        label="Email"
+    
         position="absolute"
         top="255px"
         left="41px"
-        placeholder="Placeholder"
+        placeholder="Email"
         size="default"
         isDisabled={false}
         labelHidden={false}
@@ -120,13 +125,14 @@ export default function StudentFormCrear(props) {
         {...getOverrideProps(overrides, "TextField39312699")}
       ></TextField>
       <TextField
+        color="#110038"
         width="300px"
         height="unset"
-        label="Age"
+        
         position="absolute"
         top="357px"
         left="41px"
-        placeholder="Placeholder"
+        placeholder="age"
         size="default"
         isDisabled={false}
         labelHidden={false}
@@ -138,13 +144,14 @@ export default function StudentFormCrear(props) {
         {...getOverrideProps(overrides, "TextField39312706")}
       ></TextField>
       <TextField
+        color="#110038"
         width="300px"
         height="unset"
-        label="Student Image"
+
         position="absolute"
         top="453px"
         left="41px"
-        placeholder="Placeholder"
+        placeholder="Image URL"
         size="default"
         isDisabled={false}
         labelHidden={false}
@@ -166,6 +173,7 @@ export default function StudentFormCrear(props) {
         top="685px"
         left="43px"
         backgroundColor="rgba(255,174,0,1)"
+        color="#110038"
         size="default"
         isDisabled={false}
         variation="default"
@@ -180,6 +188,7 @@ export default function StudentFormCrear(props) {
         borderRadius="23px"
         top="685px"
         left="234px"
+        color="rgba(102,255,166,1)"
         backgroundColor="rgba(17,0,56,1)"
         size="default"
         isDisabled={false}
@@ -191,13 +200,14 @@ export default function StudentFormCrear(props) {
         {...getOverrideProps(overrides, "ButtonSubmit")}
       ></Button>
       <SelectField
+        color="#110038"
         width="300px"
         height="unset"
-        label="Parent"
+
         position="absolute"
         top="540px"
         left="41px"
-        placeholder="Placeholder"
+        placeholder="Parent"
         size="default"
         isDisabled={false}
         labelHidden={false}
