@@ -1,6 +1,9 @@
-import React from 'react'
+import {useState} from 'react'
 import SideNav from '../SideNav'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
+
 
 const tabs = [
   { name: 'Create an Enrollment', href: '#', current: false },

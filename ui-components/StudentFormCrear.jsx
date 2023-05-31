@@ -5,8 +5,9 @@
  **************************************************************************/
 
 /* eslint-disable */
-import * as React from "react";
-import { Students } from "../models";
+import  React,{useState} from "react";
+import { Students, Parents } from "../models";
+
 import {
   getOverrideProps,
   useDataStoreCreateAction,
@@ -36,6 +37,10 @@ export default function StudentFormCrear(props) {
     textFieldThreeNineThreeOneTwoSevenOneThreeValue,
     setTextFieldThreeNineThreeOneTwoSevenOneThreeValue,
   ] = useStateMutationAction("");
+  const [selectedParentName, setSelectedParentName] = useState("");
+
+//const [selectedParentName, setSelectedParentName] = useStateMutationAction("");
+
   const buttonSubmitOnClick = useDataStoreCreateAction({
     fields: {
       stuName: textFieldThreeNineThreeOneTwoSixEightFiveValue,
@@ -43,11 +48,16 @@ export default function StudentFormCrear(props) {
       email: textFieldThreeNineThreeOneTwoSixNineNineValue,
       age: textFieldThreeNineThreeOneTwoSevenZeroSixValue,
       imageProfileStu: textFieldThreeNineThreeOneTwoSevenOneThreeValue,
-      parentsID: "parents.parentName",
+     // parentsID: "parents?.[0]?.parentName",
+     parentsID: selectedParentName, // Use the selected parent name here
+  // parentsID: SelectField,
     },
-    model: Students,
+    model: [Students, Parents],
     schema: schema,
+
   });
+
+ 
   return (
     <View
     color="#110038"
@@ -212,9 +222,23 @@ export default function StudentFormCrear(props) {
         isDisabled={false}
         labelHidden={false}
         variation="default"
-        aria-multiselectable={`${parents?.parentName}${parents?.parentLastName}`}
+       // value={parents?.[0]?.parentName} // Assuming you want to select the first parent's name in the "parents" array
+        
+      // onChange={(event) => {
+      //   const selectedParentName = event.target.value;
+      //   setSelectedParentName(selectedParentName); // Update the selected parent name state
+      // }}
+       value={selectedParentName} // Set the selected parent name as the value
+       onChange={(e) => setSelectedParentName(e.target.value)}
         {...getOverrideProps(overrides, "SelectField")}
-      ></SelectField>
+      >
+        <option value="">Select a parent</option>
+ {parents?.map((parent) => (
+        <option key={parent.id} value={parent.id}>
+          {parents.parentName}
+        </option>
+))}
+      </SelectField>
     </View>
   );
 }

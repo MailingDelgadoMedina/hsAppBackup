@@ -7,6 +7,7 @@ import ProfileCardCollection from '@/ui-components/ProfileCardCollection'
 import ProfileCardStudents from '@/ui-components/ProfileCardStudents'
 
 
+const ParentFormCrear = dynamic(()=> import('@/ui-components/ParentsCreateForm'))
 const StudentFormCrear = dynamic(() => import('@/ui-components/StudentFormCrear'))
 const StudentFormUpdate = dynamic(() => import('@/ui-components/StudentFormUpdate'))
 
@@ -76,7 +77,8 @@ const [selectedComponent, setSelectedComponent] = useState('');
     </div>
    
  {showForm && selectedComponent === 'Create a Student' && 
-   <StudentFormCrear/>}
+<StudentFormCrear/>}
+
 
     {selectedComponent === 'View Students' && <ProfileCardStudents/>}
     </div>
