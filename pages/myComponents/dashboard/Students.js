@@ -8,8 +8,8 @@ import ProfileCardStudents from '@/ui-components/ProfileCardStudents'
 
 
 const ParentFormCrear = dynamic(()=> import('@/ui-components/ParentsCreateForm'))
-const StudentFormCrear = dynamic(() => import('@/ui-components/StudentFormCrear'))
-const StudentFormUpdate = dynamic(() => import('@/ui-components/StudentFormUpdate'))
+const StudentsCreateForm = dynamic(() => import('@/ui-components/StudentsCreateForm'))
+
 
 
 const tabs = [
@@ -77,7 +77,7 @@ const [selectedComponent, setSelectedComponent] = useState('');
     </div>
    
  {showForm && selectedComponent === 'Create a Student' && 
-<StudentFormCrear/>}
+<StudentsCreateForm/>}
 
 
     {selectedComponent === 'View Students' && <ProfileCardStudents/>}
