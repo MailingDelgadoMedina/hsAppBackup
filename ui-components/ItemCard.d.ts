@@ -5,6 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
+import { Enrollment } from "../models";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 import { BadgeProps, FlexProps, TextProps } from "@aws-amplify/ui-react";
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
@@ -18,6 +19,8 @@ export declare type ItemCardOverridesProps = {
     $99?: PrimitiveOverrideProps<TextProps>;
 } & EscapeHatchProps;
 export declare type ItemCardProps = React.PropsWithChildren<Partial<FlexProps> & {
+    Enrollments?: Enrollment;
+} & {
     overrides?: ItemCardOverridesProps | undefined | null;
 }>;
 export default function ItemCard(props: ItemCardProps): React.ReactElement;

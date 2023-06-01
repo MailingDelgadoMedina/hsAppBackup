@@ -8,26 +8,9 @@
 import * as React from "react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Badge, Flex, Text } from "@aws-amplify/ui-react";
-
-const navigation = [
-  
-  { name: 'Students', href: '/students', description: "You can create and view your student", current: false },
-  { name: 'Enrollments', href: '/enrollments', description: "Here you can manage your enrollments ", current: false },
-  { name: 'Activities', href: '/activities', description: "Manage your student activities", current: false },
-  { name: 'Evaluations', href: '/evalutations', description: "Evaluate your students", current: false },
-  { name: 'Reports', href: '/reports', description: "Print your reports", current: false },
-]
-const necessities = [
-  { id: 1, name: 'Breaks', href: '/breaks', initial: 'B', current: false },
-  { id: 2, name: 'Potty Log', href: '/pottylog', initial: 'P', current: false },
-  { id: 3, name: 'Rewards', href: 'rewards', initial: 'R', current: false },
-]
-
-
 export default function ItemCard(props) {
-  const { overrides, ...rest } = props;
+  const { Enrollments, overrides, ...rest } = props;
   return (
-
     <Flex
       gap="16px"
       direction="column"
@@ -43,7 +26,16 @@ export default function ItemCard(props) {
       {...getOverrideProps(overrides, "ItemCard")}
       {...rest}
     >
-   
+      <Badge
+        width="unset"
+        height="unset"
+        gap="0"
+        shrink="0"
+        size="small"
+        variation="default"
+        children="New"
+        {...getOverrideProps(overrides, "Badge")}
+      ></Badge>
       <Flex
         gap="0"
         direction="row"
@@ -113,10 +105,28 @@ export default function ItemCard(props) {
             {...getOverrideProps(overrides, "Classic Long Sleeve")}
           ></Text>
         </Flex>
-        
+        <Text
+          fontFamily="Inter"
+          fontSize="16px"
+          fontWeight="800"
+          color="rgba(13,26,38,1)"
+          lineHeight="20px"
+          textAlign="right"
+          display="block"
+          direction="column"
+          justifyContent="unset"
+          width="unset"
+          height="unset"
+          gap="unset"
+          alignItems="unset"
+          shrink="0"
+          position="relative"
+          padding="0px 0px 0px 0px"
+          whiteSpace="pre-wrap"
+          children="$99"
+          {...getOverrideProps(overrides, "$99")}
+        ></Text>
       </Flex>
     </Flex>
-
-
   );
 }

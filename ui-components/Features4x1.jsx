@@ -14,12 +14,12 @@ export default function Features4x1(props) {
     <Flex
       gap="10px"
       direction="column"
-      width="100%"
+      width="1448px"
       height="unset"
       justifyContent="center"
       alignItems="center"
       position="relative"
-    
+      border="4px SOLID rgba(0,0,0,1)"
       padding="40px 140px 40px 140px"
       backgroundColor="rgba(255,246,209,1)"
       {...getOverrideProps(overrides, "Features4x1")}
@@ -39,7 +39,6 @@ export default function Features4x1(props) {
         {...getOverrideProps(overrides, "Frame 136")}
       >
         <Flex
-    
           gap="16px"
           direction="column"
           width="unset"
@@ -74,7 +73,7 @@ export default function Features4x1(props) {
             position="relative"
             padding="0px 0px 0px 0px"
             whiteSpace="pre-wrap"
-            children="Attendance"
+            children="Feature A"
             {...getOverrideProps(overrides, "Feature A")}
           ></Text>
           <Text
@@ -96,10 +95,10 @@ export default function Features4x1(props) {
             position="relative"
             padding="0px 0px 0px 0px"
             whiteSpace="pre-wrap"
-            children="Rest easy knowing that your child school records are always up-to-date and accurate."
+            children="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud."
             {...getOverrideProps(
               overrides,
-              "Rest easy knowing that your child school records are always up-to-date and accurate."
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.29766581"
             )}
           ></Text>
         </Flex>
@@ -139,7 +138,7 @@ export default function Features4x1(props) {
             position="relative"
             padding="0px 0px 0px 0px"
             whiteSpace="pre-wrap"
-            children="Behavior"
+            children="Feature B"
             {...getOverrideProps(overrides, "Feature B")}
           ></Text>
           <Text
@@ -161,7 +160,7 @@ export default function Features4x1(props) {
             position="relative"
             padding="0px 0px 0px 0px"
             whiteSpace="pre-wrap"
-            children="Parents with children with special needs like ASD and ADHD and other neurodiverse conditions will be able to support the student by understanding their behavior patterns."
+            children="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud."
             {...getOverrideProps(
               overrides,
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.29766584"
@@ -204,7 +203,7 @@ export default function Features4x1(props) {
             position="relative"
             padding="0px 0px 0px 0px"
             whiteSpace="pre-wrap"
-            children="Progress"
+            children="Feature C"
             {...getOverrideProps(overrides, "Feature C")}
           ></Text>
           <Text
@@ -226,7 +225,7 @@ export default function Features4x1(props) {
             position="relative"
             padding="0px 0px 0px 0px"
             whiteSpace="pre-wrap"
-            children="Easily see your child's grades and progress over time. Get at a glance viedw of your child's progress."
+            children="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud."
             {...getOverrideProps(
               overrides,
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.29766587"
@@ -268,7 +267,7 @@ export default function Features4x1(props) {
             position="relative"
             padding="0px 0px 0px 0px"
             whiteSpace="pre-wrap"
-            children="Rewards"
+            children="Feature D"
             {...getOverrideProps(overrides, "Feature D")}
           ></Text>
           <Text
@@ -290,7 +289,7 @@ export default function Features4x1(props) {
             position="relative"
             padding="0px 0px 0px 0px"
             whiteSpace="pre-wrap"
-            children="Celebrate each accomplishment and reward good behavior."
+            children="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud."
             {...getOverrideProps(
               overrides,
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.29766590"
