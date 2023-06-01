@@ -5,9 +5,8 @@
  **************************************************************************/
 
 /* eslint-disable */
-import  React,{useState} from "react";
-import { Students, Parents } from "../models";
-
+import * as React from "react";
+import { Students } from "../models";
 import {
   getOverrideProps,
   useDataStoreCreateAction,
@@ -37,10 +36,6 @@ export default function StudentFormCrear(props) {
     textFieldThreeNineThreeOneTwoSevenOneThreeValue,
     setTextFieldThreeNineThreeOneTwoSevenOneThreeValue,
   ] = useStateMutationAction("");
-  const [selectedParentName, setSelectedParentName] = useState("");
-
-//const [selectedParentName, setSelectedParentName] = useStateMutationAction("");
-
   const buttonSubmitOnClick = useDataStoreCreateAction({
     fields: {
       stuName: textFieldThreeNineThreeOneTwoSixEightFiveValue,
@@ -48,20 +43,13 @@ export default function StudentFormCrear(props) {
       email: textFieldThreeNineThreeOneTwoSixNineNineValue,
       age: textFieldThreeNineThreeOneTwoSevenZeroSixValue,
       imageProfileStu: textFieldThreeNineThreeOneTwoSevenOneThreeValue,
-     // parentsID: "parents?.[0]?.parentName",
-     parentsID: selectedParentName, // Use the selected parent name here
-  // parentsID: SelectField,
+      parentsID: "parents.parentName",
     },
-    model: [Students, Parents],
+    model: Students,
     schema: schema,
-
   });
-
- 
   return (
     <View
-    color="#110038"
-    marginTop="75px"
       width="390px"
       height="788px"
       display="block"
@@ -78,14 +66,13 @@ export default function StudentFormCrear(props) {
       {...rest}
     >
       <TextField
-        color="#110038"
         width="300px"
         height="unset"
-  
+        label="Student Name"
         position="absolute"
         top="72px"
         left="41px"
-        placeholder="Name"
+        placeholder="Placeholder"
         size="default"
         isDisabled={false}
         labelHidden={false}
@@ -97,14 +84,13 @@ export default function StudentFormCrear(props) {
         {...getOverrideProps(overrides, "TextField39312685")}
       ></TextField>
       <TextField
-        color="#110038"
         width="300px"
         height="unset"
-  
+        label="Student Last Name"
         position="absolute"
         top="159px"
         left="41px"
-        placeholder="Last Name"
+        placeholder="Placeholder"
         size="default"
         isDisabled={false}
         labelHidden={false}
@@ -116,14 +102,13 @@ export default function StudentFormCrear(props) {
         {...getOverrideProps(overrides, "TextField39312692")}
       ></TextField>
       <TextField
-        color="#110038"
         width="300px"
         height="unset"
-    
+        label="Email"
         position="absolute"
         top="255px"
         left="41px"
-        placeholder="Email"
+        placeholder="Placeholder"
         size="default"
         isDisabled={false}
         labelHidden={false}
@@ -135,14 +120,13 @@ export default function StudentFormCrear(props) {
         {...getOverrideProps(overrides, "TextField39312699")}
       ></TextField>
       <TextField
-        color="#110038"
         width="300px"
         height="unset"
-        
+        label="Age"
         position="absolute"
         top="357px"
         left="41px"
-        placeholder="age"
+        placeholder="Placeholder"
         size="default"
         isDisabled={false}
         labelHidden={false}
@@ -154,14 +138,13 @@ export default function StudentFormCrear(props) {
         {...getOverrideProps(overrides, "TextField39312706")}
       ></TextField>
       <TextField
-        color="#110038"
         width="300px"
         height="unset"
-
+        label="Student Image"
         position="absolute"
         top="453px"
         left="41px"
-        placeholder="Image URL"
+        placeholder="Placeholder"
         size="default"
         isDisabled={false}
         labelHidden={false}
@@ -183,7 +166,6 @@ export default function StudentFormCrear(props) {
         top="685px"
         left="43px"
         backgroundColor="rgba(255,174,0,1)"
-        color="#110038"
         size="default"
         isDisabled={false}
         variation="default"
@@ -198,7 +180,6 @@ export default function StudentFormCrear(props) {
         borderRadius="23px"
         top="685px"
         left="234px"
-        color="rgba(102,255,166,1)"
         backgroundColor="rgba(17,0,56,1)"
         size="default"
         isDisabled={false}
@@ -210,35 +191,20 @@ export default function StudentFormCrear(props) {
         {...getOverrideProps(overrides, "ButtonSubmit")}
       ></Button>
       <SelectField
-        color="#110038"
         width="300px"
         height="unset"
-
+        label="Parent"
         position="absolute"
         top="540px"
         left="41px"
-        placeholder="Parent"
+        placeholder="Placeholder"
         size="default"
         isDisabled={false}
         labelHidden={false}
         variation="default"
-       // value={parents?.[0]?.parentName} // Assuming you want to select the first parent's name in the "parents" array
-        
-      // onChange={(event) => {
-      //   const selectedParentName = event.target.value;
-      //   setSelectedParentName(selectedParentName); // Update the selected parent name state
-      // }}
-       value={selectedParentName} // Set the selected parent name as the value
-       onChange={(e) => setSelectedParentName(e.target.value)}
+        aria-multiselectable={`${parents?.parentName}${parents?.parentLastName}`}
         {...getOverrideProps(overrides, "SelectField")}
-      >
-        <option value="">Select a parent</option>
- {parents?.map((parent) => (
-        <option key={parent.id} value={parent.id}>
-          {parents.parentName}
-        </option>
-))}
-      </SelectField>
+      ></SelectField>
     </View>
   );
 }

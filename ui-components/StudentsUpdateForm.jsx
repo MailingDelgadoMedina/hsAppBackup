@@ -8,13 +8,13 @@
 import * as React from "react";
 import { Button, Flex, Grid, TextField, useTheme } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Breaks } from "../models";
+import { Students } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-export default function BreaksUpdateForm(props) {
+export default function StudentsUpdateForm(props) {
   const {
     id: idProp,
-    breaks: breaksModelProp,
+    students: studentsModelProp,
     onSuccess,
     onError,
     onSubmit,
@@ -25,52 +25,50 @@ export default function BreaksUpdateForm(props) {
   } = props;
   const { tokens } = useTheme();
   const initialValues = {
-    breaksStart: "",
-    breaksEnd: "",
-    breaksBehavior: "",
-    breaksDescription: "",
-    breaksDate: "",
+    stuName: "",
+    stuLastName: "",
+    email: "",
+    age: "",
+    imageProfileStu: "",
   };
-  const [breaksStart, setBreaksStart] = React.useState(
-    initialValues.breaksStart
+  const [stuName, setStuName] = React.useState(initialValues.stuName);
+  const [stuLastName, setStuLastName] = React.useState(
+    initialValues.stuLastName
   );
-  const [breaksEnd, setBreaksEnd] = React.useState(initialValues.breaksEnd);
-  const [breaksBehavior, setBreaksBehavior] = React.useState(
-    initialValues.breaksBehavior
+  const [email, setEmail] = React.useState(initialValues.email);
+  const [age, setAge] = React.useState(initialValues.age);
+  const [imageProfileStu, setImageProfileStu] = React.useState(
+    initialValues.imageProfileStu
   );
-  const [breaksDescription, setBreaksDescription] = React.useState(
-    initialValues.breaksDescription
-  );
-  const [breaksDate, setBreaksDate] = React.useState(initialValues.breaksDate);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = breaksRecord
-      ? { ...initialValues, ...breaksRecord }
+    const cleanValues = studentsRecord
+      ? { ...initialValues, ...studentsRecord }
       : initialValues;
-    setBreaksStart(cleanValues.breaksStart);
-    setBreaksEnd(cleanValues.breaksEnd);
-    setBreaksBehavior(cleanValues.breaksBehavior);
-    setBreaksDescription(cleanValues.breaksDescription);
-    setBreaksDate(cleanValues.breaksDate);
+    setStuName(cleanValues.stuName);
+    setStuLastName(cleanValues.stuLastName);
+    setEmail(cleanValues.email);
+    setAge(cleanValues.age);
+    setImageProfileStu(cleanValues.imageProfileStu);
     setErrors({});
   };
-  const [breaksRecord, setBreaksRecord] = React.useState(breaksModelProp);
+  const [studentsRecord, setStudentsRecord] = React.useState(studentsModelProp);
   React.useEffect(() => {
     const queryData = async () => {
       const record = idProp
-        ? await DataStore.query(Breaks, idProp)
-        : breaksModelProp;
-      setBreaksRecord(record);
+        ? await DataStore.query(Students, idProp)
+        : studentsModelProp;
+      setStudentsRecord(record);
     };
     queryData();
-  }, [idProp, breaksModelProp]);
-  React.useEffect(resetStateValues, [breaksRecord]);
+  }, [idProp, studentsModelProp]);
+  React.useEffect(resetStateValues, [studentsRecord]);
   const validations = {
-    breaksStart: [],
-    breaksEnd: [],
-    breaksBehavior: [],
-    breaksDescription: [],
-    breaksDate: [],
+    stuName: [],
+    stuLastName: [],
+    email: [{ type: "Email" }],
+    age: [],
+    imageProfileStu: [{ type: "URL" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -92,17 +90,17 @@ export default function BreaksUpdateForm(props) {
   return (
     <Grid
       as="form"
-      rowGap={tokens.space.medium.value}
-      columnGap={tokens.space.medium.value}
-      padding={tokens.space.medium.value}
+      rowGap={tokens.space.xl.value}
+      columnGap={tokens.space.xl.value}
+      padding="20px"
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          breaksStart,
-          breaksEnd,
-          breaksBehavior,
-          breaksDescription,
-          breaksDate,
+          stuName,
+          stuLastName,
+          email,
+          age,
+          imageProfileStu,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -133,7 +131,7 @@ export default function BreaksUpdateForm(props) {
             }
           });
           await DataStore.save(
-            Breaks.copyOf(breaksRecord, (updated) => {
+            Students.copyOf(studentsRecord, (updated) => {
               Object.assign(updated, modelFields);
             })
           );
@@ -146,153 +144,152 @@ export default function BreaksUpdateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "BreaksUpdateForm")}
+      {...getOverrideProps(overrides, "StudentsUpdateForm")}
       {...rest}
     >
       <TextField
-        label="Breaks start"
+        label="Stu name"
         isRequired={false}
         isReadOnly={false}
-        type="time"
-        value={breaksStart}
+        value={stuName}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              breaksStart: value,
-              breaksEnd,
-              breaksBehavior,
-              breaksDescription,
-              breaksDate,
+              stuName: value,
+              stuLastName,
+              email,
+              age,
+              imageProfileStu,
             };
             const result = onChange(modelFields);
-            value = result?.breaksStart ?? value;
+            value = result?.stuName ?? value;
           }
-          if (errors.breaksStart?.hasError) {
-            runValidationTasks("breaksStart", value);
+          if (errors.stuName?.hasError) {
+            runValidationTasks("stuName", value);
           }
-          setBreaksStart(value);
+          setStuName(value);
         }}
-        onBlur={() => runValidationTasks("breaksStart", breaksStart)}
-        errorMessage={errors.breaksStart?.errorMessage}
-        hasError={errors.breaksStart?.hasError}
-        {...getOverrideProps(overrides, "breaksStart")}
+        onBlur={() => runValidationTasks("stuName", stuName)}
+        errorMessage={errors.stuName?.errorMessage}
+        hasError={errors.stuName?.hasError}
+        {...getOverrideProps(overrides, "stuName")}
       ></TextField>
       <TextField
-        label="Breaks end"
+        label="Stu last name"
         isRequired={false}
         isReadOnly={false}
-        type="time"
-        value={breaksEnd}
+        value={stuLastName}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              breaksStart,
-              breaksEnd: value,
-              breaksBehavior,
-              breaksDescription,
-              breaksDate,
+              stuName,
+              stuLastName: value,
+              email,
+              age,
+              imageProfileStu,
             };
             const result = onChange(modelFields);
-            value = result?.breaksEnd ?? value;
+            value = result?.stuLastName ?? value;
           }
-          if (errors.breaksEnd?.hasError) {
-            runValidationTasks("breaksEnd", value);
+          if (errors.stuLastName?.hasError) {
+            runValidationTasks("stuLastName", value);
           }
-          setBreaksEnd(value);
+          setStuLastName(value);
         }}
-        onBlur={() => runValidationTasks("breaksEnd", breaksEnd)}
-        errorMessage={errors.breaksEnd?.errorMessage}
-        hasError={errors.breaksEnd?.hasError}
-        {...getOverrideProps(overrides, "breaksEnd")}
+        onBlur={() => runValidationTasks("stuLastName", stuLastName)}
+        errorMessage={errors.stuLastName?.errorMessage}
+        hasError={errors.stuLastName?.hasError}
+        {...getOverrideProps(overrides, "stuLastName")}
       ></TextField>
       <TextField
-        label="Breaks behavior"
+        label="Email"
         isRequired={false}
         isReadOnly={false}
-        value={breaksBehavior}
+        value={email}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              breaksStart,
-              breaksEnd,
-              breaksBehavior: value,
-              breaksDescription,
-              breaksDate,
+              stuName,
+              stuLastName,
+              email: value,
+              age,
+              imageProfileStu,
             };
             const result = onChange(modelFields);
-            value = result?.breaksBehavior ?? value;
+            value = result?.email ?? value;
           }
-          if (errors.breaksBehavior?.hasError) {
-            runValidationTasks("breaksBehavior", value);
+          if (errors.email?.hasError) {
+            runValidationTasks("email", value);
           }
-          setBreaksBehavior(value);
+          setEmail(value);
         }}
-        onBlur={() => runValidationTasks("breaksBehavior", breaksBehavior)}
-        errorMessage={errors.breaksBehavior?.errorMessage}
-        hasError={errors.breaksBehavior?.hasError}
-        {...getOverrideProps(overrides, "breaksBehavior")}
+        onBlur={() => runValidationTasks("email", email)}
+        errorMessage={errors.email?.errorMessage}
+        hasError={errors.email?.hasError}
+        {...getOverrideProps(overrides, "email")}
       ></TextField>
       <TextField
-        label="Breaks description"
+        label="Age"
         isRequired={false}
         isReadOnly={false}
-        value={breaksDescription}
+        type="number"
+        step="any"
+        value={age}
         onChange={(e) => {
-          let { value } = e.target;
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
-              breaksStart,
-              breaksEnd,
-              breaksBehavior,
-              breaksDescription: value,
-              breaksDate,
+              stuName,
+              stuLastName,
+              email,
+              age: value,
+              imageProfileStu,
             };
             const result = onChange(modelFields);
-            value = result?.breaksDescription ?? value;
+            value = result?.age ?? value;
           }
-          if (errors.breaksDescription?.hasError) {
-            runValidationTasks("breaksDescription", value);
+          if (errors.age?.hasError) {
+            runValidationTasks("age", value);
           }
-          setBreaksDescription(value);
+          setAge(value);
         }}
-        onBlur={() =>
-          runValidationTasks("breaksDescription", breaksDescription)
-        }
-        errorMessage={errors.breaksDescription?.errorMessage}
-        hasError={errors.breaksDescription?.hasError}
-        {...getOverrideProps(overrides, "breaksDescription")}
+        onBlur={() => runValidationTasks("age", age)}
+        errorMessage={errors.age?.errorMessage}
+        hasError={errors.age?.hasError}
+        {...getOverrideProps(overrides, "age")}
       ></TextField>
       <TextField
-        label="Breaks date"
+        label="Image profile stu"
         isRequired={false}
         isReadOnly={false}
-        type="date"
-        value={breaksDate}
+        value={imageProfileStu}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              breaksStart,
-              breaksEnd,
-              breaksBehavior,
-              breaksDescription,
-              breaksDate: value,
+              stuName,
+              stuLastName,
+              email,
+              age,
+              imageProfileStu: value,
             };
             const result = onChange(modelFields);
-            value = result?.breaksDate ?? value;
+            value = result?.imageProfileStu ?? value;
           }
-          if (errors.breaksDate?.hasError) {
-            runValidationTasks("breaksDate", value);
+          if (errors.imageProfileStu?.hasError) {
+            runValidationTasks("imageProfileStu", value);
           }
-          setBreaksDate(value);
+          setImageProfileStu(value);
         }}
-        onBlur={() => runValidationTasks("breaksDate", breaksDate)}
-        errorMessage={errors.breaksDate?.errorMessage}
-        hasError={errors.breaksDate?.hasError}
-        {...getOverrideProps(overrides, "breaksDate")}
+        onBlur={() => runValidationTasks("imageProfileStu", imageProfileStu)}
+        errorMessage={errors.imageProfileStu?.errorMessage}
+        hasError={errors.imageProfileStu?.hasError}
+        {...getOverrideProps(overrides, "imageProfileStu")}
       ></TextField>
       <Flex
         justifyContent="space-between"
@@ -305,11 +302,11 @@ export default function BreaksUpdateForm(props) {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || breaksModelProp)}
+          isDisabled={!(idProp || studentsModelProp)}
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
-          gap={tokens.space.medium.value}
+          gap={tokens.space.xl.value}
           {...getOverrideProps(overrides, "RightAlignCTASubFlex")}
         >
           <Button
@@ -317,7 +314,7 @@ export default function BreaksUpdateForm(props) {
             type="submit"
             variation="primary"
             isDisabled={
-              !(idProp || breaksModelProp) ||
+              !(idProp || studentsModelProp) ||
               Object.values(errors).some((e) => e?.hasError)
             }
             {...getOverrideProps(overrides, "SubmitButton")}

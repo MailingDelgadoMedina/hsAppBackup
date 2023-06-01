@@ -6,14 +6,15 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { Button, Flex, Grid, TextField, useTheme } from "@aws-amplify/ui-react";
+import { Button, Flex, Grid, useTheme } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Classes } from "../models";
+import { Enrollment } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-export default function ClassesCreateForm(props) {
+export default function EnrollmentUpdateForm(props) {
   const {
-    clearOnSuccess = true,
+    id: idProp,
+    enrollment: enrollmentModelProp,
     onSuccess,
     onError,
     onSubmit,
@@ -23,22 +24,27 @@ export default function ClassesCreateForm(props) {
     ...rest
   } = props;
   const { tokens } = useTheme();
-  const initialValues = {
-    className: "",
-    classLevel: "",
-  };
-  const [className, setClassName] = React.useState(initialValues.className);
-  const [classLevel, setClassLevel] = React.useState(initialValues.classLevel);
+  const initialValues = {};
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setClassName(initialValues.className);
-    setClassLevel(initialValues.classLevel);
+    const cleanValues = enrollmentRecord
+      ? { ...initialValues, ...enrollmentRecord }
+      : initialValues;
     setErrors({});
   };
-  const validations = {
-    className: [],
-    classLevel: [],
-  };
+  const [enrollmentRecord, setEnrollmentRecord] =
+    React.useState(enrollmentModelProp);
+  React.useEffect(() => {
+    const queryData = async () => {
+      const record = idProp
+        ? await DataStore.query(Enrollment, idProp)
+        : enrollmentModelProp;
+      setEnrollmentRecord(record);
+    };
+    queryData();
+  }, [idProp, enrollmentModelProp]);
+  React.useEffect(resetStateValues, [enrollmentRecord]);
+  const validations = {};
   const runValidationTasks = async (
     fieldName,
     currentValue,
@@ -64,10 +70,7 @@ export default function ClassesCreateForm(props) {
       padding="20px"
       onSubmit={async (event) => {
         event.preventDefault();
-        let modelFields = {
-          className,
-          classLevel,
-        };
+        let modelFields = {};
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
             if (Array.isArray(modelFields[fieldName])) {
@@ -96,12 +99,13 @@ export default function ClassesCreateForm(props) {
               modelFields[key] = undefined;
             }
           });
-          await DataStore.save(new Classes(modelFields));
+          await DataStore.save(
+            Enrollment.copyOf(enrollmentRecord, (updated) => {
+              Object.assign(updated, modelFields);
+            })
+          );
           if (onSuccess) {
             onSuccess(modelFields);
-          }
-          if (clearOnSuccess) {
-            resetStateValues();
           }
         } catch (err) {
           if (onError) {
@@ -109,71 +113,22 @@ export default function ClassesCreateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "ClassesCreateForm")}
+      {...getOverrideProps(overrides, "EnrollmentUpdateForm")}
       {...rest}
     >
-      <TextField
-        label="Class name"
-        isRequired={false}
-        isReadOnly={false}
-        value={className}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              className: value,
-              classLevel,
-            };
-            const result = onChange(modelFields);
-            value = result?.className ?? value;
-          }
-          if (errors.className?.hasError) {
-            runValidationTasks("className", value);
-          }
-          setClassName(value);
-        }}
-        onBlur={() => runValidationTasks("className", className)}
-        errorMessage={errors.className?.errorMessage}
-        hasError={errors.className?.hasError}
-        {...getOverrideProps(overrides, "className")}
-      ></TextField>
-      <TextField
-        label="Class level"
-        isRequired={false}
-        isReadOnly={false}
-        value={classLevel}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              className,
-              classLevel: value,
-            };
-            const result = onChange(modelFields);
-            value = result?.classLevel ?? value;
-          }
-          if (errors.classLevel?.hasError) {
-            runValidationTasks("classLevel", value);
-          }
-          setClassLevel(value);
-        }}
-        onBlur={() => runValidationTasks("classLevel", classLevel)}
-        errorMessage={errors.classLevel?.errorMessage}
-        hasError={errors.classLevel?.hasError}
-        {...getOverrideProps(overrides, "classLevel")}
-      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
       >
         <Button
-          children="Clear"
+          children="Reset"
           type="reset"
           onClick={(event) => {
             event.preventDefault();
             resetStateValues();
           }}
-          {...getOverrideProps(overrides, "ClearButton")}
+          isDisabled={!(idProp || enrollmentModelProp)}
+          {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
           gap={tokens.space.medium.value}
@@ -183,7 +138,10 @@ export default function ClassesCreateForm(props) {
             children="Submit"
             type="submit"
             variation="primary"
-            isDisabled={Object.values(errors).some((e) => e?.hasError)}
+            isDisabled={
+              !(idProp || enrollmentModelProp) ||
+              Object.values(errors).some((e) => e?.hasError)
+            }
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>
