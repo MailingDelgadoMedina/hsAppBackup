@@ -7,25 +7,30 @@
 /* eslint-disable */
 import * as React from "react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Text, View } from "@aws-amplify/ui-react";
+import { Text, View, useBreakpointValue } from "@aws-amplify/ui-react";
+
 export default function MarketingFooter(props) {
   const { overrides, ...rest } = props;
+
+  
   return (
     <View
-      width="1442px"
+      width="100vw"
       height="109px"
       display="block"
       gap="unset"
       alignItems="unset"
       justifyContent="unset"
       position="relative"
+   
+      
       border="1px SOLID rgba(48,255,134,1)"
       padding="0px 0px 0px 0px"
       {...getOverrideProps(overrides, "MarketingFooter")}
       {...rest}
     >
       <View
-        width="1440px"
+        width="100%"
         height="107px"
         display="block"
         gap="unset"
@@ -60,10 +65,10 @@ export default function MarketingFooter(props) {
         left="514px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children="© Mailing Delgado Medina 2023. All Rights Reserved."
+        children="Mailing Delgado Medina © 2023. All Rights Reserved."
         {...getOverrideProps(
           overrides,
-          "\u00A9 Mailing Delgado Medina 2023. All Rights Reserved."
+          "Mailing Delgado Medina \u00A9  2023. All Rights Reserved."
         )}
       ></Text>
     </View>
