@@ -2,14 +2,15 @@ import{useState}from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
-import { ItemCard, ProfileCard } from '@/ui-components'
-import ProfileCardCollection from '@/ui-components/ProfileCardCollection'
+
 import ProfileCardStudents from '@/ui-components/ProfileCardStudents'
 
+const EnrollmentCreateForm = dynamic (()=> import('@/ui-components/EnrollmentCreateForm'))
 
-const ParentFormCrear = dynamic(()=> import('@/ui-components/ParentsCreateForm'))
+
+
 const StudentsCreateForm = dynamic(() => import('@/ui-components/StudentsCreateForm'))
-const ClassesCreateForm = dynamic(() => import('@/ui-components/ClassesCreateForm'))
+
 
 
 const tabs = [
@@ -78,7 +79,8 @@ const [selectedComponent, setSelectedComponent] = useState('');
    
  {showForm && selectedComponent === 'Create a Student' && 
 <StudentsCreateForm/>}
-
+ {showForm && selectedComponent === 'Create a Student' && 
+<EnrollmentCreateForm/>}
 
     {selectedComponent === 'View Students' && <ProfileCardStudents/>}
     </div>
