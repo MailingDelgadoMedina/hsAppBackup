@@ -69,6 +69,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "enrollmentCode": {
+                    "name": "enrollmentCode",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1166,5 +1173,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.0",
-    "version": "afa74975fa70cd59af060fc52199e1ca"
+    "version": "2b194c6c611092afc30ec8078d55b85f"
 };

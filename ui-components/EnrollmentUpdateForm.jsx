@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { Button, Flex, Grid, useTheme } from "@aws-amplify/ui-react";
+import { Button, Flex, Grid, TextField, useTheme } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Enrollment } from "../models";
 import { fetchByPath, validateField } from "./utils";
@@ -24,12 +24,18 @@ export default function EnrollmentUpdateForm(props) {
     ...rest
   } = props;
   const { tokens } = useTheme();
-  const initialValues = {};
+  const initialValues = {
+    enrollmentCode: "",
+  };
+  const [enrollmentCode, setEnrollmentCode] = React.useState(
+    initialValues.enrollmentCode
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = enrollmentRecord
       ? { ...initialValues, ...enrollmentRecord }
       : initialValues;
+    setEnrollmentCode(cleanValues.enrollmentCode);
     setErrors({});
   };
   const [enrollmentRecord, setEnrollmentRecord] =
@@ -44,7 +50,9 @@ export default function EnrollmentUpdateForm(props) {
     queryData();
   }, [idProp, enrollmentModelProp]);
   React.useEffect(resetStateValues, [enrollmentRecord]);
-  const validations = {};
+  const validations = {
+    enrollmentCode: [],
+  };
   const runValidationTasks = async (
     fieldName,
     currentValue,
@@ -70,7 +78,9 @@ export default function EnrollmentUpdateForm(props) {
       padding="20px"
       onSubmit={async (event) => {
         event.preventDefault();
-        let modelFields = {};
+        let modelFields = {
+          enrollmentCode,
+        };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
             if (Array.isArray(modelFields[fieldName])) {
@@ -116,6 +126,30 @@ export default function EnrollmentUpdateForm(props) {
       {...getOverrideProps(overrides, "EnrollmentUpdateForm")}
       {...rest}
     >
+      <TextField
+        label="Enrollment code"
+        isRequired={false}
+        isReadOnly={false}
+        value={enrollmentCode}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              enrollmentCode: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.enrollmentCode ?? value;
+          }
+          if (errors.enrollmentCode?.hasError) {
+            runValidationTasks("enrollmentCode", value);
+          }
+          setEnrollmentCode(value);
+        }}
+        onBlur={() => runValidationTasks("enrollmentCode", enrollmentCode)}
+        errorMessage={errors.enrollmentCode?.errorMessage}
+        hasError={errors.enrollmentCode?.hasError}
+        {...getOverrideProps(overrides, "enrollmentCode")}
+      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

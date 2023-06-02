@@ -16,6 +16,7 @@ type EagerEnrollment = {
   readonly TermEnrollment?: Term | null;
   readonly ActivitiesEnrollment?: (Activities | null)[] | null;
   readonly studentsID: string;
+  readonly enrollmentCode?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly enrollmentClassesEnrollmentId?: string | null;
@@ -32,6 +33,7 @@ type LazyEnrollment = {
   readonly TermEnrollment: AsyncItem<Term | undefined>;
   readonly ActivitiesEnrollment: AsyncCollection<Activities>;
   readonly studentsID: string;
+  readonly enrollmentCode?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly enrollmentClassesEnrollmentId?: string | null;

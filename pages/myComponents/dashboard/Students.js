@@ -9,7 +9,7 @@ import ProfileCardStudents from '@/ui-components/ProfileCardStudents'
 
 const ParentFormCrear = dynamic(()=> import('@/ui-components/ParentsCreateForm'))
 const StudentsCreateForm = dynamic(() => import('@/ui-components/StudentsCreateForm'))
-
+const ClassesCreateForm = dynamic(() => import('@/ui-components/ClassesCreateForm'))
 
 
 const tabs = [
@@ -86,3 +86,5 @@ const [selectedComponent, setSelectedComponent] = useState('');
 }
 
 export default Students
+
+

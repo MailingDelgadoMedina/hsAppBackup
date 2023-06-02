@@ -12,7 +12,6 @@ import {
   Grid,
   SwitchField,
   TextField,
-  useTheme,
 } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { PottyLog } from "../models";
@@ -30,7 +29,6 @@ export default function PottyLogUpdateForm(props) {
     overrides,
     ...rest
   } = props;
-  const { tokens } = useTheme();
   const initialValues = {
     pottyDate: "",
     pottyTime: "",
@@ -113,8 +111,8 @@ export default function PottyLogUpdateForm(props) {
   return (
     <Grid
       as="form"
-      rowGap={tokens.space.medium.value}
-      columnGap={tokens.space.medium.value}
+      rowGap="15px"
+      columnGap="15px"
       padding="20px"
       onSubmit={async (event) => {
         event.preventDefault();
@@ -482,7 +480,7 @@ export default function PottyLogUpdateForm(props) {
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
-          gap={tokens.space.medium.value}
+          gap="15px"
           {...getOverrideProps(overrides, "RightAlignCTASubFlex")}
         >
           <Button

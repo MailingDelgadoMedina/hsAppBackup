@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { Button, Flex, Grid, TextField, useTheme } from "@aws-amplify/ui-react";
+import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Classes } from "../models";
 import { fetchByPath, validateField } from "./utils";
@@ -23,7 +23,6 @@ export default function ClassesUpdateForm(props) {
     overrides,
     ...rest
   } = props;
-  const { tokens } = useTheme();
   const initialValues = {
     className: "",
     classLevel: "",
@@ -74,8 +73,8 @@ export default function ClassesUpdateForm(props) {
   return (
     <Grid
       as="form"
-      rowGap={tokens.space.medium.value}
-      columnGap={tokens.space.medium.value}
+      rowGap="15px"
+      columnGap="15px"
       padding="20px"
       onSubmit={async (event) => {
         event.preventDefault();
@@ -193,7 +192,7 @@ export default function ClassesUpdateForm(props) {
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
-          gap={tokens.space.medium.value}
+          gap="15px"
           {...getOverrideProps(overrides, "RightAlignCTASubFlex")}
         >
           <Button

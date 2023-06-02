@@ -12,7 +12,6 @@ import {
   Grid,
   SwitchField,
   TextField,
-  useTheme,
 } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Term } from "../models";
@@ -29,7 +28,6 @@ export default function TermCreateForm(props) {
     overrides,
     ...rest
   } = props;
-  const { tokens } = useTheme();
   const initialValues = {
     winter: false,
     summer: false,
@@ -78,8 +76,8 @@ export default function TermCreateForm(props) {
   return (
     <Grid
       as="form"
-      rowGap={tokens.space.xl.value}
-      columnGap={tokens.space.xl.value}
+      rowGap="15px"
+      columnGap="15px"
       padding="20px"
       onSubmit={async (event) => {
         event.preventDefault();
@@ -288,7 +286,7 @@ export default function TermCreateForm(props) {
           {...getOverrideProps(overrides, "ClearButton")}
         ></Button>
         <Flex
-          gap={tokens.space.xl.value}
+          gap="15px"
           {...getOverrideProps(overrides, "RightAlignCTASubFlex")}
         >
           <Button

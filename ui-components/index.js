@@ -32,8 +32,8 @@ export { default as Features2x3 } from "./Features2x3";
 export { default as Features2x2 } from "./Features2x2";
 export { default as ContactUs } from "./ContactUs";
 export { default as EditProfile } from "./EditProfile";
+export { default as ProfileCardStudents } from "./ProfileCardStudents";
 export { default as studioTheme } from "./studioTheme";
-
 export { default as ParentsCreateForm } from "./ParentsCreateForm";
 export { default as ParentsUpdateForm } from "./ParentsUpdateForm";
 export { default as TermCreateForm } from "./TermCreateForm";

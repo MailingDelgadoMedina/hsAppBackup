@@ -4,6 +4,7 @@ type Enrollment @model @auth(rules: [{allow: public}]) {
   TermEnrollment: Term @hasOne
   ActivitiesEnrollment: [Activities] @hasMany(indexName: "byEnrollment", fields: ["id"])
   studentsID: ID! @index(name: "byStudents")
+  enrollmentCode: String
 }
 
 type Parents @model @auth(rules: [{allow: public}]) {
