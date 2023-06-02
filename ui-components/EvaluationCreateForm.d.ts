@@ -5,8 +5,9 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { AutocompleteProps, GridProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
+import { Activities as Activities0 } from "../models";
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
@@ -24,6 +25,7 @@ export declare type EvaluationCreateFormInputValues = {
     evaluationValue?: number;
     evaluationScore?: number;
     progress?: number;
+    Activities?: Activities0;
 };
 export declare type EvaluationCreateFormValidationValues = {
     behavior?: ValidationFunction<number>;
@@ -37,6 +39,7 @@ export declare type EvaluationCreateFormValidationValues = {
     evaluationValue?: ValidationFunction<number>;
     evaluationScore?: ValidationFunction<number>;
     progress?: ValidationFunction<number>;
+    Activities?: ValidationFunction<Activities0>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type EvaluationCreateFormOverridesProps = {
@@ -52,6 +55,7 @@ export declare type EvaluationCreateFormOverridesProps = {
     evaluationValue?: PrimitiveOverrideProps<TextFieldProps>;
     evaluationScore?: PrimitiveOverrideProps<TextFieldProps>;
     progress?: PrimitiveOverrideProps<TextFieldProps>;
+    Activities?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
 export declare type EvaluationCreateFormProps = React.PropsWithChildren<{
     overrides?: EvaluationCreateFormOverridesProps | undefined | null;

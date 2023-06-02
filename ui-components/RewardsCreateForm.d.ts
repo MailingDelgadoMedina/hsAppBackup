@@ -5,8 +5,9 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { AutocompleteProps, GridProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
+import { Evaluation as Evaluation0, PottyLog as PottyLog0 } from "../models";
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
@@ -18,6 +19,8 @@ export declare type RewardsCreateFormInputValues = {
     desctiptionRewardGiven?: string;
     rewardDate?: string;
     rewardTime?: string;
+    Evaluation?: Evaluation0;
+    PottyLog?: PottyLog0;
 };
 export declare type RewardsCreateFormValidationValues = {
     goodBehavior?: ValidationFunction<boolean>;
@@ -25,6 +28,8 @@ export declare type RewardsCreateFormValidationValues = {
     desctiptionRewardGiven?: ValidationFunction<string>;
     rewardDate?: ValidationFunction<string>;
     rewardTime?: ValidationFunction<string>;
+    Evaluation?: ValidationFunction<Evaluation0>;
+    PottyLog?: ValidationFunction<PottyLog0>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type RewardsCreateFormOverridesProps = {
@@ -34,6 +39,8 @@ export declare type RewardsCreateFormOverridesProps = {
     desctiptionRewardGiven?: PrimitiveOverrideProps<TextFieldProps>;
     rewardDate?: PrimitiveOverrideProps<TextFieldProps>;
     rewardTime?: PrimitiveOverrideProps<TextFieldProps>;
+    Evaluation?: PrimitiveOverrideProps<AutocompleteProps>;
+    PottyLog?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
 export declare type RewardsCreateFormProps = React.PropsWithChildren<{
     overrides?: RewardsCreateFormOverridesProps | undefined | null;

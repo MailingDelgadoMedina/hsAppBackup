@@ -6,11 +6,184 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Parents } from "../models";
+import {
+  Autocomplete,
+  Badge,
+  Button,
+  Divider,
+  Flex,
+  Grid,
+  Icon,
+  ScrollView,
+  Text,
+  TextField,
+  useTheme,
+} from "@aws-amplify/ui-react";
+import {
+  getOverrideProps,
+  useDataStoreBinding,
+} from "@aws-amplify/ui-react/internal";
+import { Parents, Students } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
+function ArrayField({
+  items = [],
+  onChange,
+  label,
+  inputFieldRef,
+  children,
+  hasError,
+  setFieldValue,
+  currentFieldValue,
+  defaultFieldValue,
+  lengthLimit,
+  getBadgeText,
+  errorMessage,
+}) {
+  const labelElement = <Text>{label}</Text>;
+  const {
+    tokens: {
+      components: {
+        fieldmessages: { error: errorStyles },
+      },
+    },
+  } = useTheme();
+  const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
+  const [isEditing, setIsEditing] = React.useState();
+  React.useEffect(() => {
+    if (isEditing) {
+      inputFieldRef?.current?.focus();
+    }
+  }, [isEditing]);
+  const removeItem = async (removeIndex) => {
+    const newItems = items.filter((value, index) => index !== removeIndex);
+    await onChange(newItems);
+    setSelectedBadgeIndex(undefined);
+  };
+  const addItem = async () => {
+    if (
+      currentFieldValue !== undefined &&
+      currentFieldValue !== null &&
+      currentFieldValue !== "" &&
+      !hasError
+    ) {
+      const newItems = [...items];
+      if (selectedBadgeIndex !== undefined) {
+        newItems[selectedBadgeIndex] = currentFieldValue;
+        setSelectedBadgeIndex(undefined);
+      } else {
+        newItems.push(currentFieldValue);
+      }
+      await onChange(newItems);
+      setIsEditing(false);
+    }
+  };
+  const arraySection = (
+    <React.Fragment>
+      {!!items?.length && (
+        <ScrollView height="inherit" width="inherit" maxHeight={"7rem"}>
+          {items.map((value, index) => {
+            return (
+              <Badge
+                key={index}
+                style={{
+                  cursor: "pointer",
+                  alignItems: "center",
+                  marginRight: 3,
+                  marginTop: 3,
+                  backgroundColor:
+                    index === selectedBadgeIndex ? "#B8CEF9" : "",
+                }}
+                onClick={() => {
+                  setSelectedBadgeIndex(index);
+                  setFieldValue(items[index]);
+                  setIsEditing(true);
+                }}
+              >
+                {getBadgeText ? getBadgeText(value) : value.toString()}
+                <Icon
+                  style={{
+                    cursor: "pointer",
+                    paddingLeft: 3,
+                    width: 20,
+                    height: 20,
+                  }}
+                  viewBox={{ width: 20, height: 20 }}
+                  paths={[
+                    {
+                      d: "M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z",
+                      stroke: "black",
+                    },
+                  ]}
+                  ariaLabel="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    removeItem(index);
+                  }}
+                />
+              </Badge>
+            );
+          })}
+        </ScrollView>
+      )}
+      <Divider orientation="horizontal" marginTop={5} />
+    </React.Fragment>
+  );
+  if (lengthLimit !== undefined && items.length >= lengthLimit && !isEditing) {
+    return (
+      <React.Fragment>
+        {labelElement}
+        {arraySection}
+      </React.Fragment>
+    );
+  }
+  return (
+    <React.Fragment>
+      {labelElement}
+      {isEditing && children}
+      {!isEditing ? (
+        <>
+          <Button
+            onClick={() => {
+              setIsEditing(true);
+            }}
+          >
+            Add item
+          </Button>
+          {errorMessage && hasError && (
+            <Text color={errorStyles.color} fontSize={errorStyles.fontSize}>
+              {errorMessage}
+            </Text>
+          )}
+        </>
+      ) : (
+        <Flex justifyContent="flex-end">
+          {(currentFieldValue || isEditing) && (
+            <Button
+              children="Cancel"
+              type="button"
+              size="small"
+              onClick={() => {
+                setFieldValue(defaultFieldValue);
+                setIsEditing(false);
+                setSelectedBadgeIndex(undefined);
+              }}
+            ></Button>
+          )}
+          <Button
+            size="small"
+            variation="link"
+            isDisabled={hasError}
+            onClick={addItem}
+          >
+            {selectedBadgeIndex !== undefined ? "Save" : "Add"}
+          </Button>
+        </Flex>
+      )}
+      {arraySection}
+    </React.Fragment>
+  );
+}
 export default function ParentsCreateForm(props) {
   const {
     clearOnSuccess = true,
@@ -27,6 +200,7 @@ export default function ParentsCreateForm(props) {
     parentLastName: "",
     email: "",
     imageProfile: "",
+    ParentStudents: [],
   };
   const [parentName, setParentName] = React.useState(initialValues.parentName);
   const [parentLastName, setParentLastName] = React.useState(
@@ -36,19 +210,48 @@ export default function ParentsCreateForm(props) {
   const [imageProfile, setImageProfile] = React.useState(
     initialValues.imageProfile
   );
+  const [ParentStudents, setParentStudents] = React.useState(
+    initialValues.ParentStudents
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setParentName(initialValues.parentName);
     setParentLastName(initialValues.parentLastName);
     setEmail(initialValues.email);
     setImageProfile(initialValues.imageProfile);
+    setParentStudents(initialValues.ParentStudents);
+    setCurrentParentStudentsValue(undefined);
+    setCurrentParentStudentsDisplayValue("");
     setErrors({});
+  };
+  const [
+    currentParentStudentsDisplayValue,
+    setCurrentParentStudentsDisplayValue,
+  ] = React.useState("");
+  const [currentParentStudentsValue, setCurrentParentStudentsValue] =
+    React.useState(undefined);
+  const ParentStudentsRef = React.createRef();
+  const getIDValue = {
+    ParentStudents: (r) => JSON.stringify({ id: r?.id }),
+  };
+  const ParentStudentsIdSet = new Set(
+    Array.isArray(ParentStudents)
+      ? ParentStudents.map((r) => getIDValue.ParentStudents?.(r))
+      : getIDValue.ParentStudents?.(ParentStudents)
+  );
+  const studentsRecords = useDataStoreBinding({
+    type: "collection",
+    model: Students,
+  }).items;
+  const getDisplayValue = {
+    ParentStudents: (r) => `${r?.stuName ? r?.stuName + " - " : ""}${r?.id}`,
   };
   const validations = {
     parentName: [],
     parentLastName: [],
     email: [{ type: "Email" }],
     imageProfile: [{ type: "URL" }],
+    ParentStudents: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -80,19 +283,28 @@ export default function ParentsCreateForm(props) {
           parentLastName,
           email,
           imageProfile,
+          ParentStudents,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
             if (Array.isArray(modelFields[fieldName])) {
               promises.push(
                 ...modelFields[fieldName].map((item) =>
-                  runValidationTasks(fieldName, item)
+                  runValidationTasks(
+                    fieldName,
+                    item,
+                    getDisplayValue[fieldName]
+                  )
                 )
               );
               return promises;
             }
             promises.push(
-              runValidationTasks(fieldName, modelFields[fieldName])
+              runValidationTasks(
+                fieldName,
+                modelFields[fieldName],
+                getDisplayValue[fieldName]
+              )
             );
             return promises;
           }, [])
@@ -109,7 +321,27 @@ export default function ParentsCreateForm(props) {
               modelFields[key] = undefined;
             }
           });
-          await DataStore.save(new Parents(modelFields));
+          const modelFieldsToSave = {
+            parentName: modelFields.parentName,
+            parentLastName: modelFields.parentLastName,
+            email: modelFields.email,
+            imageProfile: modelFields.imageProfile,
+          };
+          const parents = await DataStore.save(new Parents(modelFieldsToSave));
+          const promises = [];
+          promises.push(
+            ...ParentStudents.reduce((promises, original) => {
+              promises.push(
+                DataStore.save(
+                  Students.copyOf(original, (updated) => {
+                    updated.parentsID = parents.id;
+                  })
+                )
+              );
+              return promises;
+            }, [])
+          );
+          await Promise.all(promises);
           if (onSuccess) {
             onSuccess(modelFields);
           }
@@ -138,6 +370,7 @@ export default function ParentsCreateForm(props) {
               parentLastName,
               email,
               imageProfile,
+              ParentStudents,
             };
             const result = onChange(modelFields);
             value = result?.parentName ?? value;
@@ -165,6 +398,7 @@ export default function ParentsCreateForm(props) {
               parentLastName: value,
               email,
               imageProfile,
+              ParentStudents,
             };
             const result = onChange(modelFields);
             value = result?.parentLastName ?? value;
@@ -192,6 +426,7 @@ export default function ParentsCreateForm(props) {
               parentLastName,
               email: value,
               imageProfile,
+              ParentStudents,
             };
             const result = onChange(modelFields);
             value = result?.email ?? value;
@@ -219,6 +454,7 @@ export default function ParentsCreateForm(props) {
               parentLastName,
               email,
               imageProfile: value,
+              ParentStudents,
             };
             const result = onChange(modelFields);
             value = result?.imageProfile ?? value;
@@ -233,6 +469,88 @@ export default function ParentsCreateForm(props) {
         hasError={errors.imageProfile?.hasError}
         {...getOverrideProps(overrides, "imageProfile")}
       ></TextField>
+      <ArrayField
+        onChange={async (items) => {
+          let values = items;
+          if (onChange) {
+            const modelFields = {
+              parentName,
+              parentLastName,
+              email,
+              imageProfile,
+              ParentStudents: values,
+            };
+            const result = onChange(modelFields);
+            values = result?.ParentStudents ?? values;
+          }
+          setParentStudents(values);
+          setCurrentParentStudentsValue(undefined);
+          setCurrentParentStudentsDisplayValue("");
+        }}
+        currentFieldValue={currentParentStudentsValue}
+        label={"Parent students"}
+        items={ParentStudents}
+        hasError={errors?.ParentStudents?.hasError}
+        errorMessage={errors?.ParentStudents?.errorMessage}
+        getBadgeText={getDisplayValue.ParentStudents}
+        setFieldValue={(model) => {
+          setCurrentParentStudentsDisplayValue(
+            model ? getDisplayValue.ParentStudents(model) : ""
+          );
+          setCurrentParentStudentsValue(model);
+        }}
+        inputFieldRef={ParentStudentsRef}
+        defaultFieldValue={""}
+      >
+        <Autocomplete
+          label="Parent students"
+          isRequired={false}
+          isReadOnly={false}
+          placeholder="Search Students"
+          value={currentParentStudentsDisplayValue}
+          options={studentsRecords
+            .filter(
+              (r) => !ParentStudentsIdSet.has(getIDValue.ParentStudents?.(r))
+            )
+            .map((r) => ({
+              id: getIDValue.ParentStudents?.(r),
+              label: getDisplayValue.ParentStudents?.(r),
+            }))}
+          onSelect={({ id, label }) => {
+            setCurrentParentStudentsValue(
+              studentsRecords.find((r) =>
+                Object.entries(JSON.parse(id)).every(
+                  ([key, value]) => r[key] === value
+                )
+              )
+            );
+            setCurrentParentStudentsDisplayValue(label);
+            runValidationTasks("ParentStudents", label);
+          }}
+          onClear={() => {
+            setCurrentParentStudentsDisplayValue("");
+          }}
+          onChange={(e) => {
+            let { value } = e.target;
+            if (errors.ParentStudents?.hasError) {
+              runValidationTasks("ParentStudents", value);
+            }
+            setCurrentParentStudentsDisplayValue(value);
+            setCurrentParentStudentsValue(undefined);
+          }}
+          onBlur={() =>
+            runValidationTasks(
+              "ParentStudents",
+              currentParentStudentsDisplayValue
+            )
+          }
+          errorMessage={errors.ParentStudents?.errorMessage}
+          hasError={errors.ParentStudents?.hasError}
+          ref={ParentStudentsRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "ParentStudents")}
+        ></Autocomplete>
+      </ArrayField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

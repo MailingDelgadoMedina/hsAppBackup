@@ -7,16 +7,188 @@
 /* eslint-disable */
 import * as React from "react";
 import {
+  Autocomplete,
+  Badge,
   Button,
+  Divider,
   Flex,
   Grid,
+  Icon,
+  ScrollView,
   SwitchField,
+  Text,
   TextField,
+  useTheme,
 } from "@aws-amplify/ui-react";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Rewards } from "../models";
+import {
+  getOverrideProps,
+  useDataStoreBinding,
+} from "@aws-amplify/ui-react/internal";
+import {
+  Rewards,
+  Evaluation as Evaluation0,
+  PottyLog as PottyLog0,
+} from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
+function ArrayField({
+  items = [],
+  onChange,
+  label,
+  inputFieldRef,
+  children,
+  hasError,
+  setFieldValue,
+  currentFieldValue,
+  defaultFieldValue,
+  lengthLimit,
+  getBadgeText,
+  errorMessage,
+}) {
+  const labelElement = <Text>{label}</Text>;
+  const {
+    tokens: {
+      components: {
+        fieldmessages: { error: errorStyles },
+      },
+    },
+  } = useTheme();
+  const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
+  const [isEditing, setIsEditing] = React.useState();
+  React.useEffect(() => {
+    if (isEditing) {
+      inputFieldRef?.current?.focus();
+    }
+  }, [isEditing]);
+  const removeItem = async (removeIndex) => {
+    const newItems = items.filter((value, index) => index !== removeIndex);
+    await onChange(newItems);
+    setSelectedBadgeIndex(undefined);
+  };
+  const addItem = async () => {
+    if (
+      currentFieldValue !== undefined &&
+      currentFieldValue !== null &&
+      currentFieldValue !== "" &&
+      !hasError
+    ) {
+      const newItems = [...items];
+      if (selectedBadgeIndex !== undefined) {
+        newItems[selectedBadgeIndex] = currentFieldValue;
+        setSelectedBadgeIndex(undefined);
+      } else {
+        newItems.push(currentFieldValue);
+      }
+      await onChange(newItems);
+      setIsEditing(false);
+    }
+  };
+  const arraySection = (
+    <React.Fragment>
+      {!!items?.length && (
+        <ScrollView height="inherit" width="inherit" maxHeight={"7rem"}>
+          {items.map((value, index) => {
+            return (
+              <Badge
+                key={index}
+                style={{
+                  cursor: "pointer",
+                  alignItems: "center",
+                  marginRight: 3,
+                  marginTop: 3,
+                  backgroundColor:
+                    index === selectedBadgeIndex ? "#B8CEF9" : "",
+                }}
+                onClick={() => {
+                  setSelectedBadgeIndex(index);
+                  setFieldValue(items[index]);
+                  setIsEditing(true);
+                }}
+              >
+                {getBadgeText ? getBadgeText(value) : value.toString()}
+                <Icon
+                  style={{
+                    cursor: "pointer",
+                    paddingLeft: 3,
+                    width: 20,
+                    height: 20,
+                  }}
+                  viewBox={{ width: 20, height: 20 }}
+                  paths={[
+                    {
+                      d: "M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z",
+                      stroke: "black",
+                    },
+                  ]}
+                  ariaLabel="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    removeItem(index);
+                  }}
+                />
+              </Badge>
+            );
+          })}
+        </ScrollView>
+      )}
+      <Divider orientation="horizontal" marginTop={5} />
+    </React.Fragment>
+  );
+  if (lengthLimit !== undefined && items.length >= lengthLimit && !isEditing) {
+    return (
+      <React.Fragment>
+        {labelElement}
+        {arraySection}
+      </React.Fragment>
+    );
+  }
+  return (
+    <React.Fragment>
+      {labelElement}
+      {isEditing && children}
+      {!isEditing ? (
+        <>
+          <Button
+            onClick={() => {
+              setIsEditing(true);
+            }}
+          >
+            Add item
+          </Button>
+          {errorMessage && hasError && (
+            <Text color={errorStyles.color} fontSize={errorStyles.fontSize}>
+              {errorMessage}
+            </Text>
+          )}
+        </>
+      ) : (
+        <Flex justifyContent="flex-end">
+          {(currentFieldValue || isEditing) && (
+            <Button
+              children="Cancel"
+              type="button"
+              size="small"
+              onClick={() => {
+                setFieldValue(defaultFieldValue);
+                setIsEditing(false);
+                setSelectedBadgeIndex(undefined);
+              }}
+            ></Button>
+          )}
+          <Button
+            size="small"
+            variation="link"
+            isDisabled={hasError}
+            onClick={addItem}
+          >
+            {selectedBadgeIndex !== undefined ? "Save" : "Add"}
+          </Button>
+        </Flex>
+      )}
+      {arraySection}
+    </React.Fragment>
+  );
+}
 export default function RewardsCreateForm(props) {
   const {
     clearOnSuccess = true,
@@ -34,6 +206,8 @@ export default function RewardsCreateForm(props) {
     desctiptionRewardGiven: "",
     rewardDate: "",
     rewardTime: "",
+    Evaluation: undefined,
+    PottyLog: undefined,
   };
   const [goodBehavior, setGoodBehavior] = React.useState(
     initialValues.goodBehavior
@@ -46,6 +220,8 @@ export default function RewardsCreateForm(props) {
   );
   const [rewardDate, setRewardDate] = React.useState(initialValues.rewardDate);
   const [rewardTime, setRewardTime] = React.useState(initialValues.rewardTime);
+  const [Evaluation, setEvaluation] = React.useState(initialValues.Evaluation);
+  const [PottyLog, setPottyLog] = React.useState(initialValues.PottyLog);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setGoodBehavior(initialValues.goodBehavior);
@@ -53,7 +229,49 @@ export default function RewardsCreateForm(props) {
     setDesctiptionRewardGiven(initialValues.desctiptionRewardGiven);
     setRewardDate(initialValues.rewardDate);
     setRewardTime(initialValues.rewardTime);
+    setEvaluation(initialValues.Evaluation);
+    setCurrentEvaluationValue(undefined);
+    setCurrentEvaluationDisplayValue("");
+    setPottyLog(initialValues.PottyLog);
+    setCurrentPottyLogValue(undefined);
+    setCurrentPottyLogDisplayValue("");
     setErrors({});
+  };
+  const [currentEvaluationDisplayValue, setCurrentEvaluationDisplayValue] =
+    React.useState("");
+  const [currentEvaluationValue, setCurrentEvaluationValue] =
+    React.useState(undefined);
+  const EvaluationRef = React.createRef();
+  const [currentPottyLogDisplayValue, setCurrentPottyLogDisplayValue] =
+    React.useState("");
+  const [currentPottyLogValue, setCurrentPottyLogValue] =
+    React.useState(undefined);
+  const PottyLogRef = React.createRef();
+  const getIDValue = {
+    Evaluation: (r) => JSON.stringify({ id: r?.id }),
+    PottyLog: (r) => JSON.stringify({ id: r?.id }),
+  };
+  const EvaluationIdSet = new Set(
+    Array.isArray(Evaluation)
+      ? Evaluation.map((r) => getIDValue.Evaluation?.(r))
+      : getIDValue.Evaluation?.(Evaluation)
+  );
+  const PottyLogIdSet = new Set(
+    Array.isArray(PottyLog)
+      ? PottyLog.map((r) => getIDValue.PottyLog?.(r))
+      : getIDValue.PottyLog?.(PottyLog)
+  );
+  const evaluationRecords = useDataStoreBinding({
+    type: "collection",
+    model: Evaluation0,
+  }).items;
+  const pottyLogRecords = useDataStoreBinding({
+    type: "collection",
+    model: PottyLog0,
+  }).items;
+  const getDisplayValue = {
+    Evaluation: (r) => `${r?.behavior ? r?.behavior + " - " : ""}${r?.id}`,
+    PottyLog: (r) => `${r?.urine ? r?.urine + " - " : ""}${r?.id}`,
   };
   const validations = {
     goodBehavior: [],
@@ -61,6 +279,8 @@ export default function RewardsCreateForm(props) {
     desctiptionRewardGiven: [],
     rewardDate: [],
     rewardTime: [],
+    Evaluation: [],
+    PottyLog: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -93,19 +313,29 @@ export default function RewardsCreateForm(props) {
           desctiptionRewardGiven,
           rewardDate,
           rewardTime,
+          Evaluation,
+          PottyLog,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
             if (Array.isArray(modelFields[fieldName])) {
               promises.push(
                 ...modelFields[fieldName].map((item) =>
-                  runValidationTasks(fieldName, item)
+                  runValidationTasks(
+                    fieldName,
+                    item,
+                    getDisplayValue[fieldName]
+                  )
                 )
               );
               return promises;
             }
             promises.push(
-              runValidationTasks(fieldName, modelFields[fieldName])
+              runValidationTasks(
+                fieldName,
+                modelFields[fieldName],
+                getDisplayValue[fieldName]
+              )
             );
             return promises;
           }, [])
@@ -152,6 +382,8 @@ export default function RewardsCreateForm(props) {
               desctiptionRewardGiven,
               rewardDate,
               rewardTime,
+              Evaluation,
+              PottyLog,
             };
             const result = onChange(modelFields);
             value = result?.goodBehavior ?? value;
@@ -180,6 +412,8 @@ export default function RewardsCreateForm(props) {
               desctiptionRewardGiven,
               rewardDate,
               rewardTime,
+              Evaluation,
+              PottyLog,
             };
             const result = onChange(modelFields);
             value = result?.completedActivities ?? value;
@@ -210,6 +444,8 @@ export default function RewardsCreateForm(props) {
               desctiptionRewardGiven: value,
               rewardDate,
               rewardTime,
+              Evaluation,
+              PottyLog,
             };
             const result = onChange(modelFields);
             value = result?.desctiptionRewardGiven ?? value;
@@ -241,6 +477,8 @@ export default function RewardsCreateForm(props) {
               desctiptionRewardGiven,
               rewardDate: value,
               rewardTime,
+              Evaluation,
+              PottyLog,
             };
             const result = onChange(modelFields);
             value = result?.rewardDate ?? value;
@@ -270,6 +508,8 @@ export default function RewardsCreateForm(props) {
               desctiptionRewardGiven,
               rewardDate,
               rewardTime: value,
+              Evaluation,
+              PottyLog,
             };
             const result = onChange(modelFields);
             value = result?.rewardTime ?? value;
@@ -284,6 +524,166 @@ export default function RewardsCreateForm(props) {
         hasError={errors.rewardTime?.hasError}
         {...getOverrideProps(overrides, "rewardTime")}
       ></TextField>
+      <ArrayField
+        lengthLimit={1}
+        onChange={async (items) => {
+          let value = items[0];
+          if (onChange) {
+            const modelFields = {
+              goodBehavior,
+              completedActivities,
+              desctiptionRewardGiven,
+              rewardDate,
+              rewardTime,
+              Evaluation: value,
+              PottyLog,
+            };
+            const result = onChange(modelFields);
+            value = result?.Evaluation ?? value;
+          }
+          setEvaluation(value);
+          setCurrentEvaluationValue(undefined);
+          setCurrentEvaluationDisplayValue("");
+        }}
+        currentFieldValue={currentEvaluationValue}
+        label={"Evaluation"}
+        items={Evaluation ? [Evaluation] : []}
+        hasError={errors?.Evaluation?.hasError}
+        errorMessage={errors?.Evaluation?.errorMessage}
+        getBadgeText={getDisplayValue.Evaluation}
+        setFieldValue={(model) => {
+          setCurrentEvaluationDisplayValue(
+            model ? getDisplayValue.Evaluation(model) : ""
+          );
+          setCurrentEvaluationValue(model);
+        }}
+        inputFieldRef={EvaluationRef}
+        defaultFieldValue={""}
+      >
+        <Autocomplete
+          label="Evaluation"
+          isRequired={false}
+          isReadOnly={false}
+          placeholder="Search Evaluation"
+          value={currentEvaluationDisplayValue}
+          options={evaluationRecords
+            .filter((r) => !EvaluationIdSet.has(getIDValue.Evaluation?.(r)))
+            .map((r) => ({
+              id: getIDValue.Evaluation?.(r),
+              label: getDisplayValue.Evaluation?.(r),
+            }))}
+          onSelect={({ id, label }) => {
+            setCurrentEvaluationValue(
+              evaluationRecords.find((r) =>
+                Object.entries(JSON.parse(id)).every(
+                  ([key, value]) => r[key] === value
+                )
+              )
+            );
+            setCurrentEvaluationDisplayValue(label);
+            runValidationTasks("Evaluation", label);
+          }}
+          onClear={() => {
+            setCurrentEvaluationDisplayValue("");
+          }}
+          onChange={(e) => {
+            let { value } = e.target;
+            if (errors.Evaluation?.hasError) {
+              runValidationTasks("Evaluation", value);
+            }
+            setCurrentEvaluationDisplayValue(value);
+            setCurrentEvaluationValue(undefined);
+          }}
+          onBlur={() =>
+            runValidationTasks("Evaluation", currentEvaluationDisplayValue)
+          }
+          errorMessage={errors.Evaluation?.errorMessage}
+          hasError={errors.Evaluation?.hasError}
+          ref={EvaluationRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "Evaluation")}
+        ></Autocomplete>
+      </ArrayField>
+      <ArrayField
+        lengthLimit={1}
+        onChange={async (items) => {
+          let value = items[0];
+          if (onChange) {
+            const modelFields = {
+              goodBehavior,
+              completedActivities,
+              desctiptionRewardGiven,
+              rewardDate,
+              rewardTime,
+              Evaluation,
+              PottyLog: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.PottyLog ?? value;
+          }
+          setPottyLog(value);
+          setCurrentPottyLogValue(undefined);
+          setCurrentPottyLogDisplayValue("");
+        }}
+        currentFieldValue={currentPottyLogValue}
+        label={"Potty log"}
+        items={PottyLog ? [PottyLog] : []}
+        hasError={errors?.PottyLog?.hasError}
+        errorMessage={errors?.PottyLog?.errorMessage}
+        getBadgeText={getDisplayValue.PottyLog}
+        setFieldValue={(model) => {
+          setCurrentPottyLogDisplayValue(
+            model ? getDisplayValue.PottyLog(model) : ""
+          );
+          setCurrentPottyLogValue(model);
+        }}
+        inputFieldRef={PottyLogRef}
+        defaultFieldValue={""}
+      >
+        <Autocomplete
+          label="Potty log"
+          isRequired={false}
+          isReadOnly={false}
+          placeholder="Search PottyLog"
+          value={currentPottyLogDisplayValue}
+          options={pottyLogRecords
+            .filter((r) => !PottyLogIdSet.has(getIDValue.PottyLog?.(r)))
+            .map((r) => ({
+              id: getIDValue.PottyLog?.(r),
+              label: getDisplayValue.PottyLog?.(r),
+            }))}
+          onSelect={({ id, label }) => {
+            setCurrentPottyLogValue(
+              pottyLogRecords.find((r) =>
+                Object.entries(JSON.parse(id)).every(
+                  ([key, value]) => r[key] === value
+                )
+              )
+            );
+            setCurrentPottyLogDisplayValue(label);
+            runValidationTasks("PottyLog", label);
+          }}
+          onClear={() => {
+            setCurrentPottyLogDisplayValue("");
+          }}
+          onChange={(e) => {
+            let { value } = e.target;
+            if (errors.PottyLog?.hasError) {
+              runValidationTasks("PottyLog", value);
+            }
+            setCurrentPottyLogDisplayValue(value);
+            setCurrentPottyLogValue(undefined);
+          }}
+          onBlur={() =>
+            runValidationTasks("PottyLog", currentPottyLogDisplayValue)
+          }
+          errorMessage={errors.PottyLog?.errorMessage}
+          hasError={errors.PottyLog?.hasError}
+          ref={PottyLogRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "PottyLog")}
+        ></Autocomplete>
+      </ArrayField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

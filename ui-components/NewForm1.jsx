@@ -184,10 +184,9 @@ function ArrayField({
     </React.Fragment>
   );
 }
-export default function StudentsUpdateForm(props) {
+export default function NewForm1(props) {
   const {
-    id: idProp,
-    students: studentsModelProp,
+    clearOnSuccess = true,
     onSuccess,
     onError,
     onSubmit,
@@ -220,51 +219,19 @@ export default function StudentsUpdateForm(props) {
   );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = studentsRecord
-      ? {
-          ...initialValues,
-          ...studentsRecord,
-          parentsID,
-          StudentEnrollments: linkedStudentEnrollments,
-        }
-      : initialValues;
-    setStuName(cleanValues.stuName);
-    setStuLastName(cleanValues.stuLastName);
-    setEmail(cleanValues.email);
-    setAge(cleanValues.age);
-    setImageProfileStu(cleanValues.imageProfileStu);
-    setParentsID(cleanValues.parentsID);
+    setStuName(initialValues.stuName);
+    setStuLastName(initialValues.stuLastName);
+    setEmail(initialValues.email);
+    setAge(initialValues.age);
+    setImageProfileStu(initialValues.imageProfileStu);
+    setParentsID(initialValues.parentsID);
     setCurrentParentsIDValue(undefined);
     setCurrentParentsIDDisplayValue("");
-    setStudentEnrollments(cleanValues.StudentEnrollments ?? []);
+    setStudentEnrollments(initialValues.StudentEnrollments);
     setCurrentStudentEnrollmentsValue(undefined);
     setCurrentStudentEnrollmentsDisplayValue("");
     setErrors({});
   };
-  const [studentsRecord, setStudentsRecord] = React.useState(studentsModelProp);
-  const [linkedStudentEnrollments, setLinkedStudentEnrollments] =
-    React.useState([]);
-  const canUnlinkStudentEnrollments = false;
-  React.useEffect(() => {
-    const queryData = async () => {
-      const record = idProp
-        ? await DataStore.query(Students, idProp)
-        : studentsModelProp;
-      setStudentsRecord(record);
-      const parentsIDRecord = record ? await record.parentsID : undefined;
-      setParentsID(parentsIDRecord);
-      const linkedStudentEnrollments = record
-        ? await record.StudentEnrollments.toArray()
-        : [];
-      setLinkedStudentEnrollments(linkedStudentEnrollments);
-    };
-    queryData();
-  }, [idProp, studentsModelProp]);
-  React.useEffect(resetStateValues, [
-    studentsRecord,
-    parentsID,
-    linkedStudentEnrollments,
-  ]);
   const [currentParentsIDDisplayValue, setCurrentParentsIDDisplayValue] =
     React.useState("");
   const [currentParentsIDValue, setCurrentParentsIDValue] =
@@ -377,56 +344,6 @@ export default function StudentsUpdateForm(props) {
               modelFields[key] = undefined;
             }
           });
-          const promises = [];
-          const studentEnrollmentsToLink = [];
-          const studentEnrollmentsToUnLink = [];
-          const studentEnrollmentsSet = new Set();
-          const linkedStudentEnrollmentsSet = new Set();
-          StudentEnrollments.forEach((r) =>
-            studentEnrollmentsSet.add(getIDValue.StudentEnrollments?.(r))
-          );
-          linkedStudentEnrollments.forEach((r) =>
-            linkedStudentEnrollmentsSet.add(getIDValue.StudentEnrollments?.(r))
-          );
-          linkedStudentEnrollments.forEach((r) => {
-            if (
-              !studentEnrollmentsSet.has(getIDValue.StudentEnrollments?.(r))
-            ) {
-              studentEnrollmentsToUnLink.push(r);
-            }
-          });
-          StudentEnrollments.forEach((r) => {
-            if (
-              !linkedStudentEnrollmentsSet.has(
-                getIDValue.StudentEnrollments?.(r)
-              )
-            ) {
-              studentEnrollmentsToLink.push(r);
-            }
-          });
-          studentEnrollmentsToUnLink.forEach((original) => {
-            if (!canUnlinkStudentEnrollments) {
-              throw Error(
-                `Enrollment ${original.id} cannot be unlinked from Students because studentsID is a required field.`
-              );
-            }
-            promises.push(
-              DataStore.save(
-                Enrollment.copyOf(original, (updated) => {
-                  updated.studentsID = null;
-                })
-              )
-            );
-          });
-          studentEnrollmentsToLink.forEach((original) => {
-            promises.push(
-              DataStore.save(
-                Enrollment.copyOf(original, (updated) => {
-                  updated.studentsID = studentsRecord.id;
-                })
-              )
-            );
-          });
           const modelFieldsToSave = {
             stuName: modelFields.stuName,
             stuLastName: modelFields.stuLastName,
@@ -435,16 +352,28 @@ export default function StudentsUpdateForm(props) {
             imageProfileStu: modelFields.imageProfileStu,
             parentsID: modelFields.parentsID,
           };
+          const students = await DataStore.save(
+            new Students(modelFieldsToSave)
+          );
+          const promises = [];
           promises.push(
-            DataStore.save(
-              Students.copyOf(studentsRecord, (updated) => {
-                Object.assign(updated, modelFieldsToSave);
-              })
-            )
+            ...StudentEnrollments.reduce((promises, original) => {
+              promises.push(
+                DataStore.save(
+                  Enrollment.copyOf(original, (updated) => {
+                    updated.studentsID = students.id;
+                  })
+                )
+              );
+              return promises;
+            }, [])
           );
           await Promise.all(promises);
           if (onSuccess) {
             onSuccess(modelFields);
+          }
+          if (clearOnSuccess) {
+            resetStateValues();
           }
         } catch (err) {
           if (onError) {
@@ -452,7 +381,7 @@ export default function StudentsUpdateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "StudentsUpdateForm")}
+      {...getOverrideProps(overrides, "NewForm1")}
       {...rest}
     >
       <TextField
@@ -677,7 +606,6 @@ export default function StudentsUpdateForm(props) {
           onClear={() => {
             setCurrentParentsIDDisplayValue("");
           }}
-          defaultValue={parentsID}
           onChange={(e) => {
             let { value } = e.target;
             if (errors.parentsID?.hasError) {
@@ -784,14 +712,13 @@ export default function StudentsUpdateForm(props) {
         {...getOverrideProps(overrides, "CTAFlex")}
       >
         <Button
-          children="Reset"
+          children="Clear"
           type="reset"
           onClick={(event) => {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || studentsModelProp)}
-          {...getOverrideProps(overrides, "ResetButton")}
+          {...getOverrideProps(overrides, "ClearButton")}
         ></Button>
         <Flex
           gap="15px"
@@ -801,10 +728,7 @@ export default function StudentsUpdateForm(props) {
             children="Submit"
             type="submit"
             variation="primary"
-            isDisabled={
-              !(idProp || studentsModelProp) ||
-              Object.values(errors).some((e) => e?.hasError)
-            }
+            isDisabled={Object.values(errors).some((e) => e?.hasError)}
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>

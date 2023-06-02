@@ -5,9 +5,9 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { AutocompleteProps, GridProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
-import { Parents } from "../models";
+import { Parents, Students } from "../models";
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
@@ -18,12 +18,14 @@ export declare type ParentsUpdateFormInputValues = {
     parentLastName?: string;
     email?: string;
     imageProfile?: string;
+    ParentStudents?: Students[];
 };
 export declare type ParentsUpdateFormValidationValues = {
     parentName?: ValidationFunction<string>;
     parentLastName?: ValidationFunction<string>;
     email?: ValidationFunction<string>;
     imageProfile?: ValidationFunction<string>;
+    ParentStudents?: ValidationFunction<Students>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type ParentsUpdateFormOverridesProps = {
@@ -32,6 +34,7 @@ export declare type ParentsUpdateFormOverridesProps = {
     parentLastName?: PrimitiveOverrideProps<TextFieldProps>;
     email?: PrimitiveOverrideProps<TextFieldProps>;
     imageProfile?: PrimitiveOverrideProps<TextFieldProps>;
+    ParentStudents?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
 export declare type ParentsUpdateFormProps = React.PropsWithChildren<{
     overrides?: ParentsUpdateFormOverridesProps | undefined | null;

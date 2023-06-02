@@ -7,13 +7,13 @@
 import * as React from "react";
 import { AutocompleteProps, GridProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
-import { Students, Enrollment } from "../models";
+import { Enrollment } from "../models";
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type StudentsUpdateFormInputValues = {
+export declare type NewForm1InputValues = {
     stuName?: string;
     stuLastName?: string;
     email?: string;
@@ -22,7 +22,7 @@ export declare type StudentsUpdateFormInputValues = {
     parentsID?: string;
     StudentEnrollments?: Enrollment[];
 };
-export declare type StudentsUpdateFormValidationValues = {
+export declare type NewForm1ValidationValues = {
     stuName?: ValidationFunction<string>;
     stuLastName?: ValidationFunction<string>;
     email?: ValidationFunction<string>;
@@ -32,8 +32,8 @@ export declare type StudentsUpdateFormValidationValues = {
     StudentEnrollments?: ValidationFunction<Enrollment>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type StudentsUpdateFormOverridesProps = {
-    StudentsUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
+export declare type NewForm1OverridesProps = {
+    NewForm1Grid?: PrimitiveOverrideProps<GridProps>;
     stuName?: PrimitiveOverrideProps<TextFieldProps>;
     stuLastName?: PrimitiveOverrideProps<TextFieldProps>;
     email?: PrimitiveOverrideProps<TextFieldProps>;
@@ -42,15 +42,14 @@ export declare type StudentsUpdateFormOverridesProps = {
     parentsID?: PrimitiveOverrideProps<AutocompleteProps>;
     StudentEnrollments?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
-export declare type StudentsUpdateFormProps = React.PropsWithChildren<{
-    overrides?: StudentsUpdateFormOverridesProps | undefined | null;
+export declare type NewForm1Props = React.PropsWithChildren<{
+    overrides?: NewForm1OverridesProps | undefined | null;
 } & {
-    id?: string;
-    students?: Students;
-    onSubmit?: (fields: StudentsUpdateFormInputValues) => StudentsUpdateFormInputValues;
-    onSuccess?: (fields: StudentsUpdateFormInputValues) => void;
-    onError?: (fields: StudentsUpdateFormInputValues, errorMessage: string) => void;
-    onChange?: (fields: StudentsUpdateFormInputValues) => StudentsUpdateFormInputValues;
-    onValidate?: StudentsUpdateFormValidationValues;
+    clearOnSuccess?: boolean;
+    onSubmit?: (fields: NewForm1InputValues) => NewForm1InputValues;
+    onSuccess?: (fields: NewForm1InputValues) => void;
+    onError?: (fields: NewForm1InputValues, errorMessage: string) => void;
+    onChange?: (fields: NewForm1InputValues) => NewForm1InputValues;
+    onValidate?: NewForm1ValidationValues;
 } & React.CSSProperties>;
-export default function StudentsUpdateForm(props: StudentsUpdateFormProps): React.ReactElement;
+export default function NewForm1(props: NewForm1Props): React.ReactElement;

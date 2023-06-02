@@ -6,11 +6,184 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Activities } from "../models";
+import {
+  Autocomplete,
+  Badge,
+  Button,
+  Divider,
+  Flex,
+  Grid,
+  Icon,
+  ScrollView,
+  Text,
+  TextField,
+  useTheme,
+} from "@aws-amplify/ui-react";
+import {
+  getOverrideProps,
+  useDataStoreBinding,
+} from "@aws-amplify/ui-react/internal";
+import { Activities, Enrollment } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
+function ArrayField({
+  items = [],
+  onChange,
+  label,
+  inputFieldRef,
+  children,
+  hasError,
+  setFieldValue,
+  currentFieldValue,
+  defaultFieldValue,
+  lengthLimit,
+  getBadgeText,
+  errorMessage,
+}) {
+  const labelElement = <Text>{label}</Text>;
+  const {
+    tokens: {
+      components: {
+        fieldmessages: { error: errorStyles },
+      },
+    },
+  } = useTheme();
+  const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
+  const [isEditing, setIsEditing] = React.useState();
+  React.useEffect(() => {
+    if (isEditing) {
+      inputFieldRef?.current?.focus();
+    }
+  }, [isEditing]);
+  const removeItem = async (removeIndex) => {
+    const newItems = items.filter((value, index) => index !== removeIndex);
+    await onChange(newItems);
+    setSelectedBadgeIndex(undefined);
+  };
+  const addItem = async () => {
+    if (
+      currentFieldValue !== undefined &&
+      currentFieldValue !== null &&
+      currentFieldValue !== "" &&
+      !hasError
+    ) {
+      const newItems = [...items];
+      if (selectedBadgeIndex !== undefined) {
+        newItems[selectedBadgeIndex] = currentFieldValue;
+        setSelectedBadgeIndex(undefined);
+      } else {
+        newItems.push(currentFieldValue);
+      }
+      await onChange(newItems);
+      setIsEditing(false);
+    }
+  };
+  const arraySection = (
+    <React.Fragment>
+      {!!items?.length && (
+        <ScrollView height="inherit" width="inherit" maxHeight={"7rem"}>
+          {items.map((value, index) => {
+            return (
+              <Badge
+                key={index}
+                style={{
+                  cursor: "pointer",
+                  alignItems: "center",
+                  marginRight: 3,
+                  marginTop: 3,
+                  backgroundColor:
+                    index === selectedBadgeIndex ? "#B8CEF9" : "",
+                }}
+                onClick={() => {
+                  setSelectedBadgeIndex(index);
+                  setFieldValue(items[index]);
+                  setIsEditing(true);
+                }}
+              >
+                {getBadgeText ? getBadgeText(value) : value.toString()}
+                <Icon
+                  style={{
+                    cursor: "pointer",
+                    paddingLeft: 3,
+                    width: 20,
+                    height: 20,
+                  }}
+                  viewBox={{ width: 20, height: 20 }}
+                  paths={[
+                    {
+                      d: "M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z",
+                      stroke: "black",
+                    },
+                  ]}
+                  ariaLabel="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    removeItem(index);
+                  }}
+                />
+              </Badge>
+            );
+          })}
+        </ScrollView>
+      )}
+      <Divider orientation="horizontal" marginTop={5} />
+    </React.Fragment>
+  );
+  if (lengthLimit !== undefined && items.length >= lengthLimit && !isEditing) {
+    return (
+      <React.Fragment>
+        {labelElement}
+        {arraySection}
+      </React.Fragment>
+    );
+  }
+  return (
+    <React.Fragment>
+      {labelElement}
+      {isEditing && children}
+      {!isEditing ? (
+        <>
+          <Button
+            onClick={() => {
+              setIsEditing(true);
+            }}
+          >
+            Add item
+          </Button>
+          {errorMessage && hasError && (
+            <Text color={errorStyles.color} fontSize={errorStyles.fontSize}>
+              {errorMessage}
+            </Text>
+          )}
+        </>
+      ) : (
+        <Flex justifyContent="flex-end">
+          {(currentFieldValue || isEditing) && (
+            <Button
+              children="Cancel"
+              type="button"
+              size="small"
+              onClick={() => {
+                setFieldValue(defaultFieldValue);
+                setIsEditing(false);
+                setSelectedBadgeIndex(undefined);
+              }}
+            ></Button>
+          )}
+          <Button
+            size="small"
+            variation="link"
+            isDisabled={hasError}
+            onClick={addItem}
+          >
+            {selectedBadgeIndex !== undefined ? "Save" : "Add"}
+          </Button>
+        </Flex>
+      )}
+      {arraySection}
+    </React.Fragment>
+  );
+}
 export default function ActivitiesCreateForm(props) {
   const {
     clearOnSuccess = true,
@@ -30,6 +203,7 @@ export default function ActivitiesCreateForm(props) {
     actEnd: "",
     actDescription: "",
     actDocument: "",
+    enrollmentID: undefined,
   };
   const [actName, setActName] = React.useState(initialValues.actName);
   const [actType, setActType] = React.useState(initialValues.actType);
@@ -42,6 +216,9 @@ export default function ActivitiesCreateForm(props) {
   const [actDocument, setActDocument] = React.useState(
     initialValues.actDocument
   );
+  const [enrollmentID, setEnrollmentID] = React.useState(
+    initialValues.enrollmentID
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setActName(initialValues.actName);
@@ -51,7 +228,23 @@ export default function ActivitiesCreateForm(props) {
     setActEnd(initialValues.actEnd);
     setActDescription(initialValues.actDescription);
     setActDocument(initialValues.actDocument);
+    setEnrollmentID(initialValues.enrollmentID);
+    setCurrentEnrollmentIDValue(undefined);
+    setCurrentEnrollmentIDDisplayValue("");
     setErrors({});
+  };
+  const [currentEnrollmentIDDisplayValue, setCurrentEnrollmentIDDisplayValue] =
+    React.useState("");
+  const [currentEnrollmentIDValue, setCurrentEnrollmentIDValue] =
+    React.useState(undefined);
+  const enrollmentIDRef = React.createRef();
+  const enrollmentRecords = useDataStoreBinding({
+    type: "collection",
+    model: Enrollment,
+  }).items;
+  const getDisplayValue = {
+    enrollmentID: (r) =>
+      `${r?.enrollmentCode ? r?.enrollmentCode + " - " : ""}${r?.id}`,
   };
   const validations = {
     actName: [],
@@ -61,6 +254,7 @@ export default function ActivitiesCreateForm(props) {
     actEnd: [],
     actDescription: [],
     actDocument: [{ type: "URL" }],
+    enrollmentID: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -95,6 +289,7 @@ export default function ActivitiesCreateForm(props) {
           actEnd,
           actDescription,
           actDocument,
+          enrollmentID,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -156,6 +351,7 @@ export default function ActivitiesCreateForm(props) {
               actEnd,
               actDescription,
               actDocument,
+              enrollmentID,
             };
             const result = onChange(modelFields);
             value = result?.actName ?? value;
@@ -186,6 +382,7 @@ export default function ActivitiesCreateForm(props) {
               actEnd,
               actDescription,
               actDocument,
+              enrollmentID,
             };
             const result = onChange(modelFields);
             value = result?.actType ?? value;
@@ -217,6 +414,7 @@ export default function ActivitiesCreateForm(props) {
               actEnd,
               actDescription,
               actDocument,
+              enrollmentID,
             };
             const result = onChange(modelFields);
             value = result?.actDate ?? value;
@@ -248,6 +446,7 @@ export default function ActivitiesCreateForm(props) {
               actEnd,
               actDescription,
               actDocument,
+              enrollmentID,
             };
             const result = onChange(modelFields);
             value = result?.actStart ?? value;
@@ -279,6 +478,7 @@ export default function ActivitiesCreateForm(props) {
               actEnd: value,
               actDescription,
               actDocument,
+              enrollmentID,
             };
             const result = onChange(modelFields);
             value = result?.actEnd ?? value;
@@ -309,6 +509,7 @@ export default function ActivitiesCreateForm(props) {
               actEnd,
               actDescription: value,
               actDocument,
+              enrollmentID,
             };
             const result = onChange(modelFields);
             value = result?.actDescription ?? value;
@@ -339,6 +540,7 @@ export default function ActivitiesCreateForm(props) {
               actEnd,
               actDescription,
               actDocument: value,
+              enrollmentID,
             };
             const result = onChange(modelFields);
             value = result?.actDocument ?? value;
@@ -353,6 +555,93 @@ export default function ActivitiesCreateForm(props) {
         hasError={errors.actDocument?.hasError}
         {...getOverrideProps(overrides, "actDocument")}
       ></TextField>
+      <ArrayField
+        lengthLimit={1}
+        onChange={async (items) => {
+          let value = items[0];
+          if (onChange) {
+            const modelFields = {
+              actName,
+              actType,
+              actDate,
+              actStart,
+              actEnd,
+              actDescription,
+              actDocument,
+              enrollmentID: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.enrollmentID ?? value;
+          }
+          setEnrollmentID(value);
+          setCurrentEnrollmentIDValue(undefined);
+        }}
+        currentFieldValue={currentEnrollmentIDValue}
+        label={"Enrollment id"}
+        items={enrollmentID ? [enrollmentID] : []}
+        hasError={errors?.enrollmentID?.hasError}
+        errorMessage={errors?.enrollmentID?.errorMessage}
+        getBadgeText={(value) =>
+          value
+            ? getDisplayValue.enrollmentID(
+                enrollmentRecords.find((r) => r.id === value)
+              )
+            : ""
+        }
+        setFieldValue={(value) => {
+          setCurrentEnrollmentIDDisplayValue(
+            value
+              ? getDisplayValue.enrollmentID(
+                  enrollmentRecords.find((r) => r.id === value)
+                )
+              : ""
+          );
+          setCurrentEnrollmentIDValue(value);
+        }}
+        inputFieldRef={enrollmentIDRef}
+        defaultFieldValue={""}
+      >
+        <Autocomplete
+          label="Enrollment id"
+          isRequired={true}
+          isReadOnly={false}
+          placeholder="Search Enrollment"
+          value={currentEnrollmentIDDisplayValue}
+          options={enrollmentRecords
+            .filter(
+              (r, i, arr) =>
+                arr.findIndex((member) => member?.id === r?.id) === i
+            )
+            .map((r) => ({
+              id: r?.id,
+              label: getDisplayValue.enrollmentID?.(r),
+            }))}
+          onSelect={({ id, label }) => {
+            setCurrentEnrollmentIDValue(id);
+            setCurrentEnrollmentIDDisplayValue(label);
+            runValidationTasks("enrollmentID", label);
+          }}
+          onClear={() => {
+            setCurrentEnrollmentIDDisplayValue("");
+          }}
+          onChange={(e) => {
+            let { value } = e.target;
+            if (errors.enrollmentID?.hasError) {
+              runValidationTasks("enrollmentID", value);
+            }
+            setCurrentEnrollmentIDDisplayValue(value);
+            setCurrentEnrollmentIDValue(undefined);
+          }}
+          onBlur={() =>
+            runValidationTasks("enrollmentID", currentEnrollmentIDValue)
+          }
+          errorMessage={errors.enrollmentID?.errorMessage}
+          hasError={errors.enrollmentID?.hasError}
+          ref={enrollmentIDRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "enrollmentID")}
+        ></Autocomplete>
+      </ArrayField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

@@ -5,8 +5,9 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { AutocompleteProps, GridProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
+import { Activities } from "../models";
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
@@ -18,6 +19,7 @@ export declare type BreaksCreateFormInputValues = {
     breaksBehavior?: string;
     breaksDescription?: string;
     breaksDate?: string;
+    ActivitiesBreak?: Activities;
 };
 export declare type BreaksCreateFormValidationValues = {
     breaksStart?: ValidationFunction<string>;
@@ -25,6 +27,7 @@ export declare type BreaksCreateFormValidationValues = {
     breaksBehavior?: ValidationFunction<string>;
     breaksDescription?: ValidationFunction<string>;
     breaksDate?: ValidationFunction<string>;
+    ActivitiesBreak?: ValidationFunction<Activities>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type BreaksCreateFormOverridesProps = {
@@ -34,6 +37,7 @@ export declare type BreaksCreateFormOverridesProps = {
     breaksBehavior?: PrimitiveOverrideProps<TextFieldProps>;
     breaksDescription?: PrimitiveOverrideProps<TextFieldProps>;
     breaksDate?: PrimitiveOverrideProps<TextFieldProps>;
+    ActivitiesBreak?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
 export declare type BreaksCreateFormProps = React.PropsWithChildren<{
     overrides?: BreaksCreateFormOverridesProps | undefined | null;

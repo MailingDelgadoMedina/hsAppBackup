@@ -5,8 +5,9 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { AutocompleteProps, GridProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
+import { Students } from "../models";
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
@@ -17,12 +18,14 @@ export declare type ParentsCreateFormInputValues = {
     parentLastName?: string;
     email?: string;
     imageProfile?: string;
+    ParentStudents?: Students[];
 };
 export declare type ParentsCreateFormValidationValues = {
     parentName?: ValidationFunction<string>;
     parentLastName?: ValidationFunction<string>;
     email?: ValidationFunction<string>;
     imageProfile?: ValidationFunction<string>;
+    ParentStudents?: ValidationFunction<Students>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type ParentsCreateFormOverridesProps = {
@@ -31,6 +34,7 @@ export declare type ParentsCreateFormOverridesProps = {
     parentLastName?: PrimitiveOverrideProps<TextFieldProps>;
     email?: PrimitiveOverrideProps<TextFieldProps>;
     imageProfile?: PrimitiveOverrideProps<TextFieldProps>;
+    ParentStudents?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
 export declare type ParentsCreateFormProps = React.PropsWithChildren<{
     overrides?: ParentsCreateFormOverridesProps | undefined | null;

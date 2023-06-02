@@ -5,8 +5,9 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { AutocompleteProps, GridProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
+import { Students } from "../models";
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
@@ -22,6 +23,7 @@ export declare type PottyLogCreateFormInputValues = {
     selfInitiated?: boolean;
     prompted?: boolean;
     exactTime?: string;
+    PottyStudents?: Students;
 };
 export declare type PottyLogCreateFormValidationValues = {
     pottyDate?: ValidationFunction<string>;
@@ -33,6 +35,7 @@ export declare type PottyLogCreateFormValidationValues = {
     selfInitiated?: ValidationFunction<boolean>;
     prompted?: ValidationFunction<boolean>;
     exactTime?: ValidationFunction<string>;
+    PottyStudents?: ValidationFunction<Students>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type PottyLogCreateFormOverridesProps = {
@@ -46,6 +49,7 @@ export declare type PottyLogCreateFormOverridesProps = {
     selfInitiated?: PrimitiveOverrideProps<SwitchFieldProps>;
     prompted?: PrimitiveOverrideProps<SwitchFieldProps>;
     exactTime?: PrimitiveOverrideProps<TextFieldProps>;
+    PottyStudents?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
 export declare type PottyLogCreateFormProps = React.PropsWithChildren<{
     overrides?: PottyLogCreateFormOverridesProps | undefined | null;

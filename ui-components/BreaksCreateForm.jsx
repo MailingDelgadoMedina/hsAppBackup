@@ -6,11 +6,184 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Breaks } from "../models";
+import {
+  Autocomplete,
+  Badge,
+  Button,
+  Divider,
+  Flex,
+  Grid,
+  Icon,
+  ScrollView,
+  Text,
+  TextField,
+  useTheme,
+} from "@aws-amplify/ui-react";
+import {
+  getOverrideProps,
+  useDataStoreBinding,
+} from "@aws-amplify/ui-react/internal";
+import { Breaks, Activities } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
+function ArrayField({
+  items = [],
+  onChange,
+  label,
+  inputFieldRef,
+  children,
+  hasError,
+  setFieldValue,
+  currentFieldValue,
+  defaultFieldValue,
+  lengthLimit,
+  getBadgeText,
+  errorMessage,
+}) {
+  const labelElement = <Text>{label}</Text>;
+  const {
+    tokens: {
+      components: {
+        fieldmessages: { error: errorStyles },
+      },
+    },
+  } = useTheme();
+  const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
+  const [isEditing, setIsEditing] = React.useState();
+  React.useEffect(() => {
+    if (isEditing) {
+      inputFieldRef?.current?.focus();
+    }
+  }, [isEditing]);
+  const removeItem = async (removeIndex) => {
+    const newItems = items.filter((value, index) => index !== removeIndex);
+    await onChange(newItems);
+    setSelectedBadgeIndex(undefined);
+  };
+  const addItem = async () => {
+    if (
+      currentFieldValue !== undefined &&
+      currentFieldValue !== null &&
+      currentFieldValue !== "" &&
+      !hasError
+    ) {
+      const newItems = [...items];
+      if (selectedBadgeIndex !== undefined) {
+        newItems[selectedBadgeIndex] = currentFieldValue;
+        setSelectedBadgeIndex(undefined);
+      } else {
+        newItems.push(currentFieldValue);
+      }
+      await onChange(newItems);
+      setIsEditing(false);
+    }
+  };
+  const arraySection = (
+    <React.Fragment>
+      {!!items?.length && (
+        <ScrollView height="inherit" width="inherit" maxHeight={"7rem"}>
+          {items.map((value, index) => {
+            return (
+              <Badge
+                key={index}
+                style={{
+                  cursor: "pointer",
+                  alignItems: "center",
+                  marginRight: 3,
+                  marginTop: 3,
+                  backgroundColor:
+                    index === selectedBadgeIndex ? "#B8CEF9" : "",
+                }}
+                onClick={() => {
+                  setSelectedBadgeIndex(index);
+                  setFieldValue(items[index]);
+                  setIsEditing(true);
+                }}
+              >
+                {getBadgeText ? getBadgeText(value) : value.toString()}
+                <Icon
+                  style={{
+                    cursor: "pointer",
+                    paddingLeft: 3,
+                    width: 20,
+                    height: 20,
+                  }}
+                  viewBox={{ width: 20, height: 20 }}
+                  paths={[
+                    {
+                      d: "M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z",
+                      stroke: "black",
+                    },
+                  ]}
+                  ariaLabel="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    removeItem(index);
+                  }}
+                />
+              </Badge>
+            );
+          })}
+        </ScrollView>
+      )}
+      <Divider orientation="horizontal" marginTop={5} />
+    </React.Fragment>
+  );
+  if (lengthLimit !== undefined && items.length >= lengthLimit && !isEditing) {
+    return (
+      <React.Fragment>
+        {labelElement}
+        {arraySection}
+      </React.Fragment>
+    );
+  }
+  return (
+    <React.Fragment>
+      {labelElement}
+      {isEditing && children}
+      {!isEditing ? (
+        <>
+          <Button
+            onClick={() => {
+              setIsEditing(true);
+            }}
+          >
+            Add item
+          </Button>
+          {errorMessage && hasError && (
+            <Text color={errorStyles.color} fontSize={errorStyles.fontSize}>
+              {errorMessage}
+            </Text>
+          )}
+        </>
+      ) : (
+        <Flex justifyContent="flex-end">
+          {(currentFieldValue || isEditing) && (
+            <Button
+              children="Cancel"
+              type="button"
+              size="small"
+              onClick={() => {
+                setFieldValue(defaultFieldValue);
+                setIsEditing(false);
+                setSelectedBadgeIndex(undefined);
+              }}
+            ></Button>
+          )}
+          <Button
+            size="small"
+            variation="link"
+            isDisabled={hasError}
+            onClick={addItem}
+          >
+            {selectedBadgeIndex !== undefined ? "Save" : "Add"}
+          </Button>
+        </Flex>
+      )}
+      {arraySection}
+    </React.Fragment>
+  );
+}
 export default function BreaksCreateForm(props) {
   const {
     clearOnSuccess = true,
@@ -28,6 +201,7 @@ export default function BreaksCreateForm(props) {
     breaksBehavior: "",
     breaksDescription: "",
     breaksDate: "",
+    ActivitiesBreak: undefined,
   };
   const [breaksStart, setBreaksStart] = React.useState(
     initialValues.breaksStart
@@ -40,6 +214,9 @@ export default function BreaksCreateForm(props) {
     initialValues.breaksDescription
   );
   const [breaksDate, setBreaksDate] = React.useState(initialValues.breaksDate);
+  const [ActivitiesBreak, setActivitiesBreak] = React.useState(
+    initialValues.ActivitiesBreak
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setBreaksStart(initialValues.breaksStart);
@@ -47,7 +224,32 @@ export default function BreaksCreateForm(props) {
     setBreaksBehavior(initialValues.breaksBehavior);
     setBreaksDescription(initialValues.breaksDescription);
     setBreaksDate(initialValues.breaksDate);
+    setActivitiesBreak(initialValues.ActivitiesBreak);
+    setCurrentActivitiesBreakValue(undefined);
+    setCurrentActivitiesBreakDisplayValue("");
     setErrors({});
+  };
+  const [
+    currentActivitiesBreakDisplayValue,
+    setCurrentActivitiesBreakDisplayValue,
+  ] = React.useState("");
+  const [currentActivitiesBreakValue, setCurrentActivitiesBreakValue] =
+    React.useState(undefined);
+  const ActivitiesBreakRef = React.createRef();
+  const getIDValue = {
+    ActivitiesBreak: (r) => JSON.stringify({ id: r?.id }),
+  };
+  const ActivitiesBreakIdSet = new Set(
+    Array.isArray(ActivitiesBreak)
+      ? ActivitiesBreak.map((r) => getIDValue.ActivitiesBreak?.(r))
+      : getIDValue.ActivitiesBreak?.(ActivitiesBreak)
+  );
+  const activitiesRecords = useDataStoreBinding({
+    type: "collection",
+    model: Activities,
+  }).items;
+  const getDisplayValue = {
+    ActivitiesBreak: (r) => `${r?.actName ? r?.actName + " - " : ""}${r?.id}`,
   };
   const validations = {
     breaksStart: [],
@@ -55,6 +257,7 @@ export default function BreaksCreateForm(props) {
     breaksBehavior: [],
     breaksDescription: [],
     breaksDate: [],
+    ActivitiesBreak: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -87,19 +290,28 @@ export default function BreaksCreateForm(props) {
           breaksBehavior,
           breaksDescription,
           breaksDate,
+          ActivitiesBreak,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
             if (Array.isArray(modelFields[fieldName])) {
               promises.push(
                 ...modelFields[fieldName].map((item) =>
-                  runValidationTasks(fieldName, item)
+                  runValidationTasks(
+                    fieldName,
+                    item,
+                    getDisplayValue[fieldName]
+                  )
                 )
               );
               return promises;
             }
             promises.push(
-              runValidationTasks(fieldName, modelFields[fieldName])
+              runValidationTasks(
+                fieldName,
+                modelFields[fieldName],
+                getDisplayValue[fieldName]
+              )
             );
             return promises;
           }, [])
@@ -147,6 +359,7 @@ export default function BreaksCreateForm(props) {
               breaksBehavior,
               breaksDescription,
               breaksDate,
+              ActivitiesBreak,
             };
             const result = onChange(modelFields);
             value = result?.breaksStart ?? value;
@@ -176,6 +389,7 @@ export default function BreaksCreateForm(props) {
               breaksBehavior,
               breaksDescription,
               breaksDate,
+              ActivitiesBreak,
             };
             const result = onChange(modelFields);
             value = result?.breaksEnd ?? value;
@@ -204,6 +418,7 @@ export default function BreaksCreateForm(props) {
               breaksBehavior: value,
               breaksDescription,
               breaksDate,
+              ActivitiesBreak,
             };
             const result = onChange(modelFields);
             value = result?.breaksBehavior ?? value;
@@ -232,6 +447,7 @@ export default function BreaksCreateForm(props) {
               breaksBehavior,
               breaksDescription: value,
               breaksDate,
+              ActivitiesBreak,
             };
             const result = onChange(modelFields);
             value = result?.breaksDescription ?? value;
@@ -263,6 +479,7 @@ export default function BreaksCreateForm(props) {
               breaksBehavior,
               breaksDescription,
               breaksDate: value,
+              ActivitiesBreak,
             };
             const result = onChange(modelFields);
             value = result?.breaksDate ?? value;
@@ -277,6 +494,90 @@ export default function BreaksCreateForm(props) {
         hasError={errors.breaksDate?.hasError}
         {...getOverrideProps(overrides, "breaksDate")}
       ></TextField>
+      <ArrayField
+        lengthLimit={1}
+        onChange={async (items) => {
+          let value = items[0];
+          if (onChange) {
+            const modelFields = {
+              breaksStart,
+              breaksEnd,
+              breaksBehavior,
+              breaksDescription,
+              breaksDate,
+              ActivitiesBreak: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.ActivitiesBreak ?? value;
+          }
+          setActivitiesBreak(value);
+          setCurrentActivitiesBreakValue(undefined);
+          setCurrentActivitiesBreakDisplayValue("");
+        }}
+        currentFieldValue={currentActivitiesBreakValue}
+        label={"Activities break"}
+        items={ActivitiesBreak ? [ActivitiesBreak] : []}
+        hasError={errors?.ActivitiesBreak?.hasError}
+        errorMessage={errors?.ActivitiesBreak?.errorMessage}
+        getBadgeText={getDisplayValue.ActivitiesBreak}
+        setFieldValue={(model) => {
+          setCurrentActivitiesBreakDisplayValue(
+            model ? getDisplayValue.ActivitiesBreak(model) : ""
+          );
+          setCurrentActivitiesBreakValue(model);
+        }}
+        inputFieldRef={ActivitiesBreakRef}
+        defaultFieldValue={""}
+      >
+        <Autocomplete
+          label="Activities break"
+          isRequired={false}
+          isReadOnly={false}
+          placeholder="Search Activities"
+          value={currentActivitiesBreakDisplayValue}
+          options={activitiesRecords
+            .filter(
+              (r) => !ActivitiesBreakIdSet.has(getIDValue.ActivitiesBreak?.(r))
+            )
+            .map((r) => ({
+              id: getIDValue.ActivitiesBreak?.(r),
+              label: getDisplayValue.ActivitiesBreak?.(r),
+            }))}
+          onSelect={({ id, label }) => {
+            setCurrentActivitiesBreakValue(
+              activitiesRecords.find((r) =>
+                Object.entries(JSON.parse(id)).every(
+                  ([key, value]) => r[key] === value
+                )
+              )
+            );
+            setCurrentActivitiesBreakDisplayValue(label);
+            runValidationTasks("ActivitiesBreak", label);
+          }}
+          onClear={() => {
+            setCurrentActivitiesBreakDisplayValue("");
+          }}
+          onChange={(e) => {
+            let { value } = e.target;
+            if (errors.ActivitiesBreak?.hasError) {
+              runValidationTasks("ActivitiesBreak", value);
+            }
+            setCurrentActivitiesBreakDisplayValue(value);
+            setCurrentActivitiesBreakValue(undefined);
+          }}
+          onBlur={() =>
+            runValidationTasks(
+              "ActivitiesBreak",
+              currentActivitiesBreakDisplayValue
+            )
+          }
+          errorMessage={errors.ActivitiesBreak?.errorMessage}
+          hasError={errors.ActivitiesBreak?.hasError}
+          ref={ActivitiesBreakRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "ActivitiesBreak")}
+        ></Autocomplete>
+      </ArrayField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
