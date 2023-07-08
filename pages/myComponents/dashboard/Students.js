@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic'
 import ProfileCardStudents from '@/ui-components/ProfileCardStudents'
 
 const EnrollmentCreateForm = dynamic (()=> import('@/ui-components/EnrollmentCreateForm'))
-
+const Form1 = dynamic(()=>import('@/ui-components/NewForm1'))
 
 
 const StudentsCreateForm = dynamic(() => import('@/ui-components/StudentsCreateForm'))
@@ -77,10 +77,9 @@ const [selectedComponent, setSelectedComponent] = useState('');
       </div>
     </div>
    
+
  {showForm && selectedComponent === 'Create a Student' && 
-<StudentsCreateForm/>}
- {showForm && selectedComponent === 'Create a Student' && 
-<EnrollmentCreateForm/>}
+<Form1/>}
 
     {selectedComponent === 'View Students' && <ProfileCardStudents/>}
     </div>
