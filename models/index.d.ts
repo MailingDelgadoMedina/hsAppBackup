@@ -1,6 +1,6 @@
 import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
 // @ts-ignore
-import { LazyLoading, LazyLoadingDisabled, AsyncItem, AsyncCollection } from "@aws-amplify/datastore";
+import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@aws-amplify/datastore";
 
 
 
@@ -12,14 +12,13 @@ type EagerEnrollment = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly ClassesEnrollment?: Classes | null;
+  readonly ClassesEnrollment?: (ClassesEnrollment | null)[] | null;
   readonly TermEnrollment?: Term | null;
   readonly ActivitiesEnrollment?: (Activities | null)[] | null;
-  readonly studentsID: string;
   readonly enrollmentCode?: string | null;
+  readonly studentsID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly enrollmentClassesEnrollmentId?: string | null;
   readonly enrollmentTermEnrollmentId?: string | null;
 }
 
@@ -29,14 +28,13 @@ type LazyEnrollment = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly ClassesEnrollment: AsyncItem<Classes | undefined>;
+  readonly ClassesEnrollment: AsyncCollection<ClassesEnrollment>;
   readonly TermEnrollment: AsyncItem<Term | undefined>;
   readonly ActivitiesEnrollment: AsyncCollection<Activities>;
-  readonly studentsID: string;
   readonly enrollmentCode?: string | null;
+  readonly studentsID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly enrollmentClassesEnrollmentId?: string | null;
   readonly enrollmentTermEnrollmentId?: string | null;
 }
 
@@ -95,6 +93,7 @@ type EagerStudents = {
   readonly imageProfileStu?: string | null;
   readonly parentsID: string;
   readonly StudentEnrollments?: (Enrollment | null)[] | null;
+  readonly classess?: (ClassesStudents | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -112,6 +111,7 @@ type LazyStudents = {
   readonly imageProfileStu?: string | null;
   readonly parentsID: string;
   readonly StudentEnrollments: AsyncCollection<Enrollment>;
+  readonly classess: AsyncCollection<ClassesStudents>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -128,11 +128,11 @@ type EagerTerm = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly winter?: boolean | null;
+  readonly termId: string;
   readonly summer?: boolean | null;
   readonly fall?: boolean | null;
-  readonly year: string;
-  readonly termId: string;
+  readonly winter?: boolean | null;
+  readonly year: number;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -143,11 +143,11 @@ type LazyTerm = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly winter?: boolean | null;
+  readonly termId: string;
   readonly summer?: boolean | null;
   readonly fall?: boolean | null;
-  readonly year: string;
-  readonly termId: string;
+  readonly winter?: boolean | null;
+  readonly year: number;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -166,6 +166,8 @@ type EagerClasses = {
   readonly id: string;
   readonly className?: string | null;
   readonly classLevel?: string | null;
+  readonly ClassesEnrollments?: (ClassesEnrollment | null)[] | null;
+  readonly ClassesStudents?: (ClassesStudents | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -178,6 +180,8 @@ type LazyClasses = {
   readonly id: string;
   readonly className?: string | null;
   readonly classLevel?: string | null;
+  readonly ClassesEnrollments: AsyncCollection<ClassesEnrollment>;
+  readonly ClassesStudents: AsyncCollection<ClassesStudents>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -202,8 +206,10 @@ type EagerActivities = {
   readonly actDescription?: string | null;
   readonly actDocument?: string | null;
   readonly enrollmentID: string;
+  readonly EvaluationRel?: Evaluation | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly activitiesEvaluationRelId?: string | null;
 }
 
 type LazyActivities = {
@@ -220,8 +226,10 @@ type LazyActivities = {
   readonly actDescription?: string | null;
   readonly actDocument?: string | null;
   readonly enrollmentID: string;
+  readonly EvaluationRel: AsyncItem<Evaluation | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly activitiesEvaluationRelId?: string | null;
 }
 
 export declare type Activities = LazyLoading extends LazyLoadingDisabled ? EagerActivities : LazyActivities
@@ -236,18 +244,20 @@ type EagerEvaluation = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly behavior?: number | null;
-  readonly followalong?: number | null;
+  readonly evaluationCode?: string | null;
+  readonly evalDate?: string | null;
   readonly organization?: number | null;
   readonly participation?: number | null;
   readonly problemSolving?: number | null;
   readonly rulesRutines?: number | null;
-  readonly timeManagement?: number | null;
+  readonly behavior?: number | null;
+  readonly followalong?: number | null;
   readonly transition?: number | null;
+  readonly timeManagement?: number | null;
   readonly evaluationValue?: number | null;
+  readonly Activities?: Activities | null;
   readonly evaluationScore?: number | null;
   readonly progress?: number | null;
-  readonly Activities?: Activities | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly evaluationActivitiesId?: string | null;
@@ -259,18 +269,20 @@ type LazyEvaluation = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly behavior?: number | null;
-  readonly followalong?: number | null;
+  readonly evaluationCode?: string | null;
+  readonly evalDate?: string | null;
   readonly organization?: number | null;
   readonly participation?: number | null;
   readonly problemSolving?: number | null;
   readonly rulesRutines?: number | null;
-  readonly timeManagement?: number | null;
+  readonly behavior?: number | null;
+  readonly followalong?: number | null;
   readonly transition?: number | null;
+  readonly timeManagement?: number | null;
   readonly evaluationValue?: number | null;
+  readonly Activities: AsyncItem<Activities | undefined>;
   readonly evaluationScore?: number | null;
   readonly progress?: number | null;
-  readonly Activities: AsyncItem<Activities | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly evaluationActivitiesId?: string | null;
@@ -288,11 +300,11 @@ type EagerRewards = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly goodBehavior?: boolean | null;
-  readonly completedActivities?: boolean | null;
   readonly desctiptionRewardGiven?: string | null;
   readonly rewardDate?: string | null;
   readonly rewardTime?: string | null;
+  readonly completedActivities?: boolean | null;
+  readonly goodBehavior?: boolean | null;
   readonly Evaluation?: Evaluation | null;
   readonly PottyLog?: PottyLog | null;
   readonly createdAt?: string | null;
@@ -307,11 +319,11 @@ type LazyRewards = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly goodBehavior?: boolean | null;
-  readonly completedActivities?: boolean | null;
   readonly desctiptionRewardGiven?: string | null;
   readonly rewardDate?: string | null;
   readonly rewardTime?: string | null;
+  readonly completedActivities?: boolean | null;
+  readonly goodBehavior?: boolean | null;
   readonly Evaluation: AsyncItem<Evaluation | undefined>;
   readonly PottyLog: AsyncItem<PottyLog | undefined>;
   readonly createdAt?: string | null;
@@ -332,11 +344,11 @@ type EagerBreaks = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly breaksDescription?: string | null;
+  readonly breaksDate?: string | null;
   readonly breaksStart?: string | null;
   readonly breaksEnd?: string | null;
   readonly breaksBehavior?: string | null;
-  readonly breaksDescription?: string | null;
-  readonly breaksDate?: string | null;
   readonly ActivitiesBreak?: Activities | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -349,11 +361,11 @@ type LazyBreaks = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly breaksDescription?: string | null;
+  readonly breaksDate?: string | null;
   readonly breaksStart?: string | null;
   readonly breaksEnd?: string | null;
   readonly breaksBehavior?: string | null;
-  readonly breaksDescription?: string | null;
-  readonly breaksDate?: string | null;
   readonly ActivitiesBreak: AsyncItem<Activities | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -412,4 +424,72 @@ export declare type PottyLog = LazyLoading extends LazyLoadingDisabled ? EagerPo
 
 export declare const PottyLog: (new (init: ModelInit<PottyLog>) => PottyLog) & {
   copyOf(source: PottyLog, mutator: (draft: MutableModel<PottyLog>) => MutableModel<PottyLog> | void): PottyLog;
+}
+
+type EagerClassesEnrollment = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ClassesEnrollment, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly enrollmentId?: string | null;
+  readonly classesId?: string | null;
+  readonly enrollment: Enrollment;
+  readonly classes: Classes;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyClassesEnrollment = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ClassesEnrollment, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly enrollmentId?: string | null;
+  readonly classesId?: string | null;
+  readonly enrollment: AsyncItem<Enrollment>;
+  readonly classes: AsyncItem<Classes>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type ClassesEnrollment = LazyLoading extends LazyLoadingDisabled ? EagerClassesEnrollment : LazyClassesEnrollment
+
+export declare const ClassesEnrollment: (new (init: ModelInit<ClassesEnrollment>) => ClassesEnrollment) & {
+  copyOf(source: ClassesEnrollment, mutator: (draft: MutableModel<ClassesEnrollment>) => MutableModel<ClassesEnrollment> | void): ClassesEnrollment;
+}
+
+type EagerClassesStudents = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ClassesStudents, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly studentsId?: string | null;
+  readonly classesId?: string | null;
+  readonly students: Students;
+  readonly classes: Classes;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyClassesStudents = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ClassesStudents, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly studentsId?: string | null;
+  readonly classesId?: string | null;
+  readonly students: AsyncItem<Students>;
+  readonly classes: AsyncItem<Classes>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type ClassesStudents = LazyLoading extends LazyLoadingDisabled ? EagerClassesStudents : LazyClassesStudents
+
+export declare const ClassesStudents: (new (init: ModelInit<ClassesStudents>) => ClassesStudents) & {
+  copyOf(source: ClassesStudents, mutator: (draft: MutableModel<ClassesStudents>) => MutableModel<ClassesStudents> | void): ClassesStudents;
 }

@@ -1,10 +1,10 @@
 type Enrollment @model @auth(rules: [{allow: public}]) {
   id: ID!
-  ClassesEnrollment: Classes @hasOne
+  ClassesEnrollment: [Classes] @manyToMany(relationName: "ClassesEnrollment")
   TermEnrollment: Term @hasOne
   ActivitiesEnrollment: [Activities] @hasMany(indexName: "byEnrollment", fields: ["id"])
-  studentsID: ID! @index(name: "byStudents")
   enrollmentCode: String
+  studentsID: ID! @index(name: "byStudents")
 }
 
 type Parents @model @auth(rules: [{allow: public}]) {
@@ -25,21 +25,24 @@ type Students @model @auth(rules: [{allow: public}]) {
   imageProfileStu: AWSURL
   parentsID: ID! @index(name: "byParents")
   StudentEnrollments: [Enrollment] @hasMany(indexName: "byStudents", fields: ["id"])
+  classess: [Classes] @manyToMany(relationName: "ClassesStudents")
 }
 
 type Term @model @auth(rules: [{allow: public}]) {
   id: ID!
-  winter: Boolean
+  termId: String!
   summer: Boolean
   fall: Boolean
-  year: String!
-  termId: ID!
+  winter: Boolean
+  year: Int!
 }
 
 type Classes @model @auth(rules: [{allow: public}]) {
   id: ID!
   className: String
   classLevel: String
+  ClassesEnrollments: [Enrollment] @manyToMany(relationName: "ClassesEnrollment")
+  ClassesStudents: [Students] @manyToMany(relationName: "ClassesStudents")
 }
 
 type Activities @model @auth(rules: [{allow: public}]) {
@@ -52,42 +55,45 @@ type Activities @model @auth(rules: [{allow: public}]) {
   actDescription: String
   actDocument: AWSURL
   enrollmentID: ID! @index(name: "byEnrollment")
+  EvaluationRel: Evaluation @belongsTo
 }
 
 type Evaluation @model @auth(rules: [{allow: public}]) {
   id: ID!
-  behavior: Float
-  followalong: Float
+  evaluationCode: String
+  evalDate: AWSDate
   organization: Float
   participation: Float
   problemSolving: Float
   rulesRutines: Float
-  timeManagement: Float
+  behavior: Float
+  followalong: Float
   transition: Float
+  timeManagement: Float
   evaluationValue: Float
+  Activities: Activities @hasOne
   evaluationScore: Float
   progress: Float
-  Activities: Activities @hasOne
 }
 
 type Rewards @model @auth(rules: [{allow: public}]) {
   id: ID!
-  goodBehavior: Boolean
-  completedActivities: Boolean
   desctiptionRewardGiven: String
   rewardDate: AWSDate
   rewardTime: AWSTime
+  completedActivities: Boolean
+  goodBehavior: Boolean
   Evaluation: Evaluation @hasOne
   PottyLog: PottyLog @hasOne
 }
 
 type Breaks @model @auth(rules: [{allow: public}]) {
   id: ID!
+  breaksDescription: String
+  breaksDate: AWSDate
   breaksStart: AWSTime
   breaksEnd: AWSTime
   breaksBehavior: String
-  breaksDescription: String
-  breaksDate: AWSDate
   ActivitiesBreak: Activities @hasOne
 }
 

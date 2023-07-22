@@ -1249,8 +1249,8 @@ export default createTheme({
         },
       },
       font: {
-        primary: { value: "hsl(41, 100%, 50%)" },
-        secondary: { value: "hsl(279, 100%, 87%)" },
+        primary: { value: "hsl(38, 100%, 50%)" },
+        secondary: { value: "hsl(258, 100%, 49%)" },
         tertiary: { value: "hsl(185, 100%, 78%)" },
         disabled: { value: "{colors.font.tertiary.value}" },
         inverse: { value: "{colors.white.value}" },

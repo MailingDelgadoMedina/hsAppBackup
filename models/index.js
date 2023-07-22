@@ -4,7 +4,7 @@ import { schema } from './schema';
 
 
 
-const { Enrollment, Parents, Students, Term, Classes, Activities, Evaluation, Rewards, Breaks, PottyLog } = initSchema(schema);
+const { Enrollment, Parents, Students, Term, Classes, Activities, Evaluation, Rewards, Breaks, PottyLog, ClassesEnrollment, ClassesStudents } = initSchema(schema);
 
 export {
   Enrollment,
@@ -16,5 +16,7 @@ export {
   Evaluation,
   Rewards,
   Breaks,
-  PottyLog
+  PottyLog,
+  ClassesEnrollment,
+  ClassesStudents
 };

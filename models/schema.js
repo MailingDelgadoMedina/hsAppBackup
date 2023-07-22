@@ -12,19 +12,17 @@ export const schema = {
                 },
                 "ClassesEnrollment": {
                     "name": "ClassesEnrollment",
-                    "isArray": false,
+                    "isArray": true,
                     "type": {
-                        "model": "Classes"
+                        "model": "ClassesEnrollment"
                     },
                     "isRequired": false,
                     "attributes": [],
+                    "isArrayNullable": true,
                     "association": {
-                        "connectionType": "HAS_ONE",
+                        "connectionType": "HAS_MANY",
                         "associatedWith": [
-                            "id"
-                        ],
-                        "targetNames": [
-                            "enrollmentClassesEnrollmentId"
+                            "enrollment"
                         ]
                     }
                 },
@@ -62,18 +60,18 @@ export const schema = {
                         ]
                     }
                 },
-                "studentsID": {
-                    "name": "studentsID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "enrollmentCode": {
                     "name": "enrollmentCode",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
+                    "attributes": []
+                },
+                "studentsID": {
+                    "name": "studentsID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
                     "attributes": []
                 },
                 "createdAt": {
@@ -91,13 +89,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "enrollmentClassesEnrollmentId": {
-                    "name": "enrollmentClassesEnrollmentId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 },
                 "enrollmentTermEnrollmentId": {
                     "name": "enrollmentTermEnrollmentId",
@@ -305,6 +296,22 @@ export const schema = {
                         ]
                     }
                 },
+                "classess": {
+                    "name": "classess",
+                    "isArray": true,
+                    "type": {
+                        "model": "ClassesStudents"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "students"
+                        ]
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -366,11 +373,11 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "winter": {
-                    "name": "winter",
+                "termId": {
+                    "name": "termId",
                     "isArray": false,
-                    "type": "Boolean",
-                    "isRequired": false,
+                    "type": "String",
+                    "isRequired": true,
                     "attributes": []
                 },
                 "summer": {
@@ -387,17 +394,17 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "winter": {
+                    "name": "winter",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "year": {
                     "name": "year",
                     "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "termId": {
-                    "name": "termId",
-                    "isArray": false,
-                    "type": "ID",
+                    "type": "Int",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -466,6 +473,38 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
+                },
+                "ClassesEnrollments": {
+                    "name": "ClassesEnrollments",
+                    "isArray": true,
+                    "type": {
+                        "model": "ClassesEnrollment"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "classes"
+                        ]
+                    }
+                },
+                "ClassesStudents": {
+                    "name": "ClassesStudents",
+                    "isArray": true,
+                    "type": {
+                        "model": "ClassesStudents"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "classes"
+                        ]
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -575,6 +614,21 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "EvaluationRel": {
+                    "name": "EvaluationRel",
+                    "isArray": false,
+                    "type": {
+                        "model": "Evaluation"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "activitiesEvaluationRelId"
+                        ]
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -590,6 +644,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
+                },
+                "activitiesEvaluationRelId": {
+                    "name": "activitiesEvaluationRelId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -636,17 +697,17 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "behavior": {
-                    "name": "behavior",
+                "evaluationCode": {
+                    "name": "evaluationCode",
                     "isArray": false,
-                    "type": "Float",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "followalong": {
-                    "name": "followalong",
+                "evalDate": {
+                    "name": "evalDate",
                     "isArray": false,
-                    "type": "Float",
+                    "type": "AWSDate",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -678,8 +739,15 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "timeManagement": {
-                    "name": "timeManagement",
+                "behavior": {
+                    "name": "behavior",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "followalong": {
+                    "name": "followalong",
                     "isArray": false,
                     "type": "Float",
                     "isRequired": false,
@@ -692,22 +760,15 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "timeManagement": {
+                    "name": "timeManagement",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "evaluationValue": {
                     "name": "evaluationValue",
-                    "isArray": false,
-                    "type": "Float",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "evaluationScore": {
-                    "name": "evaluationScore",
-                    "isArray": false,
-                    "type": "Float",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "progress": {
-                    "name": "progress",
                     "isArray": false,
                     "type": "Float",
                     "isRequired": false,
@@ -730,6 +791,20 @@ export const schema = {
                             "evaluationActivitiesId"
                         ]
                     }
+                },
+                "evaluationScore": {
+                    "name": "evaluationScore",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "progress": {
+                    "name": "progress",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -790,20 +865,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "goodBehavior": {
-                    "name": "goodBehavior",
-                    "isArray": false,
-                    "type": "Boolean",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "completedActivities": {
-                    "name": "completedActivities",
-                    "isArray": false,
-                    "type": "Boolean",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "desctiptionRewardGiven": {
                     "name": "desctiptionRewardGiven",
                     "isArray": false,
@@ -822,6 +883,20 @@ export const schema = {
                     "name": "rewardTime",
                     "isArray": false,
                     "type": "AWSTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "completedActivities": {
+                    "name": "completedActivities",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "goodBehavior": {
+                    "name": "goodBehavior",
+                    "isArray": false,
+                    "type": "Boolean",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -927,6 +1002,20 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "breaksDescription": {
+                    "name": "breaksDescription",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "breaksDate": {
+                    "name": "breaksDate",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "breaksStart": {
                     "name": "breaksStart",
                     "isArray": false,
@@ -945,20 +1034,6 @@ export const schema = {
                     "name": "breaksBehavior",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "breaksDescription": {
-                    "name": "breaksDescription",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "breaksDate": {
-                    "name": "breaksDate",
-                    "isArray": false,
-                    "type": "AWSDate",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -1168,10 +1243,206 @@ export const schema = {
                     }
                 }
             ]
+        },
+        "ClassesEnrollment": {
+            "name": "ClassesEnrollment",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "enrollmentId": {
+                    "name": "enrollmentId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "classesId": {
+                    "name": "classesId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "enrollment": {
+                    "name": "enrollment",
+                    "isArray": false,
+                    "type": {
+                        "model": "Enrollment"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "enrollmentId"
+                        ]
+                    }
+                },
+                "classes": {
+                    "name": "classes",
+                    "isArray": false,
+                    "type": {
+                        "model": "Classes"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "classesId"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "ClassesEnrollments",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byEnrollment",
+                        "fields": [
+                            "enrollmentId"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byClasses",
+                        "fields": [
+                            "classesId"
+                        ]
+                    }
+                }
+            ]
+        },
+        "ClassesStudents": {
+            "name": "ClassesStudents",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "studentsId": {
+                    "name": "studentsId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "classesId": {
+                    "name": "classesId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "students": {
+                    "name": "students",
+                    "isArray": false,
+                    "type": {
+                        "model": "Students"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "studentsId"
+                        ]
+                    }
+                },
+                "classes": {
+                    "name": "classes",
+                    "isArray": false,
+                    "type": {
+                        "model": "Classes"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "classesId"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "ClassesStudents",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byStudents",
+                        "fields": [
+                            "studentsId"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byClasses",
+                        "fields": [
+                            "classesId"
+                        ]
+                    }
+                }
+            ]
         }
     },
     "enums": {},
     "nonModels": {},
-    "codegenVersion": "3.4.3",
-    "version": "2b194c6c611092afc30ec8078d55b85f"
+    "codegenVersion": "3.4.4",
+    "version": "44bf02db15584dc12dfc90bde19a362f"
 };
