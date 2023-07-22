@@ -79,7 +79,7 @@ const [selectedComponent, setSelectedComponent] = useState('');
    
 
  {showForm && selectedComponent === 'Create a Student' && 
-<StudentsCreateForm/>}
+<div className='m-24'><StudentsCreateForm/></div>}
 
     {selectedComponent === 'View Students' && <ProfileCardStudents/>}
     </div>
