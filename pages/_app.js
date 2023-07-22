@@ -1,8 +1,7 @@
 import '@/styles/globals.css'
 import "@aws-amplify/ui-react/styles.css";
 import { Amplify } from 'aws-amplify';
-import MyNavBar from './myComponents/MyNavBar'
-import MarketingFooter from '@/ui-components/MarketingFooter'
+import { ThemeProvider } from '@aws-amplify/ui-react';
 import {studioTheme} from '@/ui-components';
 import { Mina } from 'next/font/google'
 import { Authenticator, Text, AmplifyProvider} from '@aws-amplify/ui-react'
@@ -21,6 +20,8 @@ export default function App({ Component, pageProps }) {
 
     
   return (
+
+
 
     <AmplifyProvider theme={studioTheme}>
      
@@ -59,5 +60,6 @@ export default function App({ Component, pageProps }) {
   {/* </Authenticator> */}
   </div>
  </AmplifyProvider>
+
   )
 }

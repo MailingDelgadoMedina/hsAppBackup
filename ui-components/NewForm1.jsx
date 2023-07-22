@@ -26,6 +26,10 @@ import {
 import { Students, Enrollment, Parents } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
+
+
+
+
 function ArrayField({
   items = [],
   onChange,
@@ -385,7 +389,8 @@ export default function NewForm1(props) {
       {...rest}
     >
       <TextField
-        label="Stu name"
+        label="Student Name"
+        color="#000642"
         isRequired={false}
         isReadOnly={false}
         value={stuName}
@@ -416,6 +421,7 @@ export default function NewForm1(props) {
       ></TextField>
       <TextField
         label="Stu last name"
+         color="#000642"
         isRequired={false}
         isReadOnly={false}
         value={stuLastName}
