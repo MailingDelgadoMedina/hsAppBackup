@@ -390,7 +390,7 @@ export default function NewForm1(props) {
     >
       <TextField
         label="Student Name"
-        color="#000642"
+        color="#110038"
         isRequired={false}
         isReadOnly={false}
         value={stuName}
@@ -420,8 +420,8 @@ export default function NewForm1(props) {
         {...getOverrideProps(overrides, "stuName")}
       ></TextField>
       <TextField
-        label="Stu last name"
-         color="#000642"
+        label="Student Last name"
+         color="#110038"
         isRequired={false}
         isReadOnly={false}
         value={stuLastName}
@@ -515,7 +515,7 @@ export default function NewForm1(props) {
         {...getOverrideProps(overrides, "age")}
       ></TextField>
       <TextField
-        label="Image profile stu"
+        label="Profile Image"
         isRequired={false}
         isReadOnly={false}
         value={imageProfileStu}
@@ -664,7 +664,7 @@ export default function NewForm1(props) {
         defaultFieldValue={""}
       >
         <Autocomplete
-          label="Student enrollments"
+          label="Student Enrollments"
           isRequired={false}
           isReadOnly={false}
           placeholder="Search Enrollment"
