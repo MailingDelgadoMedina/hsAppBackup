@@ -35,7 +35,7 @@ const [selectedComponent, setSelectedComponent] = useState('');
   return (
     <div className='min-h-screen'>
  <div className="border-b border-gray-200 pb-5 sm:pb-0">
-      <h3 className="text-base font-semibold leading-6 text-gray-900">Candidates</h3>
+      <h3 className="text-base font-semibold leading-6 text-gray-900">Students</h3>
       <div className="mt-3 sm:mt-4">
         <div className="sm:hidden">
           <label htmlFor="current-tab" className="sr-only">
@@ -63,7 +63,7 @@ const [selectedComponent, setSelectedComponent] = useState('');
                                      handleClick(tab.name)}}
                 className={classNames(
                   tab.current
-                    ? 'border-indigo-500 text-indigo-600'
+                    ? 'active:border-indigo-500 active:text-indigo-600'
                     : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
                   'whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium'
                 )}
