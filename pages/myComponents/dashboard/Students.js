@@ -14,8 +14,8 @@ const StudentsCreateForm = dynamic(() => import('@/ui-components/MyStudentCreate
 
 
 const tabs = [
-  { name: 'Create a Student', href: '/Student', current: true },
-  { name: 'View Students', href: '/Students', current: false },
+  { name: 'Create a Student', href: '/Student', },
+  { name: 'View Students', href: '/Students', },
   
 ]
 
@@ -27,9 +27,12 @@ function classNames(...classes) {
 function Students() {
    const [showForm, setShowForm] = useState(true)
 const [selectedComponent, setSelectedComponent] = useState('');
-  const router = useRouter()
+  const [activeTab, setActiveTab] = useState(tabs[0].name); // Set the initial active tab
+
+const router = useRouter()
   const   handleClick = (component) => {
     setSelectedComponent(component);
+    setActiveTab(component);
     // router.push('/' + component);
   };
   return (
@@ -45,7 +48,7 @@ const [selectedComponent, setSelectedComponent] = useState('');
             id="current-tab"
             name="current-tab"
             className="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-            defaultValue={tabs.find((tab) => tab.current).name}
+          
           >
             {tabs.map((tab) => (
               <option key={tab.name}>{tab.name}</option>
@@ -60,13 +63,15 @@ const [selectedComponent, setSelectedComponent] = useState('');
                 href={tab.href}
                 onClick={(e) =>{
                                     e.preventDefault();
-                                     handleClick(tab.name)}}
+                                     handleClick(tab.name)
+                                    }}
                 className={classNames(
-                  tab.current
-                    ? 'active:border-indigo-500 active:text-indigo-600'
+                  tab.name === activeTab
+                    ? 'border-indigo-500 text-indigo-600'
                     : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
                   'whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium'
                 )}
+               
                 aria-current={tab.current ? 'page' : undefined}
               >
                 {tab.name}
