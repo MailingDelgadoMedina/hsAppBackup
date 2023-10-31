@@ -48,17 +48,17 @@ const PottyLog = dynamic(() => import('./dashboard/PottyLog'))
 const Rewards = dynamic(() => import('./dashboard/Rewards'))
 
 const navigation = [
-  { name: 'Dashboard', href: '/hsapp', icon: HomeIcon, current: true },
-  { name: 'Students', href: './dashboard/Students', icon: UsersIcon, current: false },
-  { name: 'Enrollments', href: './dashboard/Enrollment', icon: FolderIcon, current: false },
-  { name: 'Activities', href: './dashboard/Activities', icon: CalendarIcon, current: false },
-  { name: 'Evaluations', href: './dashboard/Evalutations', icon: DocumentDuplicateIcon, current: false },
-  { name: 'Reports', href: './dashboard/Reports', icon: ChartPieIcon, current: false },
+  { name: 'Dashboard', href: '/hsapp', icon: HomeIcon,  },
+  { name: 'Students', href: './dashboard/Students', icon: UsersIcon},
+  { name: 'Enrollments', href: './dashboard/Enrollment', icon: FolderIcon },
+  { name: 'Activities', href: './dashboard/Activities', icon: CalendarIcon },
+  { name: 'Evaluations', href: './dashboard/Evalutations', icon: DocumentDuplicateIcon },
+  { name: 'Reports', href: './dashboard/Reports', icon: ChartPieIcon },
 ]
 const necessities = [
-  { id: 1, name: 'Breaks', href: './dashboard/Breaks', initial: 'B', current: false },
-  { id: 2, name: 'Potty Log', href: './dashboard/PottyLog', initial: 'P', current: false },
-  { id: 3, name: 'Rewards', href: './dashboard/Rewards', initial: 'R', current: false },
+  { id: 1, name: 'Breaks', href: './dashboard/Breaks', initial: 'B' },
+  { id: 2, name: 'Potty Log', href: './dashboard/PottyLog', initial: 'P'},
+  { id: 3, name: 'Rewards', href: './dashboard/Rewards', initial: 'R' },
 ]
 const userNavigation = [
   { name: 'Your profile', href: '/profile' },
@@ -72,13 +72,26 @@ function classNames(...classes) {
 export default function SideNav() {
 
  const [selectedComponent, setSelectedComponent] = useState('Dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const router = useRouter();
 
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-const router = useRouter();
-const   handleClick = (component) => {
+  const handleClick = (component) => {
     setSelectedComponent(component);
-    // router.push('/' + component);
+    // Update the current property for navigation items
+    const updatedNavigation = navigation.map((item) => ({
+      ...item,
+      current: item.name === component,
+    }));
+    // Update the current property for necessities items
+    const updatedNecessities = necessities.map((item) => ({
+      ...item,
+      current: item.name === component,
+    }));
+    // Replace the navigation and necessities arrays with the updated versions
+    navigation.splice(0, navigation.length, ...updatedNavigation);
+    necessities.splice(0, necessities.length, ...updatedNecessities);
   };
+
 
   return (
     <>
@@ -188,7 +201,7 @@ const   handleClick = (component) => {
                                      handleClick(necessities.name)}}
                                   className={classNames(
                                     necessities.current
-                                      ? 'bg-hsgreen text-hsbg'
+                                     ? 'bg-hsgreen text-hsbg'
                                       : 'text-hsorange hover:text-hsgreen hover:bg-[#000642]',
                                     'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                                   )}
@@ -279,9 +292,9 @@ const   handleClick = (component) => {
                                      handleClick(necessities.name)}}
                           className={classNames(
                             necessities.current
-                              ? 'bg-hsbg text-hsgreen'
-                              : 'text-hsorange hover:text-hsgreen hover:bg-[#000642]',
-                            'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                             ? 'bg-hsgreen text-hsbg'
+                                      : 'text-hsorange hover:text-hsgreen hover:bg-[#000642]',
+                                    'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                           )}
                         >
                           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-hsorange bg-hsbg text-[0.625rem] font-medium text-hsorange group-hover:text-hsgreen group-hover:border-hsgreen">
