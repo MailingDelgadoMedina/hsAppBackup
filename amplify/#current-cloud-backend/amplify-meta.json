@@ -1,0 +1,108 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-hsapp-staging-33635-authRole",
+      "UnauthRoleArn": "arn:aws:iam::099761953827:role/amplify-hsapp-staging-33635-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::099761953827:role/amplify-hsapp-staging-33635-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-hsapp-staging-33635-deployment",
+      "UnauthRoleName": "amplify-hsapp-staging-33635-unauthRole",
+      "StackName": "amplify-hsapp-staging-33635",
+      "StackId": "arn:aws:cloudformation:us-east-1:099761953827:stack/amplify-hsapp-staging-33635/6287d0f0-de63-11ed-9ce4-0e737fe02ae9",
+      "AmplifyAppId": "d2v3s48ljjppef"
+    }
+  },
+  "api": {
+    "hsApp": {
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ],
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 30,
+              "description": "api key description"
+            }
+          }
+        },
+        "GraphQLAPIIdOutput": "o3vddwerhfdi7mqmp2xxomn4xa",
+        "GraphQLAPIEndpointOutput": "https://6esryyopwjg5xju3uxomansdau.appsync-api.us-east-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-bvu2wu6fmrh2dmvtrjrbpv333i"
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync",
+      "lastPushTimeStamp": "2023-06-04T19:20:40.692Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-hsapp-staging-33635-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apihsApp"
+      },
+      "lastPushDirHash": "2V7pRZSA05neQkZfFPr5uxQKwnA="
+    }
+  },
+  "auth": {
+    "hsApp": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_NUMBERS",
+            "REQUIRES_SYMBOLS",
+            "REQUIRES_UPPERCASE"
+          ]
+        },
+        "signupAttributes": [],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "output": {
+        "UserPoolId": "us-east-1_zBbI4scJi",
+        "AppClientIDWeb": "5u91ladfrnfquf14shimg4ef1p",
+        "AppClientID": "6eo1c6dup9i26f6ui1m0e8ei78",
+        "IdentityPoolId": "us-east-1:2353189a-0efa-4b2a-b405-d06f0d480cfd",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:099761953827:userpool/us-east-1_zBbI4scJi",
+        "IdentityPoolName": "testAuthIdentityPool__staging",
+        "UserPoolName": "hsApp"
+      },
+      "lastPushTimeStamp": "2023-06-04T19:20:40.642Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-hsapp-staging-33635-deployment/amplify-cfn-templates/auth/hsApp-cloudformation-template.json",
+        "logicalId": "authhsApp"
+      }
+    }
+  },
+  "storage": {
+    "s3hsappstorage": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3",
+      "output": {
+        "BucketName": "hsapp-storage33635-staging",
+        "Region": "us-east-1"
+      },
+      "lastPushTimeStamp": "2023-06-04T19:20:40.643Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-hsapp-staging-33635-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storages3hsappstorage"
+      }
+    }
+  }
+}

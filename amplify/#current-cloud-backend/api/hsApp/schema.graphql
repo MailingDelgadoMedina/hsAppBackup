@@ -1,0 +1,113 @@
+type Enrollment @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ClassesEnrollment: [Classes] @manyToMany(relationName: "ClassesEnrollment")
+  TermEnrollment: Term @hasOne
+  ActivitiesEnrollment: [Activities] @hasMany(indexName: "byEnrollment", fields: ["id"])
+  enrollmentCode: String
+  studentsID: ID! @index(name: "byStudents")
+}
+
+type Parents @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  parentName: String
+  parentLastName: String
+  email: AWSEmail
+  imageProfile: AWSURL
+  ParentStudents: [Students] @hasMany(indexName: "byParents", fields: ["id"])
+}
+
+type Students @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  stuName: String
+  stuLastName: String
+  email: AWSEmail
+  age: Int
+  imageProfileStu: AWSURL
+  parentsID: ID! @index(name: "byParents")
+  StudentEnrollments: [Enrollment] @hasMany(indexName: "byStudents", fields: ["id"])
+  classess: [Classes] @manyToMany(relationName: "ClassesStudents")
+}
+
+type Term @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  termId: String!
+  summer: Boolean
+  fall: Boolean
+  winter: Boolean
+  year: Int!
+}
+
+type Classes @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  className: String
+  classLevel: String
+  ClassesEnrollments: [Enrollment] @manyToMany(relationName: "ClassesEnrollment")
+  ClassesStudents: [Students] @manyToMany(relationName: "ClassesStudents")
+}
+
+type Activities @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  actName: String
+  actType: String
+  actDate: AWSDate
+  actStart: AWSTime
+  actEnd: AWSTime
+  actDescription: String
+  actDocument: AWSURL
+  enrollmentID: ID! @index(name: "byEnrollment")
+  EvaluationRel: Evaluation @belongsTo
+}
+
+type Evaluation @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  evaluationCode: String
+  evalDate: AWSDate
+  organization: Float
+  participation: Float
+  problemSolving: Float
+  rulesRutines: Float
+  behavior: Float
+  followalong: Float
+  transition: Float
+  timeManagement: Float
+  evaluationValue: Float
+  Activities: Activities @hasOne
+  evaluationScore: Float
+  progress: Float
+}
+
+type Rewards @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  desctiptionRewardGiven: String
+  rewardDate: AWSDate
+  rewardTime: AWSTime
+  completedActivities: Boolean
+  goodBehavior: Boolean
+  Evaluation: Evaluation @hasOne
+  PottyLog: PottyLog @hasOne
+}
+
+type Breaks @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  breaksDescription: String
+  breaksDate: AWSDate
+  breaksStart: AWSTime
+  breaksEnd: AWSTime
+  breaksBehavior: String
+  ActivitiesBreak: Activities @hasOne
+}
+
+type PottyLog @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  pottyDate: AWSDate
+  pottyTime: AWSTime
+  urine: Boolean
+  bowel: Boolean
+  underwareAccident: Boolean
+  toilet: Boolean
+  selfInitiated: Boolean
+  prompted: Boolean
+  exactTime: AWSDate
+  PottyStudents: Students @hasOne
+}
+ 

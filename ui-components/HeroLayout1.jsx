@@ -50,8 +50,9 @@ const router = useRouter();
       justifyContent="center"
       alignItems="center"
       position="relative"
+      
       border="4px SOLID rgba(102,255,166,1)"
-      padding={["0px 634px 0px 416px","0px 0px 0px 0px","0px 234px 0px 216px","0px 634px 0px 416px","0px 634px 0px 416px","0px 634px 0px 416px",]}
+      padding={["0px 634px 0px 416px","0px 0px 0px 0px","0px 234px 0px 216px","0px 634px 0px 416px","0px 634px 0px 416px","0px 634px 0px 516px",]}
       backgroundColor="rgba(17,0,56,1)"
       display="flex"
       {...getOverrideProps(overrides, "HeroLayout1")}
@@ -68,6 +69,7 @@ const router = useRouter();
         shrink="0"
         alignSelf="stretch"
         position="relative"
+        margin={[ "0px 0px 0px 0px","0px 0px 0px 0px","0px 0px 0px 0px","0px 0px 0px 0px","0px 100px 0px 100px","0px 0px 0px 0px",]}
         padding={["120px 151px 120px 120px", "120px 151px 120px 120px","120px 80px 120px 60px","120px 151px 120px 120px","120px 151px 120px 120px","120px 151px 120px 120px", ]}
         backgroundColor="rgba(0,6,66,1)"
         display="flex"

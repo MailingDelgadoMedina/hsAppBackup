@@ -1,0 +1,1328 @@
+type Enrollment @aws_iam @aws_api_key {
+  id: ID!
+  ClassesEnrollment(filter: ModelClassesEnrollmentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelClassesEnrollmentConnection
+  TermEnrollment: Term
+  ActivitiesEnrollment(filter: ModelActivitiesFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelActivitiesConnection
+  enrollmentCode: String
+  studentsID: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  enrollmentTermEnrollmentId: ID
+}
+
+type Parents @aws_iam @aws_api_key {
+  id: ID!
+  parentName: String
+  parentLastName: String
+  email: AWSEmail
+  imageProfile: AWSURL
+  ParentStudents(filter: ModelStudentsFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelStudentsConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+}
+
+type Students @aws_iam @aws_api_key {
+  id: ID!
+  stuName: String
+  stuLastName: String
+  email: AWSEmail
+  age: Int
+  imageProfileStu: AWSURL
+  parentsID: ID!
+  StudentEnrollments(filter: ModelEnrollmentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelEnrollmentConnection
+  classess(filter: ModelClassesStudentsFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelClassesStudentsConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+}
+
+type Term @aws_iam @aws_api_key {
+  id: ID!
+  termId: String!
+  summer: Boolean
+  fall: Boolean
+  winter: Boolean
+  year: Int!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+}
+
+type Classes @aws_iam @aws_api_key {
+  id: ID!
+  className: String
+  classLevel: String
+  ClassesEnrollments(filter: ModelClassesEnrollmentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelClassesEnrollmentConnection
+  ClassesStudents(filter: ModelClassesStudentsFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelClassesStudentsConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+}
+
+type Activities @aws_iam @aws_api_key {
+  id: ID!
+  actName: String
+  actType: String
+  actDate: AWSDate
+  actStart: AWSTime
+  actEnd: AWSTime
+  actDescription: String
+  actDocument: AWSURL
+  enrollmentID: ID!
+  EvaluationRel: Evaluation
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  activitiesEvaluationRelId: ID
+}
+
+type Evaluation @aws_iam @aws_api_key {
+  id: ID!
+  evaluationCode: String
+  evalDate: AWSDate
+  organization: Float
+  participation: Float
+  problemSolving: Float
+  rulesRutines: Float
+  behavior: Float
+  followalong: Float
+  transition: Float
+  timeManagement: Float
+  evaluationValue: Float
+  Activities: Activities
+  evaluationScore: Float
+  progress: Float
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  evaluationActivitiesId: ID
+}
+
+type Rewards @aws_iam @aws_api_key {
+  id: ID!
+  desctiptionRewardGiven: String
+  rewardDate: AWSDate
+  rewardTime: AWSTime
+  completedActivities: Boolean
+  goodBehavior: Boolean
+  Evaluation: Evaluation
+  PottyLog: PottyLog
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  rewardsEvaluationId: ID
+  rewardsPottyLogId: ID
+}
+
+type Breaks @aws_iam @aws_api_key {
+  id: ID!
+  breaksDescription: String
+  breaksDate: AWSDate
+  breaksStart: AWSTime
+  breaksEnd: AWSTime
+  breaksBehavior: String
+  ActivitiesBreak: Activities
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  breaksActivitiesBreakId: ID
+}
+
+type PottyLog @aws_iam @aws_api_key {
+  id: ID!
+  pottyDate: AWSDate
+  pottyTime: AWSTime
+  urine: Boolean
+  bowel: Boolean
+  underwareAccident: Boolean
+  toilet: Boolean
+  selfInitiated: Boolean
+  prompted: Boolean
+  exactTime: AWSDate
+  PottyStudents: Students
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  pottyLogPottyStudentsId: ID
+}
+
+type ClassesEnrollment @aws_iam @aws_api_key {
+  id: ID!
+  enrollmentId: ID!
+  classesId: ID!
+  enrollment: Enrollment!
+  classes: Classes!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+}
+
+type ClassesStudents @aws_iam @aws_api_key {
+  id: ID!
+  studentsId: ID!
+  classesId: ID!
+  students: Students!
+  classes: Classes!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  in: [String]
+  notIn: [String]
+}
+
+input ModelSubscriptionIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  in: [Int]
+  notIn: [Int]
+}
+
+input ModelSubscriptionFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  in: [Float]
+  notIn: [Float]
+}
+
+input ModelSubscriptionBooleanInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelSubscriptionIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  in: [ID]
+  notIn: [ID]
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelEnrollmentConnection @aws_api_key @aws_iam {
+  items: [Enrollment]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelEnrollmentFilterInput {
+  id: ModelIDInput
+  enrollmentCode: ModelStringInput
+  studentsID: ModelIDInput
+  and: [ModelEnrollmentFilterInput]
+  or: [ModelEnrollmentFilterInput]
+  not: ModelEnrollmentFilterInput
+  _deleted: ModelBooleanInput
+  enrollmentTermEnrollmentId: ModelIDInput
+}
+
+type Query {
+  getEnrollment(id: ID!): Enrollment @aws_api_key @aws_iam
+  listEnrollments(filter: ModelEnrollmentFilterInput, limit: Int, nextToken: String): ModelEnrollmentConnection @aws_api_key @aws_iam
+  syncEnrollments(filter: ModelEnrollmentFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelEnrollmentConnection @aws_api_key @aws_iam
+  enrollmentsByStudentsID(studentsID: ID!, sortDirection: ModelSortDirection, filter: ModelEnrollmentFilterInput, limit: Int, nextToken: String): ModelEnrollmentConnection @aws_api_key @aws_iam
+  getParents(id: ID!): Parents @aws_api_key @aws_iam
+  listParents(filter: ModelParentsFilterInput, limit: Int, nextToken: String): ModelParentsConnection @aws_api_key @aws_iam
+  syncParents(filter: ModelParentsFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelParentsConnection @aws_api_key @aws_iam
+  getStudents(id: ID!): Students @aws_api_key @aws_iam
+  listStudents(filter: ModelStudentsFilterInput, limit: Int, nextToken: String): ModelStudentsConnection @aws_api_key @aws_iam
+  syncStudents(filter: ModelStudentsFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelStudentsConnection @aws_api_key @aws_iam
+  studentsByParentsID(parentsID: ID!, sortDirection: ModelSortDirection, filter: ModelStudentsFilterInput, limit: Int, nextToken: String): ModelStudentsConnection @aws_api_key @aws_iam
+  getTerm(id: ID!): Term @aws_api_key @aws_iam
+  listTerms(filter: ModelTermFilterInput, limit: Int, nextToken: String): ModelTermConnection @aws_api_key @aws_iam
+  syncTerms(filter: ModelTermFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelTermConnection @aws_api_key @aws_iam
+  getClasses(id: ID!): Classes @aws_api_key @aws_iam
+  listClasses(filter: ModelClassesFilterInput, limit: Int, nextToken: String): ModelClassesConnection @aws_api_key @aws_iam
+  syncClasses(filter: ModelClassesFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelClassesConnection @aws_api_key @aws_iam
+  getActivities(id: ID!): Activities @aws_api_key @aws_iam
+  listActivities(filter: ModelActivitiesFilterInput, limit: Int, nextToken: String): ModelActivitiesConnection @aws_api_key @aws_iam
+  syncActivities(filter: ModelActivitiesFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelActivitiesConnection @aws_api_key @aws_iam
+  activitiesByEnrollmentID(enrollmentID: ID!, sortDirection: ModelSortDirection, filter: ModelActivitiesFilterInput, limit: Int, nextToken: String): ModelActivitiesConnection @aws_api_key @aws_iam
+  getEvaluation(id: ID!): Evaluation @aws_api_key @aws_iam
+  listEvaluations(filter: ModelEvaluationFilterInput, limit: Int, nextToken: String): ModelEvaluationConnection @aws_api_key @aws_iam
+  syncEvaluations(filter: ModelEvaluationFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelEvaluationConnection @aws_api_key @aws_iam
+  getRewards(id: ID!): Rewards @aws_api_key @aws_iam
+  listRewards(filter: ModelRewardsFilterInput, limit: Int, nextToken: String): ModelRewardsConnection @aws_api_key @aws_iam
+  syncRewards(filter: ModelRewardsFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelRewardsConnection @aws_api_key @aws_iam
+  getBreaks(id: ID!): Breaks @aws_api_key @aws_iam
+  listBreaks(filter: ModelBreaksFilterInput, limit: Int, nextToken: String): ModelBreaksConnection @aws_api_key @aws_iam
+  syncBreaks(filter: ModelBreaksFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelBreaksConnection @aws_api_key @aws_iam
+  getPottyLog(id: ID!): PottyLog @aws_api_key @aws_iam
+  listPottyLogs(filter: ModelPottyLogFilterInput, limit: Int, nextToken: String): ModelPottyLogConnection @aws_api_key @aws_iam
+  syncPottyLogs(filter: ModelPottyLogFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPottyLogConnection @aws_api_key @aws_iam
+  getClassesEnrollment(id: ID!): ClassesEnrollment @aws_api_key @aws_iam
+  listClassesEnrollments(filter: ModelClassesEnrollmentFilterInput, limit: Int, nextToken: String): ModelClassesEnrollmentConnection @aws_api_key @aws_iam
+  syncClassesEnrollments(filter: ModelClassesEnrollmentFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelClassesEnrollmentConnection @aws_api_key @aws_iam
+  classesEnrollmentsByEnrollmentId(enrollmentId: ID!, sortDirection: ModelSortDirection, filter: ModelClassesEnrollmentFilterInput, limit: Int, nextToken: String): ModelClassesEnrollmentConnection @aws_api_key @aws_iam
+  classesEnrollmentsByClassesId(classesId: ID!, sortDirection: ModelSortDirection, filter: ModelClassesEnrollmentFilterInput, limit: Int, nextToken: String): ModelClassesEnrollmentConnection @aws_api_key @aws_iam
+  getClassesStudents(id: ID!): ClassesStudents @aws_api_key @aws_iam
+  listClassesStudents(filter: ModelClassesStudentsFilterInput, limit: Int, nextToken: String): ModelClassesStudentsConnection @aws_api_key @aws_iam
+  syncClassesStudents(filter: ModelClassesStudentsFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelClassesStudentsConnection @aws_api_key @aws_iam
+  classesStudentsByStudentsId(studentsId: ID!, sortDirection: ModelSortDirection, filter: ModelClassesStudentsFilterInput, limit: Int, nextToken: String): ModelClassesStudentsConnection @aws_api_key @aws_iam
+  classesStudentsByClassesId(classesId: ID!, sortDirection: ModelSortDirection, filter: ModelClassesStudentsFilterInput, limit: Int, nextToken: String): ModelClassesStudentsConnection @aws_api_key @aws_iam
+}
+
+input ModelEnrollmentConditionInput {
+  enrollmentCode: ModelStringInput
+  studentsID: ModelIDInput
+  and: [ModelEnrollmentConditionInput]
+  or: [ModelEnrollmentConditionInput]
+  not: ModelEnrollmentConditionInput
+  _deleted: ModelBooleanInput
+  enrollmentTermEnrollmentId: ModelIDInput
+}
+
+input CreateEnrollmentInput {
+  id: ID
+  enrollmentCode: String
+  studentsID: ID!
+  _version: Int
+  enrollmentTermEnrollmentId: ID
+}
+
+input UpdateEnrollmentInput {
+  id: ID!
+  enrollmentCode: String
+  studentsID: ID
+  _version: Int
+  enrollmentTermEnrollmentId: ID
+}
+
+input DeleteEnrollmentInput {
+  id: ID!
+  _version: Int
+}
+
+type Mutation {
+  createEnrollment(input: CreateEnrollmentInput!, condition: ModelEnrollmentConditionInput): Enrollment @aws_api_key @aws_iam
+  updateEnrollment(input: UpdateEnrollmentInput!, condition: ModelEnrollmentConditionInput): Enrollment @aws_api_key @aws_iam
+  deleteEnrollment(input: DeleteEnrollmentInput!, condition: ModelEnrollmentConditionInput): Enrollment @aws_api_key @aws_iam
+  createParents(input: CreateParentsInput!, condition: ModelParentsConditionInput): Parents @aws_api_key @aws_iam
+  updateParents(input: UpdateParentsInput!, condition: ModelParentsConditionInput): Parents @aws_api_key @aws_iam
+  deleteParents(input: DeleteParentsInput!, condition: ModelParentsConditionInput): Parents @aws_api_key @aws_iam
+  createStudents(input: CreateStudentsInput!, condition: ModelStudentsConditionInput): Students @aws_api_key @aws_iam
+  updateStudents(input: UpdateStudentsInput!, condition: ModelStudentsConditionInput): Students @aws_api_key @aws_iam
+  deleteStudents(input: DeleteStudentsInput!, condition: ModelStudentsConditionInput): Students @aws_api_key @aws_iam
+  createTerm(input: CreateTermInput!, condition: ModelTermConditionInput): Term @aws_api_key @aws_iam
+  updateTerm(input: UpdateTermInput!, condition: ModelTermConditionInput): Term @aws_api_key @aws_iam
+  deleteTerm(input: DeleteTermInput!, condition: ModelTermConditionInput): Term @aws_api_key @aws_iam
+  createClasses(input: CreateClassesInput!, condition: ModelClassesConditionInput): Classes @aws_api_key @aws_iam
+  updateClasses(input: UpdateClassesInput!, condition: ModelClassesConditionInput): Classes @aws_api_key @aws_iam
+  deleteClasses(input: DeleteClassesInput!, condition: ModelClassesConditionInput): Classes @aws_api_key @aws_iam
+  createActivities(input: CreateActivitiesInput!, condition: ModelActivitiesConditionInput): Activities @aws_api_key @aws_iam
+  updateActivities(input: UpdateActivitiesInput!, condition: ModelActivitiesConditionInput): Activities @aws_api_key @aws_iam
+  deleteActivities(input: DeleteActivitiesInput!, condition: ModelActivitiesConditionInput): Activities @aws_api_key @aws_iam
+  createEvaluation(input: CreateEvaluationInput!, condition: ModelEvaluationConditionInput): Evaluation @aws_api_key @aws_iam
+  updateEvaluation(input: UpdateEvaluationInput!, condition: ModelEvaluationConditionInput): Evaluation @aws_api_key @aws_iam
+  deleteEvaluation(input: DeleteEvaluationInput!, condition: ModelEvaluationConditionInput): Evaluation @aws_api_key @aws_iam
+  createRewards(input: CreateRewardsInput!, condition: ModelRewardsConditionInput): Rewards @aws_api_key @aws_iam
+  updateRewards(input: UpdateRewardsInput!, condition: ModelRewardsConditionInput): Rewards @aws_api_key @aws_iam
+  deleteRewards(input: DeleteRewardsInput!, condition: ModelRewardsConditionInput): Rewards @aws_api_key @aws_iam
+  createBreaks(input: CreateBreaksInput!, condition: ModelBreaksConditionInput): Breaks @aws_api_key @aws_iam
+  updateBreaks(input: UpdateBreaksInput!, condition: ModelBreaksConditionInput): Breaks @aws_api_key @aws_iam
+  deleteBreaks(input: DeleteBreaksInput!, condition: ModelBreaksConditionInput): Breaks @aws_api_key @aws_iam
+  createPottyLog(input: CreatePottyLogInput!, condition: ModelPottyLogConditionInput): PottyLog @aws_api_key @aws_iam
+  updatePottyLog(input: UpdatePottyLogInput!, condition: ModelPottyLogConditionInput): PottyLog @aws_api_key @aws_iam
+  deletePottyLog(input: DeletePottyLogInput!, condition: ModelPottyLogConditionInput): PottyLog @aws_api_key @aws_iam
+  createClassesEnrollment(input: CreateClassesEnrollmentInput!, condition: ModelClassesEnrollmentConditionInput): ClassesEnrollment @aws_api_key @aws_iam
+  updateClassesEnrollment(input: UpdateClassesEnrollmentInput!, condition: ModelClassesEnrollmentConditionInput): ClassesEnrollment @aws_api_key @aws_iam
+  deleteClassesEnrollment(input: DeleteClassesEnrollmentInput!, condition: ModelClassesEnrollmentConditionInput): ClassesEnrollment @aws_api_key @aws_iam
+  createClassesStudents(input: CreateClassesStudentsInput!, condition: ModelClassesStudentsConditionInput): ClassesStudents @aws_api_key @aws_iam
+  updateClassesStudents(input: UpdateClassesStudentsInput!, condition: ModelClassesStudentsConditionInput): ClassesStudents @aws_api_key @aws_iam
+  deleteClassesStudents(input: DeleteClassesStudentsInput!, condition: ModelClassesStudentsConditionInput): ClassesStudents @aws_api_key @aws_iam
+}
+
+input ModelSubscriptionEnrollmentFilterInput {
+  id: ModelSubscriptionIDInput
+  enrollmentCode: ModelSubscriptionStringInput
+  studentsID: ModelSubscriptionIDInput
+  and: [ModelSubscriptionEnrollmentFilterInput]
+  or: [ModelSubscriptionEnrollmentFilterInput]
+  _deleted: ModelBooleanInput
+}
+
+type Subscription {
+  onCreateEnrollment(filter: ModelSubscriptionEnrollmentFilterInput): Enrollment @aws_subscribe(mutations: ["createEnrollment"]) @aws_api_key @aws_iam
+  onUpdateEnrollment(filter: ModelSubscriptionEnrollmentFilterInput): Enrollment @aws_subscribe(mutations: ["updateEnrollment"]) @aws_api_key @aws_iam
+  onDeleteEnrollment(filter: ModelSubscriptionEnrollmentFilterInput): Enrollment @aws_subscribe(mutations: ["deleteEnrollment"]) @aws_api_key @aws_iam
+  onCreateParents(filter: ModelSubscriptionParentsFilterInput): Parents @aws_subscribe(mutations: ["createParents"]) @aws_api_key @aws_iam
+  onUpdateParents(filter: ModelSubscriptionParentsFilterInput): Parents @aws_subscribe(mutations: ["updateParents"]) @aws_api_key @aws_iam
+  onDeleteParents(filter: ModelSubscriptionParentsFilterInput): Parents @aws_subscribe(mutations: ["deleteParents"]) @aws_api_key @aws_iam
+  onCreateStudents(filter: ModelSubscriptionStudentsFilterInput): Students @aws_subscribe(mutations: ["createStudents"]) @aws_api_key @aws_iam
+  onUpdateStudents(filter: ModelSubscriptionStudentsFilterInput): Students @aws_subscribe(mutations: ["updateStudents"]) @aws_api_key @aws_iam
+  onDeleteStudents(filter: ModelSubscriptionStudentsFilterInput): Students @aws_subscribe(mutations: ["deleteStudents"]) @aws_api_key @aws_iam
+  onCreateTerm(filter: ModelSubscriptionTermFilterInput): Term @aws_subscribe(mutations: ["createTerm"]) @aws_api_key @aws_iam
+  onUpdateTerm(filter: ModelSubscriptionTermFilterInput): Term @aws_subscribe(mutations: ["updateTerm"]) @aws_api_key @aws_iam
+  onDeleteTerm(filter: ModelSubscriptionTermFilterInput): Term @aws_subscribe(mutations: ["deleteTerm"]) @aws_api_key @aws_iam
+  onCreateClasses(filter: ModelSubscriptionClassesFilterInput): Classes @aws_subscribe(mutations: ["createClasses"]) @aws_api_key @aws_iam
+  onUpdateClasses(filter: ModelSubscriptionClassesFilterInput): Classes @aws_subscribe(mutations: ["updateClasses"]) @aws_api_key @aws_iam
+  onDeleteClasses(filter: ModelSubscriptionClassesFilterInput): Classes @aws_subscribe(mutations: ["deleteClasses"]) @aws_api_key @aws_iam
+  onCreateActivities(filter: ModelSubscriptionActivitiesFilterInput): Activities @aws_subscribe(mutations: ["createActivities"]) @aws_api_key @aws_iam
+  onUpdateActivities(filter: ModelSubscriptionActivitiesFilterInput): Activities @aws_subscribe(mutations: ["updateActivities"]) @aws_api_key @aws_iam
+  onDeleteActivities(filter: ModelSubscriptionActivitiesFilterInput): Activities @aws_subscribe(mutations: ["deleteActivities"]) @aws_api_key @aws_iam
+  onCreateEvaluation(filter: ModelSubscriptionEvaluationFilterInput): Evaluation @aws_subscribe(mutations: ["createEvaluation"]) @aws_api_key @aws_iam
+  onUpdateEvaluation(filter: ModelSubscriptionEvaluationFilterInput): Evaluation @aws_subscribe(mutations: ["updateEvaluation"]) @aws_api_key @aws_iam
+  onDeleteEvaluation(filter: ModelSubscriptionEvaluationFilterInput): Evaluation @aws_subscribe(mutations: ["deleteEvaluation"]) @aws_api_key @aws_iam
+  onCreateRewards(filter: ModelSubscriptionRewardsFilterInput): Rewards @aws_subscribe(mutations: ["createRewards"]) @aws_api_key @aws_iam
+  onUpdateRewards(filter: ModelSubscriptionRewardsFilterInput): Rewards @aws_subscribe(mutations: ["updateRewards"]) @aws_api_key @aws_iam
+  onDeleteRewards(filter: ModelSubscriptionRewardsFilterInput): Rewards @aws_subscribe(mutations: ["deleteRewards"]) @aws_api_key @aws_iam
+  onCreateBreaks(filter: ModelSubscriptionBreaksFilterInput): Breaks @aws_subscribe(mutations: ["createBreaks"]) @aws_api_key @aws_iam
+  onUpdateBreaks(filter: ModelSubscriptionBreaksFilterInput): Breaks @aws_subscribe(mutations: ["updateBreaks"]) @aws_api_key @aws_iam
+  onDeleteBreaks(filter: ModelSubscriptionBreaksFilterInput): Breaks @aws_subscribe(mutations: ["deleteBreaks"]) @aws_api_key @aws_iam
+  onCreatePottyLog(filter: ModelSubscriptionPottyLogFilterInput): PottyLog @aws_subscribe(mutations: ["createPottyLog"]) @aws_api_key @aws_iam
+  onUpdatePottyLog(filter: ModelSubscriptionPottyLogFilterInput): PottyLog @aws_subscribe(mutations: ["updatePottyLog"]) @aws_api_key @aws_iam
+  onDeletePottyLog(filter: ModelSubscriptionPottyLogFilterInput): PottyLog @aws_subscribe(mutations: ["deletePottyLog"]) @aws_api_key @aws_iam
+  onCreateClassesEnrollment(filter: ModelSubscriptionClassesEnrollmentFilterInput): ClassesEnrollment @aws_subscribe(mutations: ["createClassesEnrollment"]) @aws_api_key @aws_iam
+  onUpdateClassesEnrollment(filter: ModelSubscriptionClassesEnrollmentFilterInput): ClassesEnrollment @aws_subscribe(mutations: ["updateClassesEnrollment"]) @aws_api_key @aws_iam
+  onDeleteClassesEnrollment(filter: ModelSubscriptionClassesEnrollmentFilterInput): ClassesEnrollment @aws_subscribe(mutations: ["deleteClassesEnrollment"]) @aws_api_key @aws_iam
+  onCreateClassesStudents(filter: ModelSubscriptionClassesStudentsFilterInput): ClassesStudents @aws_subscribe(mutations: ["createClassesStudents"]) @aws_api_key @aws_iam
+  onUpdateClassesStudents(filter: ModelSubscriptionClassesStudentsFilterInput): ClassesStudents @aws_subscribe(mutations: ["updateClassesStudents"]) @aws_api_key @aws_iam
+  onDeleteClassesStudents(filter: ModelSubscriptionClassesStudentsFilterInput): ClassesStudents @aws_subscribe(mutations: ["deleteClassesStudents"]) @aws_api_key @aws_iam
+}
+
+type ModelParentsConnection @aws_api_key @aws_iam {
+  items: [Parents]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelParentsFilterInput {
+  id: ModelIDInput
+  parentName: ModelStringInput
+  parentLastName: ModelStringInput
+  email: ModelStringInput
+  imageProfile: ModelStringInput
+  and: [ModelParentsFilterInput]
+  or: [ModelParentsFilterInput]
+  not: ModelParentsFilterInput
+  _deleted: ModelBooleanInput
+}
+
+input ModelParentsConditionInput {
+  parentName: ModelStringInput
+  parentLastName: ModelStringInput
+  email: ModelStringInput
+  imageProfile: ModelStringInput
+  and: [ModelParentsConditionInput]
+  or: [ModelParentsConditionInput]
+  not: ModelParentsConditionInput
+  _deleted: ModelBooleanInput
+}
+
+input CreateParentsInput {
+  id: ID
+  parentName: String
+  parentLastName: String
+  email: AWSEmail
+  imageProfile: AWSURL
+  _version: Int
+}
+
+input UpdateParentsInput {
+  id: ID!
+  parentName: String
+  parentLastName: String
+  email: AWSEmail
+  imageProfile: AWSURL
+  _version: Int
+}
+
+input DeleteParentsInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelSubscriptionParentsFilterInput {
+  id: ModelSubscriptionIDInput
+  parentName: ModelSubscriptionStringInput
+  parentLastName: ModelSubscriptionStringInput
+  email: ModelSubscriptionStringInput
+  imageProfile: ModelSubscriptionStringInput
+  and: [ModelSubscriptionParentsFilterInput]
+  or: [ModelSubscriptionParentsFilterInput]
+  _deleted: ModelBooleanInput
+}
+
+type ModelStudentsConnection @aws_iam @aws_api_key {
+  items: [Students]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelStudentsFilterInput {
+  id: ModelIDInput
+  stuName: ModelStringInput
+  stuLastName: ModelStringInput
+  email: ModelStringInput
+  age: ModelIntInput
+  imageProfileStu: ModelStringInput
+  parentsID: ModelIDInput
+  and: [ModelStudentsFilterInput]
+  or: [ModelStudentsFilterInput]
+  not: ModelStudentsFilterInput
+  _deleted: ModelBooleanInput
+}
+
+input ModelStudentsConditionInput {
+  stuName: ModelStringInput
+  stuLastName: ModelStringInput
+  email: ModelStringInput
+  age: ModelIntInput
+  imageProfileStu: ModelStringInput
+  parentsID: ModelIDInput
+  and: [ModelStudentsConditionInput]
+  or: [ModelStudentsConditionInput]
+  not: ModelStudentsConditionInput
+  _deleted: ModelBooleanInput
+}
+
+input CreateStudentsInput {
+  id: ID
+  stuName: String
+  stuLastName: String
+  email: AWSEmail
+  age: Int
+  imageProfileStu: AWSURL
+  parentsID: ID!
+  _version: Int
+}
+
+input UpdateStudentsInput {
+  id: ID!
+  stuName: String
+  stuLastName: String
+  email: AWSEmail
+  age: Int
+  imageProfileStu: AWSURL
+  parentsID: ID
+  _version: Int
+}
+
+input DeleteStudentsInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelSubscriptionStudentsFilterInput {
+  id: ModelSubscriptionIDInput
+  stuName: ModelSubscriptionStringInput
+  stuLastName: ModelSubscriptionStringInput
+  email: ModelSubscriptionStringInput
+  age: ModelSubscriptionIntInput
+  imageProfileStu: ModelSubscriptionStringInput
+  parentsID: ModelSubscriptionIDInput
+  and: [ModelSubscriptionStudentsFilterInput]
+  or: [ModelSubscriptionStudentsFilterInput]
+  _deleted: ModelBooleanInput
+}
+
+type ModelTermConnection @aws_api_key @aws_iam {
+  items: [Term]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelTermFilterInput {
+  id: ModelIDInput
+  termId: ModelStringInput
+  summer: ModelBooleanInput
+  fall: ModelBooleanInput
+  winter: ModelBooleanInput
+  year: ModelIntInput
+  and: [ModelTermFilterInput]
+  or: [ModelTermFilterInput]
+  not: ModelTermFilterInput
+  _deleted: ModelBooleanInput
+}
+
+input ModelTermConditionInput {
+  termId: ModelStringInput
+  summer: ModelBooleanInput
+  fall: ModelBooleanInput
+  winter: ModelBooleanInput
+  year: ModelIntInput
+  and: [ModelTermConditionInput]
+  or: [ModelTermConditionInput]
+  not: ModelTermConditionInput
+  _deleted: ModelBooleanInput
+}
+
+input CreateTermInput {
+  id: ID
+  termId: String!
+  summer: Boolean
+  fall: Boolean
+  winter: Boolean
+  year: Int!
+  _version: Int
+}
+
+input UpdateTermInput {
+  id: ID!
+  termId: String
+  summer: Boolean
+  fall: Boolean
+  winter: Boolean
+  year: Int
+  _version: Int
+}
+
+input DeleteTermInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelSubscriptionTermFilterInput {
+  id: ModelSubscriptionIDInput
+  termId: ModelSubscriptionStringInput
+  summer: ModelSubscriptionBooleanInput
+  fall: ModelSubscriptionBooleanInput
+  winter: ModelSubscriptionBooleanInput
+  year: ModelSubscriptionIntInput
+  and: [ModelSubscriptionTermFilterInput]
+  or: [ModelSubscriptionTermFilterInput]
+  _deleted: ModelBooleanInput
+}
+
+type ModelClassesConnection @aws_api_key @aws_iam {
+  items: [Classes]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelClassesFilterInput {
+  id: ModelIDInput
+  className: ModelStringInput
+  classLevel: ModelStringInput
+  and: [ModelClassesFilterInput]
+  or: [ModelClassesFilterInput]
+  not: ModelClassesFilterInput
+  _deleted: ModelBooleanInput
+}
+
+input ModelClassesConditionInput {
+  className: ModelStringInput
+  classLevel: ModelStringInput
+  and: [ModelClassesConditionInput]
+  or: [ModelClassesConditionInput]
+  not: ModelClassesConditionInput
+  _deleted: ModelBooleanInput
+}
+
+input CreateClassesInput {
+  id: ID
+  className: String
+  classLevel: String
+  _version: Int
+}
+
+input UpdateClassesInput {
+  id: ID!
+  className: String
+  classLevel: String
+  _version: Int
+}
+
+input DeleteClassesInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelSubscriptionClassesFilterInput {
+  id: ModelSubscriptionIDInput
+  className: ModelSubscriptionStringInput
+  classLevel: ModelSubscriptionStringInput
+  and: [ModelSubscriptionClassesFilterInput]
+  or: [ModelSubscriptionClassesFilterInput]
+  _deleted: ModelBooleanInput
+}
+
+type ModelActivitiesConnection @aws_iam @aws_api_key {
+  items: [Activities]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelActivitiesFilterInput {
+  id: ModelIDInput
+  actName: ModelStringInput
+  actType: ModelStringInput
+  actDate: ModelStringInput
+  actStart: ModelStringInput
+  actEnd: ModelStringInput
+  actDescription: ModelStringInput
+  actDocument: ModelStringInput
+  enrollmentID: ModelIDInput
+  and: [ModelActivitiesFilterInput]
+  or: [ModelActivitiesFilterInput]
+  not: ModelActivitiesFilterInput
+  _deleted: ModelBooleanInput
+  activitiesEvaluationRelId: ModelIDInput
+}
+
+input ModelActivitiesConditionInput {
+  actName: ModelStringInput
+  actType: ModelStringInput
+  actDate: ModelStringInput
+  actStart: ModelStringInput
+  actEnd: ModelStringInput
+  actDescription: ModelStringInput
+  actDocument: ModelStringInput
+  enrollmentID: ModelIDInput
+  and: [ModelActivitiesConditionInput]
+  or: [ModelActivitiesConditionInput]
+  not: ModelActivitiesConditionInput
+  _deleted: ModelBooleanInput
+  activitiesEvaluationRelId: ModelIDInput
+}
+
+input CreateActivitiesInput {
+  id: ID
+  actName: String
+  actType: String
+  actDate: AWSDate
+  actStart: AWSTime
+  actEnd: AWSTime
+  actDescription: String
+  actDocument: AWSURL
+  enrollmentID: ID!
+  _version: Int
+  activitiesEvaluationRelId: ID
+}
+
+input UpdateActivitiesInput {
+  id: ID!
+  actName: String
+  actType: String
+  actDate: AWSDate
+  actStart: AWSTime
+  actEnd: AWSTime
+  actDescription: String
+  actDocument: AWSURL
+  enrollmentID: ID
+  _version: Int
+  activitiesEvaluationRelId: ID
+}
+
+input DeleteActivitiesInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelSubscriptionActivitiesFilterInput {
+  id: ModelSubscriptionIDInput
+  actName: ModelSubscriptionStringInput
+  actType: ModelSubscriptionStringInput
+  actDate: ModelSubscriptionStringInput
+  actStart: ModelSubscriptionStringInput
+  actEnd: ModelSubscriptionStringInput
+  actDescription: ModelSubscriptionStringInput
+  actDocument: ModelSubscriptionStringInput
+  enrollmentID: ModelSubscriptionIDInput
+  and: [ModelSubscriptionActivitiesFilterInput]
+  or: [ModelSubscriptionActivitiesFilterInput]
+  _deleted: ModelBooleanInput
+}
+
+type ModelEvaluationConnection @aws_api_key @aws_iam {
+  items: [Evaluation]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelEvaluationFilterInput {
+  id: ModelIDInput
+  evaluationCode: ModelStringInput
+  evalDate: ModelStringInput
+  organization: ModelFloatInput
+  participation: ModelFloatInput
+  problemSolving: ModelFloatInput
+  rulesRutines: ModelFloatInput
+  behavior: ModelFloatInput
+  followalong: ModelFloatInput
+  transition: ModelFloatInput
+  timeManagement: ModelFloatInput
+  evaluationValue: ModelFloatInput
+  evaluationScore: ModelFloatInput
+  progress: ModelFloatInput
+  and: [ModelEvaluationFilterInput]
+  or: [ModelEvaluationFilterInput]
+  not: ModelEvaluationFilterInput
+  _deleted: ModelBooleanInput
+  evaluationActivitiesId: ModelIDInput
+}
+
+input ModelEvaluationConditionInput {
+  evaluationCode: ModelStringInput
+  evalDate: ModelStringInput
+  organization: ModelFloatInput
+  participation: ModelFloatInput
+  problemSolving: ModelFloatInput
+  rulesRutines: ModelFloatInput
+  behavior: ModelFloatInput
+  followalong: ModelFloatInput
+  transition: ModelFloatInput
+  timeManagement: ModelFloatInput
+  evaluationValue: ModelFloatInput
+  evaluationScore: ModelFloatInput
+  progress: ModelFloatInput
+  and: [ModelEvaluationConditionInput]
+  or: [ModelEvaluationConditionInput]
+  not: ModelEvaluationConditionInput
+  _deleted: ModelBooleanInput
+  evaluationActivitiesId: ModelIDInput
+}
+
+input CreateEvaluationInput {
+  id: ID
+  evaluationCode: String
+  evalDate: AWSDate
+  organization: Float
+  participation: Float
+  problemSolving: Float
+  rulesRutines: Float
+  behavior: Float
+  followalong: Float
+  transition: Float
+  timeManagement: Float
+  evaluationValue: Float
+  evaluationScore: Float
+  progress: Float
+  _version: Int
+  evaluationActivitiesId: ID
+}
+
+input UpdateEvaluationInput {
+  id: ID!
+  evaluationCode: String
+  evalDate: AWSDate
+  organization: Float
+  participation: Float
+  problemSolving: Float
+  rulesRutines: Float
+  behavior: Float
+  followalong: Float
+  transition: Float
+  timeManagement: Float
+  evaluationValue: Float
+  evaluationScore: Float
+  progress: Float
+  _version: Int
+  evaluationActivitiesId: ID
+}
+
+input DeleteEvaluationInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelSubscriptionEvaluationFilterInput {
+  id: ModelSubscriptionIDInput
+  evaluationCode: ModelSubscriptionStringInput
+  evalDate: ModelSubscriptionStringInput
+  organization: ModelSubscriptionFloatInput
+  participation: ModelSubscriptionFloatInput
+  problemSolving: ModelSubscriptionFloatInput
+  rulesRutines: ModelSubscriptionFloatInput
+  behavior: ModelSubscriptionFloatInput
+  followalong: ModelSubscriptionFloatInput
+  transition: ModelSubscriptionFloatInput
+  timeManagement: ModelSubscriptionFloatInput
+  evaluationValue: ModelSubscriptionFloatInput
+  evaluationScore: ModelSubscriptionFloatInput
+  progress: ModelSubscriptionFloatInput
+  and: [ModelSubscriptionEvaluationFilterInput]
+  or: [ModelSubscriptionEvaluationFilterInput]
+  _deleted: ModelBooleanInput
+}
+
+type ModelRewardsConnection @aws_api_key @aws_iam {
+  items: [Rewards]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelRewardsFilterInput {
+  id: ModelIDInput
+  desctiptionRewardGiven: ModelStringInput
+  rewardDate: ModelStringInput
+  rewardTime: ModelStringInput
+  completedActivities: ModelBooleanInput
+  goodBehavior: ModelBooleanInput
+  and: [ModelRewardsFilterInput]
+  or: [ModelRewardsFilterInput]
+  not: ModelRewardsFilterInput
+  _deleted: ModelBooleanInput
+  rewardsEvaluationId: ModelIDInput
+  rewardsPottyLogId: ModelIDInput
+}
+
+input ModelRewardsConditionInput {
+  desctiptionRewardGiven: ModelStringInput
+  rewardDate: ModelStringInput
+  rewardTime: ModelStringInput
+  completedActivities: ModelBooleanInput
+  goodBehavior: ModelBooleanInput
+  and: [ModelRewardsConditionInput]
+  or: [ModelRewardsConditionInput]
+  not: ModelRewardsConditionInput
+  _deleted: ModelBooleanInput
+  rewardsEvaluationId: ModelIDInput
+  rewardsPottyLogId: ModelIDInput
+}
+
+input CreateRewardsInput {
+  id: ID
+  desctiptionRewardGiven: String
+  rewardDate: AWSDate
+  rewardTime: AWSTime
+  completedActivities: Boolean
+  goodBehavior: Boolean
+  _version: Int
+  rewardsEvaluationId: ID
+  rewardsPottyLogId: ID
+}
+
+input UpdateRewardsInput {
+  id: ID!
+  desctiptionRewardGiven: String
+  rewardDate: AWSDate
+  rewardTime: AWSTime
+  completedActivities: Boolean
+  goodBehavior: Boolean
+  _version: Int
+  rewardsEvaluationId: ID
+  rewardsPottyLogId: ID
+}
+
+input DeleteRewardsInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelSubscriptionRewardsFilterInput {
+  id: ModelSubscriptionIDInput
+  desctiptionRewardGiven: ModelSubscriptionStringInput
+  rewardDate: ModelSubscriptionStringInput
+  rewardTime: ModelSubscriptionStringInput
+  completedActivities: ModelSubscriptionBooleanInput
+  goodBehavior: ModelSubscriptionBooleanInput
+  and: [ModelSubscriptionRewardsFilterInput]
+  or: [ModelSubscriptionRewardsFilterInput]
+  _deleted: ModelBooleanInput
+}
+
+type ModelBreaksConnection @aws_api_key @aws_iam {
+  items: [Breaks]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelBreaksFilterInput {
+  id: ModelIDInput
+  breaksDescription: ModelStringInput
+  breaksDate: ModelStringInput
+  breaksStart: ModelStringInput
+  breaksEnd: ModelStringInput
+  breaksBehavior: ModelStringInput
+  and: [ModelBreaksFilterInput]
+  or: [ModelBreaksFilterInput]
+  not: ModelBreaksFilterInput
+  _deleted: ModelBooleanInput
+  breaksActivitiesBreakId: ModelIDInput
+}
+
+input ModelBreaksConditionInput {
+  breaksDescription: ModelStringInput
+  breaksDate: ModelStringInput
+  breaksStart: ModelStringInput
+  breaksEnd: ModelStringInput
+  breaksBehavior: ModelStringInput
+  and: [ModelBreaksConditionInput]
+  or: [ModelBreaksConditionInput]
+  not: ModelBreaksConditionInput
+  _deleted: ModelBooleanInput
+  breaksActivitiesBreakId: ModelIDInput
+}
+
+input CreateBreaksInput {
+  id: ID
+  breaksDescription: String
+  breaksDate: AWSDate
+  breaksStart: AWSTime
+  breaksEnd: AWSTime
+  breaksBehavior: String
+  _version: Int
+  breaksActivitiesBreakId: ID
+}
+
+input UpdateBreaksInput {
+  id: ID!
+  breaksDescription: String
+  breaksDate: AWSDate
+  breaksStart: AWSTime
+  breaksEnd: AWSTime
+  breaksBehavior: String
+  _version: Int
+  breaksActivitiesBreakId: ID
+}
+
+input DeleteBreaksInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelSubscriptionBreaksFilterInput {
+  id: ModelSubscriptionIDInput
+  breaksDescription: ModelSubscriptionStringInput
+  breaksDate: ModelSubscriptionStringInput
+  breaksStart: ModelSubscriptionStringInput
+  breaksEnd: ModelSubscriptionStringInput
+  breaksBehavior: ModelSubscriptionStringInput
+  and: [ModelSubscriptionBreaksFilterInput]
+  or: [ModelSubscriptionBreaksFilterInput]
+  _deleted: ModelBooleanInput
+}
+
+type ModelPottyLogConnection @aws_api_key @aws_iam {
+  items: [PottyLog]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelPottyLogFilterInput {
+  id: ModelIDInput
+  pottyDate: ModelStringInput
+  pottyTime: ModelStringInput
+  urine: ModelBooleanInput
+  bowel: ModelBooleanInput
+  underwareAccident: ModelBooleanInput
+  toilet: ModelBooleanInput
+  selfInitiated: ModelBooleanInput
+  prompted: ModelBooleanInput
+  exactTime: ModelStringInput
+  and: [ModelPottyLogFilterInput]
+  or: [ModelPottyLogFilterInput]
+  not: ModelPottyLogFilterInput
+  _deleted: ModelBooleanInput
+  pottyLogPottyStudentsId: ModelIDInput
+}
+
+input ModelPottyLogConditionInput {
+  pottyDate: ModelStringInput
+  pottyTime: ModelStringInput
+  urine: ModelBooleanInput
+  bowel: ModelBooleanInput
+  underwareAccident: ModelBooleanInput
+  toilet: ModelBooleanInput
+  selfInitiated: ModelBooleanInput
+  prompted: ModelBooleanInput
+  exactTime: ModelStringInput
+  and: [ModelPottyLogConditionInput]
+  or: [ModelPottyLogConditionInput]
+  not: ModelPottyLogConditionInput
+  _deleted: ModelBooleanInput
+  pottyLogPottyStudentsId: ModelIDInput
+}
+
+input CreatePottyLogInput {
+  id: ID
+  pottyDate: AWSDate
+  pottyTime: AWSTime
+  urine: Boolean
+  bowel: Boolean
+  underwareAccident: Boolean
+  toilet: Boolean
+  selfInitiated: Boolean
+  prompted: Boolean
+  exactTime: AWSDate
+  _version: Int
+  pottyLogPottyStudentsId: ID
+}
+
+input UpdatePottyLogInput {
+  id: ID!
+  pottyDate: AWSDate
+  pottyTime: AWSTime
+  urine: Boolean
+  bowel: Boolean
+  underwareAccident: Boolean
+  toilet: Boolean
+  selfInitiated: Boolean
+  prompted: Boolean
+  exactTime: AWSDate
+  _version: Int
+  pottyLogPottyStudentsId: ID
+}
+
+input DeletePottyLogInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelSubscriptionPottyLogFilterInput {
+  id: ModelSubscriptionIDInput
+  pottyDate: ModelSubscriptionStringInput
+  pottyTime: ModelSubscriptionStringInput
+  urine: ModelSubscriptionBooleanInput
+  bowel: ModelSubscriptionBooleanInput
+  underwareAccident: ModelSubscriptionBooleanInput
+  toilet: ModelSubscriptionBooleanInput
+  selfInitiated: ModelSubscriptionBooleanInput
+  prompted: ModelSubscriptionBooleanInput
+  exactTime: ModelSubscriptionStringInput
+  and: [ModelSubscriptionPottyLogFilterInput]
+  or: [ModelSubscriptionPottyLogFilterInput]
+  _deleted: ModelBooleanInput
+}
+
+type ModelClassesEnrollmentConnection @aws_iam @aws_api_key {
+  items: [ClassesEnrollment]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelClassesEnrollmentFilterInput {
+  id: ModelIDInput
+  enrollmentId: ModelIDInput
+  classesId: ModelIDInput
+  and: [ModelClassesEnrollmentFilterInput]
+  or: [ModelClassesEnrollmentFilterInput]
+  not: ModelClassesEnrollmentFilterInput
+  _deleted: ModelBooleanInput
+}
+
+input ModelClassesEnrollmentConditionInput {
+  enrollmentId: ModelIDInput
+  classesId: ModelIDInput
+  and: [ModelClassesEnrollmentConditionInput]
+  or: [ModelClassesEnrollmentConditionInput]
+  not: ModelClassesEnrollmentConditionInput
+  _deleted: ModelBooleanInput
+}
+
+input CreateClassesEnrollmentInput {
+  id: ID
+  enrollmentId: ID!
+  classesId: ID!
+  _version: Int
+}
+
+input UpdateClassesEnrollmentInput {
+  id: ID!
+  enrollmentId: ID
+  classesId: ID
+  _version: Int
+}
+
+input DeleteClassesEnrollmentInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelSubscriptionClassesEnrollmentFilterInput {
+  id: ModelSubscriptionIDInput
+  enrollmentId: ModelSubscriptionIDInput
+  classesId: ModelSubscriptionIDInput
+  and: [ModelSubscriptionClassesEnrollmentFilterInput]
+  or: [ModelSubscriptionClassesEnrollmentFilterInput]
+  _deleted: ModelBooleanInput
+}
+
+type ModelClassesStudentsConnection @aws_iam @aws_api_key {
+  items: [ClassesStudents]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelClassesStudentsFilterInput {
+  id: ModelIDInput
+  studentsId: ModelIDInput
+  classesId: ModelIDInput
+  and: [ModelClassesStudentsFilterInput]
+  or: [ModelClassesStudentsFilterInput]
+  not: ModelClassesStudentsFilterInput
+  _deleted: ModelBooleanInput
+}
+
+input ModelClassesStudentsConditionInput {
+  studentsId: ModelIDInput
+  classesId: ModelIDInput
+  and: [ModelClassesStudentsConditionInput]
+  or: [ModelClassesStudentsConditionInput]
+  not: ModelClassesStudentsConditionInput
+  _deleted: ModelBooleanInput
+}
+
+input CreateClassesStudentsInput {
+  id: ID
+  studentsId: ID!
+  classesId: ID!
+  _version: Int
+}
+
+input UpdateClassesStudentsInput {
+  id: ID!
+  studentsId: ID
+  classesId: ID
+  _version: Int
+}
+
+input DeleteClassesStudentsInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelSubscriptionClassesStudentsFilterInput {
+  id: ModelSubscriptionIDInput
+  studentsId: ModelSubscriptionIDInput
+  classesId: ModelSubscriptionIDInput
+  and: [ModelSubscriptionClassesStudentsFilterInput]
+  or: [ModelSubscriptionClassesStudentsFilterInput]
+  _deleted: ModelBooleanInput
+}

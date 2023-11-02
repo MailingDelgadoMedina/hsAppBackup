@@ -1,0 +1,7 @@
+{
+    "AppSyncApiName": "hsApp",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "S3DeploymentBucket": "amplify-hsapp-staging-33635-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/314870dbef246a272402fb0b50b6b266471d38b1"
+}
